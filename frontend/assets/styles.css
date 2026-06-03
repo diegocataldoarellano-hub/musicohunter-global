@@ -121,6 +121,12 @@ select {
   background: rgba(255, 255, 255, 0.1);
 }
 
+.ghost-link:disabled {
+  cursor: wait;
+  opacity: 0.72;
+  transform: none;
+}
+
 .hero-grid {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(320px, 0.42fr);

@@ -79,6 +79,37 @@ def test_curator_collects_contact_links_from_html():
     assert "https://festival.typeform.com/to/apply" in bits
 
 
+def test_admin_refresh_fast_endpoint_contract(monkeypatch):
+    async def fake_fast_refresh():
+        return {
+            "mode": "fast_global",
+            "countries_scanned": 199,
+            "queries_per_country": 4,
+            "results_per_query": 2,
+            "discovered_sources": 3,
+            "created": 1,
+            "reviewed": 2,
+            "link_counts": {"ok": 2},
+            "before": {"sources": 10, "opportunities": 4},
+            "after": {"sources": 13, "opportunities": 5},
+            "added": {"sources": 3, "opportunities": 1},
+            "errors": [],
+        }
+
+    monkeypatch.setattr("app.main.run_fast_global_refresh", fake_fast_refresh)
+    monkeypatch.setattr("app.main.settings.admin_token", "test-token")
+
+    client = TestClient(app)
+    response = client.post("/api/admin/refresh-fast", headers={"x-admin-token": "test-token"})
+
+    assert response.status_code == 200
+    payload = response.json()
+    assert payload["ok"] is True
+    assert payload["mode"] == "fast_global"
+    assert payload["added"]["sources"] == 3
+    assert payload["added"]["opportunities"] == 1
+
+
 def test_discovery_queries_include_social_and_public_sources():
     queries = build_discovery_queries("Espana")
     joined = "\n".join(queries)

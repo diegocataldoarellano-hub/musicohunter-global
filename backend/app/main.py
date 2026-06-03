@@ -7,7 +7,7 @@ from sqlalchemy import or_, select
 from sqlalchemy.orm import Session
 
 from .application_inspector import build_application_snapshot
-from .curator_agent import run_curator
+from .curator_agent import run_curator, run_fast_global_refresh
 from .database import SessionLocal, get_db, init_db
 from .discovery import TARGET_COUNTRIES
 from .link_checker import refresh_link_statuses
@@ -215,4 +215,10 @@ async def admin_check_links(db: Session = Depends(get_db)) -> dict:
 @app.post("/api/admin/refresh", dependencies=[Depends(verify_admin)])
 async def admin_refresh() -> dict:
     result = await run_curator()
+    return {"ok": True, **result}
+
+
+@app.post("/api/admin/refresh-fast", dependencies=[Depends(verify_admin)])
+async def admin_refresh_fast() -> dict:
+    result = await run_fast_global_refresh()
     return {"ok": True, **result}

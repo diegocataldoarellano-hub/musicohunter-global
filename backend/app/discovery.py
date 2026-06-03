@@ -2550,7 +2550,7 @@ def source_name_from_result(title: str, url: str) -> str:
     return host[:210] or url[:210]
 
 
-async def google_cse_search(query: str) -> list[dict]:
+async def google_cse_search(query: str, results_per_query: int | None = None) -> list[dict]:
     settings = get_settings()
     if not settings.google_search_api_key or not settings.google_search_engine_id:
         return []
@@ -2558,7 +2558,7 @@ async def google_cse_search(query: str) -> list[dict]:
         "key": settings.google_search_api_key,
         "cx": settings.google_search_engine_id,
         "q": query,
-        "num": min(settings.discovery_results_per_query, 10),
+        "num": min(results_per_query or settings.discovery_results_per_query, 10),
         "safe": "active",
     }
     async with httpx.AsyncClient(timeout=settings.request_timeout_seconds) as client:
@@ -2567,16 +2567,21 @@ async def google_cse_search(query: str) -> list[dict]:
     return response.json().get("items", [])
 
 
-async def discover_sources_from_search(db: Session) -> int:
+async def discover_sources_from_search(
+    db: Session,
+    country_limit: int | None = None,
+    queries_per_country: int | None = None,
+    results_per_query: int | None = None,
+) -> int:
     settings = get_settings()
     if not settings.google_search_api_key or not settings.google_search_engine_id:
         return 0
 
     created = 0
-    countries = TARGET_COUNTRIES[: settings.discovery_country_limit]
+    countries = TARGET_COUNTRIES[: (country_limit or settings.discovery_country_limit)]
     for continent, country in countries:
-        for query in build_discovery_queries(country)[: settings.discovery_queries_per_country]:
-            for item in await google_cse_search(query):
+        for query in build_discovery_queries(country)[: (queries_per_country or settings.discovery_queries_per_country)]:
+            for item in await google_cse_search(query, results_per_query=results_per_query):
                 url = item.get("link")
                 if not url:
                     continue

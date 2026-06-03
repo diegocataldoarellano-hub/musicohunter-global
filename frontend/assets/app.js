@@ -3240,6 +3240,19 @@ async function loadData() {
   renderAll();
 }
 
+async function handleManualRefresh() {
+  const previousLabel = els.refreshButton.innerHTML;
+  els.refreshButton.disabled = true;
+  els.refreshButton.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Recargando';
+  await loadData();
+  if (API_BASE_URL) {
+    els.backendStatus.textContent = "Datos recargados - motor automatico en GitHub";
+    els.backendStatus.className = "status-pill online";
+  }
+  els.refreshButton.disabled = false;
+  els.refreshButton.innerHTML = previousLabel;
+}
+
 function setupFilters() {
   const targets = targetCountries();
   const activeContinents = unique(targets.map((item) => item.continent));
@@ -3693,7 +3706,7 @@ function reRenderAfterFilter() {
 
 function bindEvents() {
   els.apiLink.href = `${API_BASE_URL}/docs`;
-  els.refreshButton.addEventListener("click", loadData);
+  els.refreshButton.addEventListener("click", handleManualRefresh);
   els.searchInput.addEventListener("input", (event) => {
     filters.q = event.target.value.trim();
     reRenderAfterFilter();

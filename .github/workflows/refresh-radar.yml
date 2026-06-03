@@ -1,0 +1,67 @@
+name: Fast global radar refresh
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "15 9,21 * * *"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: fast-global-radar-refresh
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    env:
+      RADAR_API_BASE_URL: ${{ secrets.RADAR_API_BASE_URL }}
+      RADAR_ADMIN_TOKEN: ${{ secrets.RADAR_ADMIN_TOKEN }}
+    steps:
+      - name: Validate secrets
+        run: |
+          if [ -z "$RADAR_API_BASE_URL" ] || [ -z "$RADAR_ADMIN_TOKEN" ]; then
+            echo "Missing RADAR_API_BASE_URL or RADAR_ADMIN_TOKEN repository secrets." >&2
+            exit 1
+          fi
+
+      - name: Run fast global refresh
+        run: |
+          curl -fsS --retry 2 --retry-delay 10 --max-time 720 \
+            -X POST "$RADAR_API_BASE_URL/api/admin/refresh-fast" \
+            -H "x-admin-token: $RADAR_ADMIN_TOKEN" \
+            -H "content-type: application/json" \
+            -o refresh-result.json
+
+      - name: Check links after refresh
+        run: |
+          curl -fsS --retry 2 --retry-delay 10 --max-time 420 \
+            -X POST "$RADAR_API_BASE_URL/api/admin/check-links" \
+            -H "x-admin-token: $RADAR_ADMIN_TOKEN" \
+            -H "content-type: application/json" \
+            -o link-check-result.json
+
+      - name: Publish run summary
+        run: |
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          refresh = json.loads(Path("refresh-result.json").read_text())
+          links = json.loads(Path("link-check-result.json").read_text())
+          lines = [
+              "## Fast global radar refresh",
+              "",
+              f"- Countries scanned: {refresh.get('countries_scanned', 'n/a')}",
+              f"- Queries per country: {refresh.get('queries_per_country', 'n/a')}",
+              f"- Sources added: {refresh.get('added', {}).get('sources', 0)}",
+              f"- Opportunities added: {refresh.get('added', {}).get('opportunities', 0)}",
+              f"- Candidate pages reviewed: {refresh.get('reviewed', 0)}",
+              f"- Link status counts: {links.get('counts', {})}",
+              f"- Errors: {len(refresh.get('errors', []))}",
+          ]
+          Path(os.environ["GITHUB_STEP_SUMMARY"]).write_text("\n".join(lines), encoding="utf-8")
+          PY

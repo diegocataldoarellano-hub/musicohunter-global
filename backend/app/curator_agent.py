@@ -11,7 +11,7 @@ from sqlalchemy import select
 
 from .application_inspector import build_application_snapshot
 from .database import SessionLocal, init_db
-from .discovery import discover_sources_from_search
+from .discovery import TARGET_COUNTRIES, discover_sources_from_search
 from .link_checker import check_url, refresh_link_statuses
 from .models import Opportunity, PublicProfile, Source
 from .open_model import summarize_with_open_model
@@ -641,6 +641,65 @@ async def run_curator() -> dict:
                 db.rollback()
 
     return {"created": created, "discovered_sources": discovered_sources, "reviewed": reviewed, "errors": errors}
+
+
+async def run_fast_global_refresh() -> dict:
+    init_db()
+    settings = get_settings()
+    created = 0
+    reviewed = 0
+    errors = []
+
+    with SessionLocal() as db:
+        before_sources = db.query(Source).count()
+        before_opportunities = db.query(Opportunity).count()
+        discovered_sources = await discover_sources_from_search(
+            db,
+            country_limit=len(TARGET_COUNTRIES),
+            queries_per_country=4,
+            results_per_query=2,
+        )
+        link_counts = await refresh_link_statuses(db, limit=min(settings.curator_max_pages, 80))
+        sources = db.scalars(select(Source).order_by(Source.last_checked.desc().nullsfirst(), Source.priority.desc()).limit(min(settings.curator_max_pages, 28))).all()
+        for source in sources:
+            if source.link_status in {"broken", "timeout"}:
+                continue
+            try:
+                candidates = await fetch_source(source)
+                for candidate in candidates[:4]:
+                    result = await check_url(candidate["url"])
+                    if result.status in {"broken", "timeout"}:
+                        continue
+                    summary = await summarize_with_open_model(candidate["title"], candidate["summary"])
+                    if upsert_opportunity(db, source, candidate, result.status, summary):
+                        created += 1
+                    reviewed += 1
+                upsert_profile(db, source)
+                db.commit()
+            except Exception as exc:
+                errors.append({"source": source.name, "error": str(exc)})
+                db.rollback()
+
+        after_sources = db.query(Source).count()
+        after_opportunities = db.query(Opportunity).count()
+
+    return {
+        "mode": "fast_global",
+        "countries_scanned": len(TARGET_COUNTRIES),
+        "queries_per_country": 4,
+        "results_per_query": 2,
+        "discovered_sources": discovered_sources,
+        "created": created,
+        "reviewed": reviewed,
+        "link_counts": link_counts,
+        "before": {"sources": before_sources, "opportunities": before_opportunities},
+        "after": {"sources": after_sources, "opportunities": after_opportunities},
+        "added": {
+            "sources": after_sources - before_sources,
+            "opportunities": after_opportunities - before_opportunities,
+        },
+        "errors": errors,
+    }
 
 
 def main() -> None:
