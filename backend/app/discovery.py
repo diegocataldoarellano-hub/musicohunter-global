@@ -60,6 +60,19 @@ WORLD_COUNTRY_ROWS = [
     for country in countries
 ]
 
+EXPANSION_PRIORITY_ORDER = [
+    "Chile",
+    "Latinoamerica",
+    "Estados Unidos",
+    "Canada",
+    "Europa",
+    "Asia",
+    "Oceania",
+    "Australia",
+    "Africa",
+    "Medio Oriente",
+]
+
 
 TARGET_COUNTRIES = [
     *[("Latinoamerica", country) for country in [
@@ -275,15 +288,48 @@ GLOBAL_TERRITORIAL_AREA_SEEDS = {
         "Municipalidad de Huasco Cultura",
         "Municipalidad de Freirina Cultura",
         "Municipalidad de Alto del Carmen Cultura",
+        "Teatro del Lago Frutillar Programacion musica",
+        "Semanas Musicales de Frutillar convocatoria musica",
+        "Region de Aysen Coyhaique Puerto Aysen Puerto Cisnes Chile Chico Cochrane musica",
+        "Gobierno Regional de Aysen Cultura musica",
+        "Centro Cultural Coyhaique musica",
+        "Municipalidad de Puerto Cisnes Cultura",
+        "Municipalidad de Chile Chico Cultura",
+        "Municipalidad de Cochrane Cultura",
+        "Magallanes Punta Arenas Puerto Natales Porvenir Puerto Williams musica cultura",
     ],
-    "Argentina": ["Provincia de Buenos Aires cultura musica", "Cordoba Cultura municipios", "Santa Fe Cultura Rosario", "Mendoza Cultura municipios", "Patagonia Argentina cultura musica"],
-    "Uruguay": ["Montevideo departamento cultura musica", "Canelones Cultura", "Maldonado Cultura", "Colonia Cultura", "Paysandu Cultura", "Salto Cultura"],
-    "Paraguay": ["Asuncion Cultura", "Departamento Central cultura musica", "Alto Parana Cultura", "Itapua Cultura", "Guaira Cultura"],
-    "Bolivia": ["La Paz Culturas", "Santa Cruz Cultura", "Cochabamba Cultura", "Sucre Cultura", "Tarija Cultura"],
-    "Peru": ["Lima Cultura", "Arequipa Cultura", "Cusco Cultura", "La Libertad Trujillo Cultura", "Piura Cultura"],
-    "Colombia": ["Bogota Cultura", "Antioquia Medellin Cultura", "Valle del Cauca Cali Cultura", "Atlantico Barranquilla Cultura", "Bolivar Cartagena Cultura"],
-    "Brasil": ["Sao Paulo Secretaria de Cultura musica", "Rio de Janeiro Cultura", "Minas Gerais Cultura", "Bahia Cultura", "Rio Grande do Sul Cultura"],
-    "Mexico": ["Ciudad de Mexico Cultura", "Jalisco Cultura Guadalajara", "Nuevo Leon Cultura Monterrey", "Baja California Cultura Tijuana", "Yucatan Cultura Merida"],
+    "Argentina": ["Provincia de Buenos Aires cultura musica", "Cordoba Cultura municipios", "Santa Fe Cultura Rosario", "Mendoza Cultura municipios", "Patagonia Argentina cultura musica", "Tucuman Cultura musica", "Salta Cultura musica", "Mar del Plata Cultura musica", "Neuquen Cultura musica", "Bariloche Cultura musica"],
+    "Uruguay": ["Montevideo departamento cultura musica", "Canelones Cultura", "Maldonado Cultura", "Colonia Cultura", "Paysandu Cultura", "Salto Cultura", "Durazno Rock cultura", "Rocha Cultura musica", "Rivera Cultura musica", "Tacuarembo Cultura musica"],
+    "Paraguay": ["Asuncion Cultura", "Departamento Central cultura musica", "Alto Parana Cultura", "Itapua Cultura", "Guaira Cultura", "Encarnacion Cultura", "Ciudad del Este Cultura", "Caaguazu Cultura", "Concepcion Paraguay Cultura"],
+    "Bolivia": ["La Paz Culturas", "Santa Cruz Cultura", "Cochabamba Cultura", "Sucre Cultura", "Tarija Cultura", "Oruro Cultura", "Potosi Cultura", "El Alto Cultura musica", "Beni Cultura musica"],
+    "Peru": ["Lima Cultura", "Arequipa Cultura", "Cusco Cultura", "La Libertad Trujillo Cultura", "Piura Cultura", "Chiclayo Cultura", "Iquitos Cultura", "Puno Cultura", "Tacna Cultura", "Huancayo Cultura"],
+    "Colombia": ["Bogota Cultura", "Antioquia Medellin Cultura", "Valle del Cauca Cali Cultura", "Atlantico Barranquilla Cultura", "Bolivar Cartagena Cultura", "Santander Bucaramanga Cultura", "Nariño Pasto Cultura", "Eje Cafetero Pereira Cultura", "Tolima Ibague Cultura"],
+    "Brasil": ["Sao Paulo Secretaria de Cultura musica", "Rio de Janeiro Cultura", "Minas Gerais Cultura", "Bahia Cultura", "Rio Grande do Sul Cultura", "Pernambuco Recife Cultura", "Parana Curitiba Cultura", "Ceara Fortaleza Cultura", "Distrito Federal Brasilia Cultura", "Para Belem Cultura"],
+    "Mexico": ["Ciudad de Mexico Cultura", "Jalisco Cultura Guadalajara", "Nuevo Leon Cultura Monterrey", "Baja California Cultura Tijuana", "Yucatan Cultura Merida", "Puebla Cultura", "Oaxaca Cultura", "Queretaro Cultura", "Guanajuato Cultura", "Chiapas Cultura"],
+    "Ecuador": ["Quito Cultura", "Guayaquil Cultura", "Cuenca Cultura", "Manta Cultura", "Loja Cultura", "Ibarra Cultura"],
+    "Costa Rica": ["San Jose Cultura", "Alajuela Cultura", "Cartago Cultura", "Heredia Cultura", "Guanacaste Cultura", "Puntarenas Cultura"],
+    "Panama": ["Ciudad de Panama Cultura", "David Chiriqui Cultura", "Colon Cultura", "Los Santos Cultura", "Veraguas Cultura"],
+    "Cuba": ["La Habana Cultura", "Santiago de Cuba Cultura", "Camaguey Cultura", "Santa Clara Cultura", "Holguin Cultura"],
+    "Republica Dominicana": ["Santo Domingo Cultura", "Santiago de los Caballeros Cultura", "Puerto Plata Cultura", "La Romana Cultura"],
+    "Guatemala": ["Ciudad de Guatemala Cultura", "Antigua Guatemala Cultura", "Quetzaltenango Cultura", "Huehuetenango Cultura"],
+    "Honduras": ["Tegucigalpa Cultura", "San Pedro Sula Cultura", "La Ceiba Cultura", "Comayagua Cultura"],
+    "Nicaragua": ["Managua Cultura", "Leon Cultura", "Granada Cultura", "Masaya Cultura"],
+    "El Salvador": ["San Salvador Cultura", "Santa Ana Cultura", "San Miguel Cultura", "Suchitoto Cultura"],
+    "Venezuela": ["Caracas Cultura", "Maracaibo Cultura", "Valencia Venezuela Cultura", "Merida Venezuela Cultura"],
+    "Belice": ["Belize International Music and Food Festival", "Belize City culture music", "Belmopan culture music", "San Ignacio music festival"],
+    "Guyana": ["National Cultural Centre Guyana", "Georgetown Guyana culture music", "Guyana cultural centre music"],
+    "Surinam": ["Suriname Jazz Festival", "Paramaribo culture music", "Suriname music festival"],
+    "Jamaica": ["Reggae Month Jamaica", "Kingston music culture", "Jamaica music festival", "Edna Manley College music"],
+    "Haiti": ["FOKAL Haiti culture", "Port-au-Prince culture music", "Jacmel music festival"],
+    "Trinidad y Tobago": ["Queen's Hall Trinidad music", "Port of Spain music festival", "Trinidad culture music", "Tobago music festival"],
+    "Bahamas": ["Bahamas National Festival Commission music", "Nassau culture music", "Bahamas music festival"],
+    "Barbados": ["NIFCA Barbados music", "Bridgetown culture music", "Barbados music festival"],
+    "Santa Lucia": ["Saint Lucia Jazz", "Castries culture music", "Saint Lucia Jazz artists"],
+    "Granada": ["Grenada culture music", "SpiceMas music artists"],
+    "Dominica": ["Roseau culture music", "World Creole Music Festival Dominica"],
+    "Antigua y Barbuda": ["Antigua culture music", "Antigua Carnival music"],
+    "San Vicente y las Granadinas": ["Kingstown culture music", "Vincy Mas music"],
+    "San Cristobal y Nieves": ["St Kitts Music Festival", "Basseterre culture music"],
     "Estados Unidos": ["Texas arts council music", "California arts council music", "New York state arts music", "Los Angeles county arts music", "Austin music commission", "San Jose Arts and Cultural Exchange Grants", "Arts Envoy music international"],
     "Canada": ["Ontario arts council music", "Quebec music council", "British Columbia arts council music", "Toronto arts council music", "Montreal culture music"],
     "Inglaterra": ["London borough arts music", "Manchester music venues", "Brighton music showcase", "Liverpool music office", "Bristol live music", "SXSW London artist application", "2000trees band application Cheltenham"],
@@ -391,6 +437,16 @@ CHILE_REGIONAL_TARGETS = [
     "Alto del Carmen cultura musica valle",
     "Valdivia teatro cervantes fluvial musica conciertos",
     "Puerto Montt teatro diego rivera cultura musica conciertos",
+    "Frutillar Teatro del Lago Semanas Musicales musica conciertos",
+    "Region de Aysen Coyhaique Puerto Aysen Puerto Cisnes Chile Chico Cochrane cultura musica",
+    "Coyhaique centro cultural teatro municipal musica conciertos bandas",
+    "Puerto Aysen cultura municipal musica festival bandas",
+    "Chile Chico cultura Patagonia musica conciertos",
+    "Cochrane cultura municipal musica Patagonia",
+    "Puerto Cisnes cultura musica festival Patagonia",
+    "Magallanes Punta Arenas Puerto Natales Porvenir Puerto Williams cultura musica",
+    "Arica Parinacota Putre Camarones cultura musica",
+    "Tarapaca Iquique Alto Hospicio Pozo Almonte cultura musica",
     "Norte de Chile",
     "Sur de Chile",
 ]
@@ -421,6 +477,15 @@ CHILE_INSTAGRAM_TAGS = [
     "calama",
     "valdivia",
     "puertomontt",
+    "teatrodellago",
+    "frutillar",
+    "semanasmusicalesdefrutillar",
+    "culturaaysen",
+    "coyhaique",
+    "puertoaysen",
+    "patagoniacultural",
+    "puntaarenas",
+    "puertonatales",
 ]
 
 CHILE_REGIONAL_MISSION_TEMPLATES = [
@@ -615,12 +680,34 @@ Municipalidad de Puerto Montt Cultura
 Teatro Diego Rivera Puerto Montt
 Municipalidad de Puerto Varas Cultura
 Teatro del Lago Frutillar
+Teatro del Lago Frutillar Programacion
+Semanas Musicales de Frutillar
+Municipalidad de Frutillar Cultura
+Corporacion Cultural Puerto Varas
 Municipalidad de Castro Cultura
 Municipalidad de Ancud Cultura
+Municipalidad de Quellon Cultura
+Municipalidad de Chaiten Cultura
+Municipalidad de Hualaihue Cultura
+Seremi de las Culturas Aysen
+Gobierno Regional de Aysen Cultura
 Municipalidad de Coyhaique Cultura
+Centro Cultural Coyhaique
+Casa de la Cultura Coyhaique
 Municipalidad de Puerto Aysen Cultura
+Municipalidad de Puerto Cisnes Cultura
+Municipalidad de Chile Chico Cultura
+Municipalidad de Cochrane Cultura
+Municipalidad de Aysen Cultura
+Municipalidad de Rio Ibanez Cultura
+Municipalidad de Guaitecas Cultura
+Biblioteca Regional de Aysen eventos musica
 Municipalidad de Punta Arenas Cultura
 Municipalidad de Puerto Natales Cultura
+Municipalidad de Porvenir Cultura
+Municipalidad de Puerto Williams Cultura
+Centro Cultural Claudio Paredes Chamorro Punta Arenas
+Teatro Municipal Jose Bohr Punta Arenas
 """.strip().splitlines()
 
 PUBLIC_SPACE_MISSION_TEMPLATES = [
@@ -739,12 +826,29 @@ Osorno Cultura
 Teatro Diego Rivera Puerto Montt
 Puerto Varas Cultura
 Teatro del Lago Frutillar
+Semanas Musicales de Frutillar
+Frutillar Cultura
 Castro Cultura Chiloe
 Ancud Cultura
+Quellon Cultura
+Chaiten Cultura
+Hualaihue Cultura
+Gobierno Regional de Aysen Cultura
 Coyhaique Cultura
+Centro Cultural Coyhaique
+Casa de la Cultura Coyhaique
 Puerto Aysen Cultura
+Puerto Cisnes Cultura
+Chile Chico Cultura
+Cochrane Cultura
+Rio Ibanez Cultura
+Guaitecas Cultura
 Punta Arenas Cultura
 Puerto Natales Cultura
+Porvenir Cultura
+Puerto Williams Cultura
+Centro Cultural Claudio Paredes Chamorro Punta Arenas
+Teatro Municipal Jose Bohr Punta Arenas
 Melipilla Cultura
 Talagante Cultura
 Buin Cultura
@@ -860,6 +964,20 @@ LATAM_EXTRA_RECOGNIZED_TARGETS = {
         "Festival Nuevas Bandas", "Teatro Teresa Carreno musica", "Centro Cultural Chacao musica",
         "Cusica Venezuela", "Centro Cultural BOD conciertos",
     ],
+    "Belice": ["Belize International Music and Food Festival", "Belize City culture music", "San Ignacio music"],
+    "Guyana": ["National Cultural Centre Guyana", "Georgetown culture music", "Guyana Music Festival"],
+    "Surinam": ["Paramaribo culture music", "Suriname Jazz Festival", "Nationale Stichting Surinaamse Kunst"],
+    "Jamaica": ["Kingston music culture", "Reggae Month Jamaica", "Edna Manley College music"],
+    "Haiti": ["Port-au-Prince culture music", "Jacmel music festival", "FOKAL Haiti culture"],
+    "Trinidad y Tobago": ["Port of Spain music festival", "Queen's Hall Trinidad music", "Tobago Jazz"],
+    "Bahamas": ["Nassau culture music", "Bahamas National Festival Commission music"],
+    "Barbados": ["Bridgetown culture music", "NIFCA Barbados music", "Barbados Music Awards"],
+    "Santa Lucia": ["Saint Lucia Jazz", "Castries culture music"],
+    "Granada": ["Grenada culture music", "SpiceMas music"],
+    "Dominica": ["World Creole Music Festival Dominica", "Roseau culture music"],
+    "Antigua y Barbuda": ["Antigua Carnival music", "Antigua culture music"],
+    "San Vicente y las Granadinas": ["Vincy Mas music", "Kingstown culture music"],
+    "San Cristobal y Nieves": ["St Kitts Music Festival", "Basseterre culture music"],
 }
 
 for country, targets in LATAM_EXTRA_RECOGNIZED_TARGETS.items():

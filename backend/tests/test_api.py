@@ -7,6 +7,7 @@ from app.discovery import (
     CHILE_MEDIA_PROFILE_TARGETS,
     CHILE_PUBLIC_SPACE_TARGETS,
     COUNTRY_PUBLIC_SPACE_TARGETS,
+    EXPANSION_PRIORITY_ORDER,
     GLOBAL_TERRITORIAL_AREA_SEEDS,
     HIGH_VALUE_SEMANTIC_TERMS,
     LATAM_RECOGNIZED_TARGETS,
@@ -52,6 +53,12 @@ def test_chile_discovery_queries_include_regional_targets():
     assert "Concepcion" in joined
     assert "Valdivia" in joined
     assert "Puerto Montt" in joined
+    assert "Frutillar Teatro del Lago" in joined
+    assert "Region de Aysen" in joined
+    assert "Puerto Cisnes" in joined
+    assert "Chile Chico" in joined
+    assert "Cochrane" in joined
+    assert "Puerto Williams" in joined
     assert "Valle de Elqui" in joined
     assert "Region de Atacama" in joined
     assert "Caldera" in joined
@@ -77,6 +84,12 @@ def test_chile_discovery_queries_include_public_spaces_from_north_to_south():
     assert "Museo de la Memoria" in joined
     assert "Teatro Regional del Maule" in joined
     assert "Teatro Diego Rivera Puerto Montt" in joined
+    assert "Teatro del Lago Frutillar Programacion" in joined
+    assert "Semanas Musicales de Frutillar" in joined
+    assert "Gobierno Regional de Aysen Cultura" in joined
+    assert "Centro Cultural Coyhaique" in joined
+    assert "Municipalidad de Puerto Cisnes Cultura" in joined
+    assert "Teatro Municipal Jose Bohr Punta Arenas" in joined
     assert "Municipalidad de Punta Arenas Cultura" in joined
     assert "presentar artistas" in joined
     assert "postula tu proyecto" in joined
@@ -96,7 +109,7 @@ def test_chile_discovery_queries_include_media_profiles_and_partners():
 def test_expanded_target_lists_have_required_depth():
     latam_target_count = sum(len(targets) for targets in LATAM_RECOGNIZED_TARGETS.values())
     assert len(CHILE_DEEP_SEARCH_TARGETS) >= 100
-    assert latam_target_count >= 220
+    assert latam_target_count >= 260
 
 
 def test_latam_semantic_queries_detect_support_international_and_mobility():
@@ -157,6 +170,27 @@ def test_global_territorial_seeds_cover_priority_world_regions():
         assert "support act" in joined
 
 
+def test_latam_small_country_coverage_is_not_empty():
+    required = {
+        "Belice": "Belize International Music and Food Festival",
+        "Guyana": "National Cultural Centre Guyana",
+        "Surinam": "Suriname Jazz Festival",
+        "Jamaica": "Reggae Month Jamaica",
+        "Haiti": "FOKAL Haiti culture",
+        "Trinidad y Tobago": "Queen's Hall Trinidad music",
+        "Bahamas": "Bahamas National Festival Commission music",
+        "Barbados": "NIFCA Barbados music",
+        "Santa Lucia": "Saint Lucia Jazz",
+        "Dominica": "World Creole Music Festival Dominica",
+        "San Cristobal y Nieves": "St Kitts Music Festival",
+    }
+    for country, target in required.items():
+        joined = "\n".join(build_territorial_discovery_queries(country))
+        assert target in LATAM_RECOGNIZED_TARGETS[country]
+        assert target in GLOBAL_TERRITORIAL_AREA_SEEDS[country]
+        assert target in joined
+
+
 def test_deep_research_findings_are_folded_into_territorial_queries():
     checks = {
         "Reino Unido": ["SXSW London artist application", "UK Music Export Growth Scheme"],
@@ -176,6 +210,11 @@ def test_deep_research_findings_are_folded_into_territorial_queries():
 def test_global_discovery_bank_exceeds_100k_missions():
     assert len(TARGET_COUNTRIES) >= 190
     assert global_mission_capacity() >= 100_000
+
+
+def test_expansion_priority_keeps_user_requested_order():
+    assert EXPANSION_PRIORITY_ORDER[:4] == ["Chile", "Latinoamerica", "Estados Unidos", "Canada"]
+    assert EXPANSION_PRIORITY_ORDER[-3:] == ["Australia", "Africa", "Medio Oriente"]
 
 
 def test_global_discovery_queries_include_english_and_local_language_terms():
