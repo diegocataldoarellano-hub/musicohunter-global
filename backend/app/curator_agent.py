@@ -95,6 +95,20 @@ OPPORTUNITY_TERMS = [
     "comunicado de prensa",
     "rueda de negocios",
     "mercado musical",
+    "programming submissions",
+    "call for proposals",
+    "artist proposals",
+    "new sounds",
+    "fresh sounds",
+    "emerging artists",
+    "emerging bands",
+    "new talent",
+    "up-and-coming bands",
+    "international artists",
+    "foreign artists",
+    "open to international",
+    "music export",
+    "travel support",
 ]
 
 GENRE_TERMS = [
@@ -183,12 +197,16 @@ SEMANTIC_SIGNAL_GROUPS = {
         "telonero", "teloneros", "banda soporte", "banda invitada", "artista invitado",
         "abrir concierto", "abrir show", "buscamos bandas", "se buscan bandas",
         "support act", "opening act", "opening band", "support slot", "warm up band",
+        "local support", "special guest band", "guest artist", "premiere partie",
+        "vorband", "supportband", "acto de apertura",
     ],
     "internacional": [
         "bandas internacionales", "artistas internacionales", "bandas extranjeras",
         "artistas de otros paises", "proyectos internacionales", "latinoamerica",
         "iberoamerica", "foreign artists", "international artists", "artists from abroad",
         "overseas artists", "touring artists", "from other countries",
+        "global artists", "worldwide artists", "international applicants",
+        "open to international", "international touring artists",
     ],
     "showcase": [
         "showcase", "music market", "mercado musical", "rueda de negocios",
@@ -199,6 +217,21 @@ SEMANTIC_SIGNAL_GROUPS = {
         "gira", "giras", "tour", "touring", "residencia", "residency",
         "intercambio", "movilidad", "circulacion", "itinerancia",
         "mobility grant", "touring grant", "artist residency", "coproduccion internacional",
+        "travel support", "international mobility", "cultural exchange",
+    ],
+    "nuevos_sonidos": [
+        "nuevos sonidos", "nuevo sonido", "sonidos emergentes", "bandas emergentes",
+        "artistas emergentes", "new sounds", "fresh sounds", "emerging artists",
+        "emerging bands", "new talent", "new music discovery", "undiscovered artists",
+        "next wave", "up-and-coming bands", "new voices", "independent artists",
+        "alternative sounds", "experimental sounds", "musica independiente",
+        "talento emergente", "descubrimiento musical",
+    ],
+    "programacion": [
+        "programacion artistica", "curatoria musical", "recepcion de propuestas",
+        "presentar artistas", "artist proposals", "programming submissions",
+        "booking inquiry", "programme proposals", "live music programming",
+        "cultural programming", "call for proposals", "artist call", "music programming",
     ],
 }
 
@@ -259,6 +292,10 @@ def extract_application_requirements(text: str, source_type: str) -> str:
         requirements.append("Para showcase/mercado: preparar pitch exportable, objetivos de networking, links en vivo y disponibilidad para reuniones.")
     if "movilidad" in signals:
         requirements.append("Para movilidad/gira: revisar financiamiento, fechas, rutas, carta de invitacion y requisitos de residencia o intercambio.")
+    if "nuevos_sonidos" in signals:
+        requirements.append("Como hay senal de nuevos sonidos, preparar pitch de identidad sonora: influencias, propuesta diferencial, registro en vivo y por que encaja con la curatoria.")
+    if "programacion" in signals:
+        requirements.append("Como hay senal de programacion artistica, buscar seccion de propuestas, correo de programacion, calendario curatorial y requisitos tecnicos.")
     if contains_any(lower, DEADLINE_TERMS) or contains_any(lower, ["deadline", "apply by", "applications close"]):
         requirements.append("Verificar fecha de publicacion, cierre de convocatoria, fecha del evento y zona horaria.")
     if contains_any(lower, ["productora", "booking", "agency", "sello", "label", "a&r", "roster", "demo"]):
@@ -279,6 +316,10 @@ def infer_category(text: str, source_type: str) -> str:
         return "showcase"
     if "internacional" in signals or "movilidad" in signals:
         return "circulacion"
+    if "nuevos_sonidos" in signals:
+        return "busqueda_sonidos"
+    if "programacion" in signals:
+        return "programacion"
     if "fondo" in lower or "financ" in lower or "subvencion" in lower:
         return "fondo"
     if "concurso" in lower or "certamen" in lower:

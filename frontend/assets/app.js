@@ -94,17 +94,40 @@ const INDUSTRY_LANGUAGE_TERMS = [
   "support act",
   "opening band",
   "support slot",
+  "local support",
+  "special guest band",
+  "guest artist",
+  "premiere partie",
+  "vorband",
+  "supportband",
   "bandas extranjeras",
   "international artists",
   "foreign artists",
   "artists from abroad",
+  "open to international artists",
+  "international applicants",
   "music market",
   "mercado musical",
   "rueda de negocios",
+  "music export",
   "mobility grant",
   "touring grant",
+  "travel support",
+  "international mobility",
   "artist residency",
   "circulacion internacional",
+  "new sounds",
+  "fresh sounds",
+  "emerging artists",
+  "emerging bands",
+  "new talent",
+  "up-and-coming bands",
+  "sonidos emergentes",
+  "nuevos sonidos",
+  "programming submissions",
+  "call for proposals",
+  "artist proposals",
+  "curatoria musical",
   "A&R",
   "artist roster",
   "booking inquiry",
@@ -120,13 +143,15 @@ const INDUSTRY_LANGUAGE_TERMS = [
 ];
 
 const SEMANTIC_SIGNAL_GROUPS = {
-  teloneros: ["telonero", "teloneros", "banda soporte", "banda invitada", "abrir concierto", "abrir show", "support act", "opening act", "opening band", "support slot", "warm up band", "buscamos bandas", "se buscan bandas"],
-  internacional: ["bandas internacionales", "artistas internacionales", "bandas extranjeras", "artistas de otros paises", "foreign artists", "international artists", "artists from abroad", "overseas artists", "latam artists", "iberoamerica"],
-  showcase: ["showcase", "music market", "mercado musical", "rueda de negocios", "artist application", "band submissions", "apply to play", "festival submissions"],
-  movilidad: ["gira", "tour", "touring", "residencia", "intercambio", "movilidad", "mobility grant", "touring grant", "artist residency", "circulacion"]
+  teloneros: ["telonero", "teloneros", "banda soporte", "banda invitada", "abrir concierto", "abrir show", "support act", "opening act", "opening band", "support slot", "warm up band", "local support", "special guest band", "guest artist", "premiere partie", "vorband", "supportband", "buscamos bandas", "se buscan bandas"],
+  internacional: ["bandas internacionales", "artistas internacionales", "bandas extranjeras", "artistas de otros paises", "foreign artists", "international artists", "artists from abroad", "overseas artists", "latam artists", "iberoamerica", "open to international", "international applicants", "international touring artists"],
+  showcase: ["showcase", "music market", "mercado musical", "rueda de negocios", "artist application", "band submissions", "apply to play", "festival submissions", "music export", "delegate application", "artist pitch"],
+  movilidad: ["gira", "tour", "touring", "residencia", "intercambio", "movilidad", "mobility grant", "touring grant", "artist residency", "circulacion", "travel support", "international mobility", "cultural exchange"],
+  nuevos_sonidos: ["nuevos sonidos", "sonidos emergentes", "bandas emergentes", "artistas emergentes", "new sounds", "fresh sounds", "emerging artists", "emerging bands", "new talent", "new music discovery", "undiscovered artists", "next wave", "up-and-coming bands", "new voices", "independent artists"],
+  programacion: ["programacion artistica", "curatoria musical", "recepcion de propuestas", "presentar artistas", "artist proposals", "programming submissions", "booking inquiry", "programme proposals", "live music programming", "call for proposals", "artist call", "music programming"]
 };
 
-const LATAM_SEMANTIC_SEARCH_TERMS = [
+const GLOBAL_SEMANTIC_SEARCH_TERMS = [
   "buscamos bandas",
   "se buscan bandas",
   "teloneros",
@@ -139,12 +164,25 @@ const LATAM_SEMANTIC_SEARCH_TERMS = [
   "international artists",
   "showcase application",
   "band submissions",
+  "artist submissions",
+  "apply to play",
+  "open to international artists",
   "mercado musical",
   "rueda de negocios",
+  "music export",
   "movilidad musical",
   "touring grant",
-  "artist residency"
+  "artist residency",
+  "new sounds",
+  "fresh sounds",
+  "emerging bands",
+  "new talent",
+  "programming submissions",
+  "call for proposals",
+  "artist proposals"
 ];
+
+const LATAM_SEMANTIC_SEARCH_TERMS = GLOBAL_SEMANTIC_SEARCH_TERMS;
 
 const CHILE_MEDIA_PROFILE_TARGETS = [
   "GAM media partners La Tercera Radio 13C",
@@ -517,10 +555,27 @@ const ADMIN_DIVISION_TERMS = {
   Francia: ["region", "departement", "commune", "mairie"],
   Espana: ["comunidad autonoma", "provincia", "ayuntamiento"],
   Alemania: ["bundesland", "stadt", "kulturamt"],
-  Australia: ["state", "territory", "local council"]
+  Australia: ["state", "territory", "local council"],
+  "Nueva Zelanda": ["region", "city council", "creative communities", "local board"],
+  Sudafrica: ["province", "municipality", "arts council", "cultural affairs"],
+  Marruecos: ["region", "commune", "province", "festival"],
+  Japon: ["prefecture", "city cultural foundation", "music festival"],
+  "Corea del Sur": ["province", "metropolitan city", "arts council", "music showcase"],
+  China: ["province", "municipality", "arts festival", "cultural center"],
+  Taiwan: ["county", "city", "cultural bureau", "music festival"],
+  Vietnam: ["province", "city", "department of culture", "music festival"],
+  Libano: ["municipality", "festival", "cultural center", "music programme"],
+  Italia: ["regione", "comune", "assessorato cultura", "festival musica"],
+  Portugal: ["regiao", "municipio", "camara municipal", "festival musica"],
+  "Paises Bajos": ["province", "gemeente", "music venue", "cultural fund"],
+  Holanda: ["province", "gemeente", "music venue", "cultural fund"],
+  Dinamarca: ["region", "kommune", "music venue", "cultural fund"],
+  Suecia: ["region", "kommun", "music venue", "cultural grant"],
+  Suiza: ["canton", "gemeinde", "commune", "music festival"],
+  Noruega: ["county", "kommune", "music festival", "cultural grant"]
 };
 
-const DEFAULT_ADMIN_DIVISION_TERMS = ["region", "province", "state", "municipality", "city council"];
+const DEFAULT_ADMIN_DIVISION_TERMS = ["region", "province", "state", "department", "county", "municipality", "city council", "cultural center", "arts council", "music festival"];
 
 const TERRITORIAL_AREA_TARGETS = [
   ["Chile", "Atacama", "Copiapo", "Municipalidad de Copiapo Cultura", -27.3668, -70.3323],
@@ -552,7 +607,51 @@ const TERRITORIAL_AREA_TARGETS = [
   ["Mexico", "Ciudad de Mexico", "Ciudad de Mexico", "Ciudad de Mexico alcaldia cultura musica", 19.4326, -99.1332],
   ["Mexico", "Jalisco", "Guadalajara", "Jalisco cultura musica Guadalajara", 20.6597, -103.3496],
   ["Colombia", "Bogota", "Bogota", "Bogota secretaria de cultura musica", 4.711, -74.0721],
-  ["Colombia", "Antioquia", "Medellin", "Antioquia Medellin cultura musica", 6.2442, -75.5812]
+  ["Colombia", "Antioquia", "Medellin", "Antioquia Medellin cultura musica", 6.2442, -75.5812],
+  ["Inglaterra", "England", "London", "London borough arts music", 51.5074, -0.1278],
+  ["Inglaterra", "England", "London", "SXSW London artist application", 51.5074, -0.1278],
+  ["Inglaterra", "England", "Manchester", "Manchester music venues", 53.4808, -2.2426],
+  ["Inglaterra", "England", "Brighton", "Brighton music showcase", 50.8225, -0.1372],
+  ["Inglaterra", "Gloucestershire", "Cheltenham", "2000trees band application Cheltenham", 51.8994, -2.0783],
+  ["Reino Unido", "Scotland", "Edinburgh", "Wide Days artist application Edinburgh", 55.9533, -3.1883],
+  ["Reino Unido", "United Kingdom", "London", "UK Music Export Growth Scheme", 51.5074, -0.1278],
+  ["Irlanda", "Dublin", "Dublin", "Dublin arts office music", 53.3498, -6.2603],
+  ["Irlanda", "Cork", "Cork", "Cork city arts music", 51.8985, -8.4756],
+  ["Gales", "Cardiff", "Cardiff", "Cardiff music board", 51.4816, -3.1791],
+  ["Islandia", "Reykjavik", "Reykjavik", "Iceland Airwaves artist application", 64.1466, -21.9426],
+  ["Islandia", "Reykjavik", "Reykjavik", "Iceland Music export office", 64.1466, -21.9426],
+  ["Espana", "Madrid", "Madrid", "Madrid cultura musica", 40.4168, -3.7038],
+  ["Espana", "Cataluna", "Barcelona", "Barcelona cultura musica", 41.3851, 2.1734],
+  ["Francia", "Ile-de-France", "Paris", "Paris musique open call", 48.8566, 2.3522],
+  ["Francia", "Ile-de-France", "Paris", "Institut francais PAIR music residency", 48.8566, 2.3522],
+  ["Francia", "Provence-Alpes-Cote d'Azur", "Marseille", "Marseille culture musique", 43.2965, 5.3698],
+  ["Alemania", "Berlin", "Berlin", "Berlin musicboard", 52.52, 13.405],
+  ["Alemania", "Berlin", "Berlin", "Goethe Institut music residency", 52.52, 13.405],
+  ["Alemania", "Hamburg", "Hamburg", "Reeperbahn artist application", 53.5511, 9.9937],
+  ["Alemania", "Hamburg", "Hamburg", "Hamburg music city", 53.5511, 9.9937],
+  ["Paises Bajos", "Noord-Holland", "Amsterdam", "Amsterdam music fund", 52.3676, 4.9041],
+  ["Paises Bajos", "Zuid-Holland", "Rotterdam", "Rotterdam music city", 51.9244, 4.4777],
+  ["Dinamarca", "Hovedstaden", "Copenhagen", "Copenhagen music city", 55.6761, 12.5683],
+  ["Suecia", "Stockholm", "Stockholm", "Stockholm music city", 59.3293, 18.0686],
+  ["Suecia", "Stockholm", "Stockholm", "Export Music Sweden showcase", 59.3293, 18.0686],
+  ["Suiza", "Zurich", "Zurich", "Zurich music festival", 47.3769, 8.5417],
+  ["Marruecos", "Rabat-Sale-Kenitra", "Rabat", "Visa For Music Rabat", 34.0209, -6.8416],
+  ["Marruecos", "Casablanca-Settat", "Casablanca", "Casablanca music festival", 33.5731, -7.5898],
+  ["Sudafrica", "Western Cape", "Cape Town", "Cape Town music office", -33.9249, 18.4241],
+  ["Sudafrica", "Gauteng", "Johannesburg", "Johannesburg arts council music", -26.2041, 28.0473],
+  ["Australia", "New South Wales", "Sydney", "New South Wales music grants", -33.8688, 151.2093],
+  ["Australia", "National", "Sydney", "Music Australia Export Fund international touring", -33.8688, 151.2093],
+  ["Australia", "Victoria", "Melbourne", "Melbourne music city", -37.8136, 144.9631],
+  ["Nueva Zelanda", "Auckland", "Auckland", "Auckland music city", -36.8509, 174.7645],
+  ["Japon", "Tokyo", "Tokyo", "Tokyo music market", 35.6762, 139.6503],
+  ["Japon", "Osaka", "Osaka", "Osaka music festival", 34.6937, 135.5023],
+  ["Corea del Sur", "Seoul", "Seoul", "Seoul music week", 37.5665, 126.978],
+  ["China", "Shanghai", "Shanghai", "Shanghai international arts festival", 31.2304, 121.4737],
+  ["Taiwan", "Taipei", "Taipei", "Taipei music center", 25.033, 121.5654],
+  ["Vietnam", "Ho Chi Minh City", "Ho Chi Minh City", "Ho Chi Minh City music festival", 10.8231, 106.6297],
+  ["Libano", "Beirut", "Beirut", "Beirut and Beyond", 33.8938, 35.5018],
+  ["Estados Unidos", "California", "San Jose", "San Jose Arts and Cultural Exchange Grants", 37.3382, -121.8863],
+  ["Estados Unidos", "Washington DC", "Washington", "Arts Envoy music international", 38.9072, -77.0369]
 ].map(([country, region, city, label, lat, lng]) => ({
   country,
   region,
@@ -561,7 +660,7 @@ const TERRITORIAL_AREA_TARGETS = [
   lat,
   lng,
   type: "radar_territorial",
-  query: `${label} ${city} ${region} musica conciertos bandas convocatoria centro cultural municipio festival`
+  query: `${label} ${city} ${region} musica conciertos bandas convocatoria centro cultural municipio festival international artists support act opening band new sounds`
 }));
 
 const LATAM_RECOGNIZED_TARGETS = [
@@ -1811,6 +1910,7 @@ function territoryTargetsForSelection(country) {
   if (specific.length) return specific.slice(0, filters.region === "all" ? 14 : 18);
 
   const view = COUNTRY_VIEWS[country] || CONTINENT_VIEWS[continentForCountry(country)] || CONTINENT_VIEWS.Global;
+  const semanticTail = GLOBAL_SEMANTIC_SEARCH_TERMS.slice(0, 8).join(" ");
   return (ADMIN_DIVISION_TERMS[country] || DEFAULT_ADMIN_DIVISION_TERMS).map((term, index) => ({
     country,
     region: "Territorial",
@@ -1819,7 +1919,7 @@ function territoryTargetsForSelection(country) {
     lat: view.center[0] + (index - 2) * 0.35,
     lng: view.center[1] + (index - 2) * 0.35,
     type: "radar_territorial",
-    query: `${country} ${term} cultura musica bandas convocatoria centro cultural festival`
+    query: `${country} ${term} cultura musica bandas convocatoria centro cultural festival ${semanticTail}`
   }));
 }
 
@@ -1878,8 +1978,8 @@ function buildExternalSearchCards() {
       {
         title: `Mapa territorial - ${target.label}`,
         category: "radar_territorial",
-        url: googleSearchUrl(`"${target.query}" "convocatoria" OR "conciertos" OR "buscamos bandas" OR "open call"`),
-        summary: `Busqueda por unidad territorial (${target.region}/${target.city}). Usa el concepto local: comuna, municipio, departamento, provincia, estado o condado.`,
+        url: googleSearchUrl(`"${target.query}" "convocatoria" OR "conciertos" OR "buscamos bandas" OR "open call" OR "international artists" OR "new sounds"`),
+        summary: `Busqueda por unidad territorial (${target.region}/${target.city}). Cruza comuna/municipio/departamento/provincia/estado/condado con señales de bandas internacionales, teloneros, nuevos sonidos y programacion.`,
         lat: target.lat,
         lng: target.lng,
         region: target.region,
@@ -1888,8 +1988,8 @@ function buildExternalSearchCards() {
       {
         title: `Instagram territorial - ${target.label}`,
         category: "instagram_territorial",
-        url: googleSearchUrl(`site:instagram.com/p OR site:instagram.com/reel "${target.query}" musica bandas after:2025-01-01`),
-        summary: "Rastrea publicaciones recientes de cultura local, municipalidades, centros culturales, festivales y llamados a bandas.",
+        url: googleSearchUrl(`site:instagram.com/p OR site:instagram.com/reel "${target.query}" "support act" OR "opening band" OR "bandas extranjeras" OR "sonidos emergentes" after:2025-01-01`),
+        summary: "Rastrea publicaciones recientes de cultura local, municipalidades, centros culturales, festivales, llamados a bandas, teloneros y nuevos sonidos.",
         lat: target.lat,
         lng: target.lng,
         region: target.region,
@@ -1897,25 +1997,22 @@ function buildExternalSearchCards() {
       }
     );
   });
-  const isLatamScope = filters.continent === "Latinoamerica" || WORLD_EXTRA_COUNTRIES.Latinoamerica.includes(country);
-  if (isLatamScope) {
-    LATAM_SEMANTIC_SEARCH_TERMS.forEach((term) => {
-      searches.push(
-        {
-          title: `Radar semantico LatAm - ${term}`,
-          category: "radar_semantico",
-          url: googleSearchUrl(`"${queryCountry}" "${term}" rock OR folk OR fusion OR experimental OR progresivo`),
-          summary: "Busqueda sensible a sinonimos de oportunidad: teloneros, bandas extranjeras, showcases, movilidad, residencias y llamados internacionales."
-        },
-        {
-          title: `Instagram semantico LatAm - ${term}`,
-          category: "instagram_semantico",
-          url: googleSearchUrl(`site:instagram.com/p OR site:instagram.com/reel "${queryCountry}" "${term}" bandas musica after:2025-01-01`),
-          summary: "Rastrea posts/reels recientes donde la oportunidad puede aparecer como publicidad, caption o llamado rapido."
-        }
-      );
-    });
-  }
+  GLOBAL_SEMANTIC_SEARCH_TERMS.forEach((term) => {
+    searches.push(
+      {
+        title: `Radar semantico global - ${term}`,
+        category: "radar_semantico",
+        url: googleSearchUrl(`"${queryCountry}" "${term}" rock OR folk OR fusion OR experimental OR progresivo`),
+        summary: "Busqueda sensible a sinonimos de oportunidad: teloneros, bandas extranjeras, showcases, movilidad, nuevos sonidos, programacion y llamados internacionales."
+      },
+      {
+        title: `Instagram semantico global - ${term}`,
+        category: "instagram_semantico",
+        url: googleSearchUrl(`site:instagram.com/p OR site:instagram.com/reel "${queryCountry}" "${term}" bandas musica after:2025-01-01`),
+        summary: "Rastrea posts/reels recientes donde la oportunidad puede aparecer como publicidad, caption, busqueda de teloneros o llamado rapido a nuevos sonidos."
+      }
+    );
+  });
   const globalTerms = GLOBAL_PUBLIC_SEARCH_TERMS.slice(0, filters.continent === "Global" ? 14 : 8);
   globalTerms.forEach((term) => {
     searches.push({
@@ -2314,6 +2411,12 @@ function applicationGuide(opp) {
   }
   if (signals.includes("movilidad")) {
     steps.push("Para movilidad o residencia, revisa financiamiento, carta de invitacion, ruta, fechas y requisitos de intercambio.");
+  }
+  if (signals.includes("nuevos_sonidos")) {
+    steps.push("Si buscan nuevos sonidos, arma un pitch curatorial: identidad sonora, influencias, diferencia frente a otras bandas, registro en vivo y por que encaja.");
+  }
+  if (signals.includes("programacion")) {
+    steps.push("Si aparece programacion artistica, busca correo/formulario de propuestas, calendario curatorial, requisitos tecnicos y politica de honorarios.");
   }
   if (category.includes("sello") || sourceType.includes("sello") || sourceType.includes("label")) {
     steps.push("Revisa catalogo/roster antes de enviar material; explica por que tu sonido calza con la linea del sello.");

@@ -133,22 +133,45 @@ SEMANTIC_INTENT_GROUPS = {
         "teloneros", "telonero", "banda soporte", "banda invitada", "artista invitado",
         "support act", "opening act", "opening band", "warm up band", "buscamos bandas",
         "se buscan bandas", "abrir concierto", "abrir show", "support slot",
+        "local support", "special guest band", "guest artist", "premiere partie",
+        "vorband", "supportband", "bandas soporte", "acto de apertura",
     ],
     "internacional": [
         "bandas internacionales", "artistas internacionales", "bandas extranjeras",
         "artistas de otros paises", "foreign artists", "international artists",
         "from abroad", "overseas artists", "latam artists", "iberoamerica",
-        "mercado internacional", "circulacion internacional",
+        "mercado internacional", "circulacion internacional", "global artists",
+        "worldwide artists", "artists outside", "cross-border", "international applicants",
+        "open to international", "international touring artists",
     ],
     "showcase": [
         "showcase", "music market", "mercado musical", "rueda de negocios",
         "delegacion artistica", "artist application", "band submissions",
         "apply to play", "festival submissions", "postulacion showcase",
+        "delegate application", "export office", "music export", "industry conference",
+        "artist pitch", "networking session", "professionals meeting",
     ],
     "movilidad": [
         "gira", "tour", "touring", "residencia", "intercambio", "movilidad",
         "mobility grant", "touring grant", "residency", "artist residency",
         "circulacion", "itinerancia", "coproduccion internacional",
+        "travel support", "international mobility", "cultural exchange",
+        "residence artistique", "residenz", "artist exchange",
+    ],
+    "nuevos_sonidos": [
+        "nuevos sonidos", "nuevo sonido", "sonidos emergentes", "bandas emergentes",
+        "artistas emergentes", "new sounds", "fresh sounds", "emerging artists",
+        "emerging bands", "new talent", "new music discovery", "undiscovered artists",
+        "next wave", "up-and-coming bands", "new voices", "independent artists",
+        "alternative sounds", "experimental sounds", "musica independiente",
+        "talento emergente", "descubrimiento musical",
+    ],
+    "programacion": [
+        "programacion artistica", "curatoria musical", "curaduria musical",
+        "recepcion de propuestas", "presentar artistas", "artist proposals",
+        "programming submissions", "booking inquiry", "programme proposals",
+        "live music programming", "cultural programming", "call for proposals",
+        "open programming", "artist call", "music programming",
     ],
 }
 
@@ -161,6 +184,30 @@ LATAM_SEMANTIC_MISSION_TEMPLATES = [
     '"{country}" "{term}" "showcase" "artists"',
     '"{country}" "{term}" "festival" "apply"',
     '"{country}" "{term}" "booking" "bandas"',
+]
+
+HIGH_VALUE_SEMANTIC_TERMS = [
+    "international bands",
+    "foreign artists",
+    "open to international artists",
+    "support act",
+    "opening band",
+    "bands wanted",
+    "apply to play",
+    "band submissions",
+    "artist submissions",
+    "new sounds",
+    "emerging bands",
+    "music export",
+    "showcase application",
+    "artist open call",
+    "programming submissions",
+    "convocatoria bandas internacionales",
+    "bandas extranjeras",
+    "buscamos bandas",
+    "teloneros",
+    "sonidos emergentes",
+    "recepcion de propuestas",
 ]
 
 ADMIN_DIVISION_TERMS = {
@@ -183,9 +230,37 @@ ADMIN_DIVISION_TERMS = {
     "Espana": ["comunidad autonoma", "provincia", "ayuntamiento", "concejalia de cultura"],
     "Alemania": ["bundesland", "stadt", "kulturamt", "bezirk"],
     "Australia": ["state", "territory", "local council", "arts grants"],
+    "Nueva Zelanda": ["region", "city council", "creative communities", "local board"],
+    "Sudafrica": ["province", "municipality", "arts council", "cultural affairs"],
+    "Marruecos": ["region", "commune", "province", "festival", "centre culturel"],
+    "Japon": ["prefecture", "city cultural foundation", "music festival", "artist support"],
+    "Corea del Sur": ["province", "metropolitan city", "arts council", "music showcase"],
+    "China": ["province", "municipality", "arts festival", "cultural center"],
+    "Taiwan": ["county", "city", "cultural bureau", "music festival"],
+    "Vietnam": ["province", "city", "department of culture", "music festival"],
+    "Libano": ["municipality", "festival", "cultural center", "music programme"],
+    "India": ["state", "city", "arts festival", "cultural centre"],
+    "Indonesia": ["province", "city", "cultural office", "music festival"],
+    "Tailandia": ["province", "city", "cultural centre", "music festival"],
+    "Singapur": ["arts council", "district", "music festival", "showcase"],
+    "Italia": ["regione", "comune", "assessorato cultura", "festival musica"],
+    "Portugal": ["regiao", "municipio", "camara municipal", "festival musica"],
+    "Paises Bajos": ["province", "gemeente", "music venue", "cultural fund"],
+    "Holanda": ["province", "gemeente", "music venue", "cultural fund"],
+    "Belgica": ["region", "commune", "gemeente", "music venue"],
+    "Dinamarca": ["region", "kommune", "music venue", "cultural fund"],
+    "Suecia": ["region", "kommun", "music venue", "cultural grant"],
+    "Suiza": ["canton", "gemeinde", "commune", "music festival"],
+    "Noruega": ["county", "kommune", "music festival", "cultural grant"],
+    "Finlandia": ["region", "municipality", "music festival", "cultural grant"],
+    "Polonia": ["voivodeship", "city", "cultural centre", "music festival"],
+    "Republica Checa": ["region", "city", "cultural centre", "music festival"],
 }
 
-DEFAULT_ADMIN_DIVISION_TERMS = ["region", "province", "state", "municipality", "city council", "cultural center"]
+DEFAULT_ADMIN_DIVISION_TERMS = [
+    "region", "province", "state", "department", "county", "municipality",
+    "city council", "cultural center", "arts council", "music festival",
+]
 
 GLOBAL_TERRITORIAL_AREA_SEEDS = {
     "Chile": [
@@ -209,8 +284,30 @@ GLOBAL_TERRITORIAL_AREA_SEEDS = {
     "Colombia": ["Bogota Cultura", "Antioquia Medellin Cultura", "Valle del Cauca Cali Cultura", "Atlantico Barranquilla Cultura", "Bolivar Cartagena Cultura"],
     "Brasil": ["Sao Paulo Secretaria de Cultura musica", "Rio de Janeiro Cultura", "Minas Gerais Cultura", "Bahia Cultura", "Rio Grande do Sul Cultura"],
     "Mexico": ["Ciudad de Mexico Cultura", "Jalisco Cultura Guadalajara", "Nuevo Leon Cultura Monterrey", "Baja California Cultura Tijuana", "Yucatan Cultura Merida"],
-    "Estados Unidos": ["Texas arts council music", "California arts council music", "New York state arts music", "Los Angeles county arts music", "Austin music commission"],
+    "Estados Unidos": ["Texas arts council music", "California arts council music", "New York state arts music", "Los Angeles county arts music", "Austin music commission", "San Jose Arts and Cultural Exchange Grants", "Arts Envoy music international"],
     "Canada": ["Ontario arts council music", "Quebec music council", "British Columbia arts council music", "Toronto arts council music", "Montreal culture music"],
+    "Inglaterra": ["London borough arts music", "Manchester music venues", "Brighton music showcase", "Liverpool music office", "Bristol live music", "SXSW London artist application", "2000trees band application Cheltenham"],
+    "Reino Unido": ["SXSW London artist application", "The Great Escape artist application", "Wide Days artist application Edinburgh", "2000trees band application Cheltenham", "UK Music Export Growth Scheme"],
+    "Irlanda": ["Dublin arts office music", "Cork city arts music", "Galway arts office music", "Limerick culture music", "Culture Ireland music"],
+    "Gales": ["Cardiff music board", "Wales Arts Council music", "Swansea culture music", "Newport live music", "Wrexham music"],
+    "Islandia": ["Reykjavik music city", "Iceland Airwaves artist application", "Akureyri culture music", "Iceland Music Export", "Reykjavik arts festival music", "Iceland Music export office"],
+    "Espana": ["Madrid cultura musica", "Barcelona cultura musica", "Valencia musica cultura", "Bilbao kultura musica", "Sevilla cultura musica"],
+    "Francia": ["Paris musique open call", "Marseille culture musique", "Lyon musique festival", "Nantes culture music", "Toulouse musique", "Institut francais PAIR music residency"],
+    "Alemania": ["Berlin musicboard", "Hamburg music city", "Cologne music festival", "Munich kulturreferat musik", "Leipzig music", "Goethe Institut music residency", "Reeperbahn artist application"],
+    "Paises Bajos": ["Amsterdam music fund", "Rotterdam music city", "Utrecht music festival", "Groningen Eurosonic artists", "The Hague music"],
+    "Dinamarca": ["Copenhagen music city", "Aarhus music culture", "Odense music festival", "Aalborg music", "Roskilde festival artists"],
+    "Suecia": ["Stockholm music city", "Gothenburg culture music", "Malmo music city", "Umea music", "Swedish Arts Council music", "Export Music Sweden showcase"],
+    "Suiza": ["Zurich music festival", "Geneva culture music", "Basel music city", "Lausanne music", "Swiss music export"],
+    "Marruecos": ["Casablanca music festival", "Rabat culture music", "Marrakech culture music", "Essaouira Gnaoua artists", "Visa For Music Rabat"],
+    "Sudafrica": ["Cape Town music office", "Johannesburg arts council music", "Durban music festival", "Gauteng culture music", "Western Cape arts music"],
+    "Australia": ["New South Wales music grants", "Victoria music festival", "Melbourne music city", "Sydney arts music", "Queensland music trails", "Music Australia Export Fund international touring"],
+    "Nueva Zelanda": ["Auckland music city", "Wellington music", "Christchurch arts music", "Creative New Zealand music", "Dunedin music"],
+    "Japon": ["Tokyo music market", "Osaka music festival", "Kyoto culture music", "Hokkaido music festival", "Fukuoka music"],
+    "Corea del Sur": ["Seoul music week", "Busan music festival", "Incheon culture music", "Gwangju music", "MUCON Korea"],
+    "China": ["Shanghai international arts festival", "Beijing music festival", "Shenzhen culture music", "Guangzhou music festival", "Chengdu music"],
+    "Taiwan": ["Taipei music center", "Kaohsiung music festival", "Taichung culture music", "Tainan culture music", "Taiwan music showcase"],
+    "Vietnam": ["Ho Chi Minh City music festival", "Hanoi culture music", "Da Nang music festival", "Hue festival music", "Vietnam music week"],
+    "Libano": ["Beirut music festival", "Beirut and Beyond", "Byblos festival artists", "Baalbeck festival music", "Zouk Mikael festival"],
 }
 
 TERRITORIAL_MISSION_TEMPLATES = [
@@ -219,9 +316,13 @@ TERRITORIAL_MISSION_TEMPLATES = [
     '"{country}" "{term}" festival musica teloneros',
     'site:instagram.com/p "{country}" "{term}" musica convocatoria',
     'site:instagram.com/reel "{country}" "{term}" concierto bandas',
+    '"{country}" "{term}" "{intent}" musica',
+    'site:instagram.com/p "{country}" "{term}" "{intent}"',
     '"{area}" convocatoria musica bandas',
     '"{area}" centro cultural conciertos rock',
     'site:instagram.com/p "{area}" cultura musica bandas',
+    '"{area}" "{intent}" festival musica',
+    'site:instagram.com/reel "{area}" "{intent}" bandas',
 ]
 
 COUNTRY_SEARCH_ALIASES = {
@@ -1055,12 +1156,19 @@ def build_territorial_discovery_queries(country: str) -> list[str]:
     admin_terms = ADMIN_DIVISION_TERMS.get(country, DEFAULT_ADMIN_DIVISION_TERMS)
     areas = GLOBAL_TERRITORIAL_AREA_SEEDS.get(country, [])
     queries = []
+    priority_intents = HIGH_VALUE_SEMANTIC_TERMS[:8]
     for term in admin_terms:
         for template in TERRITORIAL_MISSION_TEMPLATES[:5]:
-            queries.append(template.replace("{country}", search_country).replace("{term}", term).replace("{area}", f"{search_country} {term}"))
+            queries.append(template.replace("{country}", search_country).replace("{term}", term).replace("{area}", f"{search_country} {term}").replace("{intent}", "music open call"))
+        for intent in priority_intents:
+            for template in TERRITORIAL_MISSION_TEMPLATES[5:7]:
+                queries.append(template.replace("{country}", search_country).replace("{term}", term).replace("{area}", f"{search_country} {term}").replace("{intent}", intent))
     for area in areas:
-        for template in TERRITORIAL_MISSION_TEMPLATES[5:]:
-            queries.append(template.replace("{country}", search_country).replace("{term}", area).replace("{area}", area))
+        for template in TERRITORIAL_MISSION_TEMPLATES[7:10]:
+            queries.append(template.replace("{country}", search_country).replace("{term}", area).replace("{area}", area).replace("{intent}", "music open call"))
+        for intent in priority_intents:
+            for template in TERRITORIAL_MISSION_TEMPLATES[10:]:
+                queries.append(template.replace("{country}", search_country).replace("{term}", area).replace("{area}", area).replace("{intent}", intent))
     return queries
 
 

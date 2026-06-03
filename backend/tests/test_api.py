@@ -8,6 +8,7 @@ from app.discovery import (
     CHILE_PUBLIC_SPACE_TARGETS,
     COUNTRY_PUBLIC_SPACE_TARGETS,
     GLOBAL_TERRITORIAL_AREA_SEEDS,
+    HIGH_VALUE_SEMANTIC_TERMS,
     LATAM_RECOGNIZED_TARGETS,
     SEMANTIC_INTENT_GROUPS,
     TARGET_COUNTRIES,
@@ -100,19 +101,21 @@ def test_expanded_target_lists_have_required_depth():
 
 def test_latam_semantic_queries_detect_support_international_and_mobility():
     joined = "\n".join(build_semantic_discovery_queries("Argentina"))
-    assert len(SEMANTIC_INTENT_GROUPS["teloneros"]) >= 10
+    assert len(SEMANTIC_INTENT_GROUPS["teloneros"]) >= 16
     assert "support act" in joined
     assert "opening band" in joined
     assert "foreign artists" in joined
     assert "music market" in joined
     assert "touring grant" in joined
+    assert "new sounds" in HIGH_VALUE_SEMANTIC_TERMS
+    assert "programming submissions" in HIGH_VALUE_SEMANTIC_TERMS
     assert "site:instagram.com/reel" in joined
 
 
 def test_semantic_scoring_lifts_implicit_international_support_calls():
-    text = "Festival busca opening band para international artists from abroad con showcase application y touring support."
+    text = "Festival busca opening band para international artists from abroad con showcase application, touring support and new sounds."
     signals = semantic_signal_hits(text)
-    assert {"teloneros", "internacional", "showcase", "movilidad"}.issubset(set(signals))
+    assert {"teloneros", "internacional", "showcase", "movilidad", "nuevos_sonidos"}.issubset(set(signals))
     assert score_text(text) >= 0.7
 
 
@@ -127,6 +130,47 @@ def test_territorial_queries_use_country_specific_admin_language():
     assert "departamento" in uruguay
     assert "county" in usa
     assert len(GLOBAL_TERRITORIAL_AREA_SEEDS["Chile"]) >= 10
+
+
+def test_global_territorial_seeds_cover_priority_world_regions():
+    required = {
+        "Inglaterra": "Brighton music showcase",
+        "Reino Unido": "Wide Days artist application Edinburgh",
+        "Irlanda": "Dublin arts office music",
+        "Islandia": "Iceland Airwaves artist application",
+        "Francia": "Paris musique open call",
+        "Alemania": "Berlin musicboard",
+        "Paises Bajos": "Groningen Eurosonic artists",
+        "Marruecos": "Visa For Music Rabat",
+        "Sudafrica": "Cape Town music office",
+        "Australia": "New South Wales music grants",
+        "Japon": "Tokyo music market",
+        "Corea del Sur": "Seoul music week",
+        "Taiwan": "Taipei music center",
+        "Vietnam": "Ho Chi Minh City music festival",
+    }
+    for country, seed in required.items():
+        joined = "\n".join(build_territorial_discovery_queries(country))
+        assert seed in GLOBAL_TERRITORIAL_AREA_SEEDS[country]
+        assert seed in joined
+        assert "international bands" in joined
+        assert "support act" in joined
+
+
+def test_deep_research_findings_are_folded_into_territorial_queries():
+    checks = {
+        "Reino Unido": ["SXSW London artist application", "UK Music Export Growth Scheme"],
+        "Alemania": ["Reeperbahn artist application", "Goethe Institut music residency"],
+        "Francia": ["Institut francais PAIR music residency"],
+        "Australia": ["Music Australia Export Fund international touring"],
+        "Suecia": ["Export Music Sweden showcase"],
+        "Estados Unidos": ["San Jose Arts and Cultural Exchange Grants", "Arts Envoy music international"],
+    }
+    for country, expected_terms in checks.items():
+        joined = "\n".join(build_territorial_discovery_queries(country))
+        for term in expected_terms:
+            assert term in GLOBAL_TERRITORIAL_AREA_SEEDS[country]
+            assert term in joined
 
 
 def test_global_discovery_bank_exceeds_100k_missions():
