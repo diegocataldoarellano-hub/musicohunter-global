@@ -1829,6 +1829,27 @@ function matchesOpportunity(opp) {
   return true;
 }
 
+function matchesSource(source) {
+  const text = [
+    source.name,
+    source.type,
+    source.country,
+    source.region,
+    itemContinent(source)
+  ].join(" ").toLowerCase();
+  const query = filters.q.toLowerCase();
+  const quick = filters.quick?.toLowerCase();
+  if (query && !text.includes(query)) return false;
+  if (quick && !text.includes(quick)) return false;
+  if (filters.continent !== "all" && itemContinent(source) !== filters.continent) return false;
+  if (filters.country !== "all" && source.country !== filters.country) return false;
+  if (filters.region !== "all" && source.region !== filters.region) return false;
+  if (filters.category !== "all" && source.type !== filters.category && !text.includes(displayLabel(filters.category))) return false;
+  if (filters.link === "public" && !publicLink(source.linkStatus)) return false;
+  if (!["public", "all"].includes(filters.link) && source.linkStatus !== filters.link) return false;
+  return true;
+}
+
 function applyFilters() {
   filtered = opportunities.filter(matchesOpportunity).sort((a, b) => {
     const aStatus = deadlineStatus(a.deadline);
@@ -1877,6 +1898,9 @@ function renderOpportunityCard(opp) {
       <a class="official-link" href="${escapeHtml(opp.url)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">
         Abrir link oficial <i class="fa-solid fa-up-right-from-square"></i>
       </a>
+      <button class="inline-action" type="button" data-guide-id="${escapeHtml(String(opp.id))}" onclick="event.stopPropagation()">
+        Ver como postular <i class="fa-solid fa-book-open"></i>
+      </button>
     </article>
   `;
 }
@@ -2067,8 +2091,25 @@ function renderCalendar() {
 }
 
 function renderSources() {
-  const visibleSources = sources.slice(0, 320);
-  els.sourcesList.innerHTML = visibleSources.map((source) => `
+  const matchingSources = sources.filter(matchesSource);
+  const visibleSources = matchingSources.slice(0, 8);
+  const guide = `
+    <article class="source-card source-guide-card">
+      <div class="card-top">
+        <span class="category-badge">tutorial</span>
+        <span class="link-status requires_review">${matchingSources.length} fuentes filtradas</span>
+      </div>
+      <h3>Como usar estos resultados</h3>
+      <p>Primero abre una oportunidad en Resultados y pulsa <strong>Ver como postular</strong>. Este panel solo muestra fuentes relacionadas con tus filtros actuales.</p>
+    </article>
+  `;
+  const empty = `
+    <article class="source-card">
+      <h3>No hay fuentes para este filtro</h3>
+      <p>Prueba ampliar pais, region o categoria. El mapa y resultados siguen conectados al mismo criterio.</p>
+    </article>
+  `;
+  els.sourcesList.innerHTML = guide + (visibleSources.length ? visibleSources.map((source) => `
     <article class="source-card">
       <div class="card-top">
         <span class="category-badge">${escapeHtml(displayLabel(source.type || "fuente"))}</span>
@@ -2081,7 +2122,7 @@ function renderSources() {
         Abrir fuente y buscar postulacion <i class="fa-solid fa-up-right-from-square"></i>
       </a>
     </article>
-  `).join("");
+  `).join("") : empty);
 }
 
 function openDetail(id) {
@@ -2139,6 +2180,7 @@ function reRenderAfterFilter() {
   renderList();
   renderMap();
   renderCalendar();
+  renderSources();
 }
 
 function bindEvents() {
@@ -2209,8 +2251,13 @@ function bindEvents() {
     renderAll();
   });
   els.opportunityList.addEventListener("click", (event) => {
+    const guideButton = event.target.closest("[data-guide-id]");
+    if (guideButton) {
+      openDetail(guideButton.dataset.guideId);
+      return;
+    }
     const card = event.target.closest(".opportunity-card");
-    if (card) openDetail(card.dataset.id);
+    if (card?.dataset.id) openDetail(card.dataset.id);
   });
   els.opportunityList.addEventListener("keydown", (event) => {
     if (event.key !== "Enter") return;
