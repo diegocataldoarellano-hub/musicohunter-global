@@ -8,6 +8,7 @@ Radar publico y curado de oportunidades musicales para rock, rock fusion, progre
 - `backend/`: API FastAPI para Render.
 - `render.yaml`: Render Blueprint con API, Postgres y cron diario.
 - `.github/workflows/pages.yml`: publicacion del frontend en GitHub Pages.
+- `.github/workflows/refresh-radar.yml`: barrido rapido global del motor desde GitHub Actions.
 
 ## Desarrollo local
 
@@ -45,6 +46,15 @@ El cron de Render ejecuta:
 python -m app.curator_agent
 ```
 
+GitHub Actions tambien puede ejecutar un barrido rapido global dos veces al dia y manualmente desde Actions. Para activarlo, configura estos secretos del repositorio:
+
+```env
+RADAR_API_BASE_URL=https://tu-api-render.onrender.com
+RADAR_ADMIN_TOKEN=el-mismo-ADMIN_TOKEN-del-backend
+```
+
+Ese workflow llama `POST /api/admin/refresh-fast`, revisa todos los paises objetivo con pocas consultas por pais para sumar fuentes nuevas rapido, luego ejecuta `POST /api/admin/check-links` y deja en el resumen de GitHub cuantos links/fuentes/oportunidades se agregaron.
+
 El agente:
 
 - Recorre fuentes publicas curadas.
@@ -78,6 +88,7 @@ No se raspa Google directamente. Se usa una API de busqueda configurable para en
 - `GET /api/search?q=rock`
 - `POST /api/admin/check-links` con header `X-Admin-Token`
 - `POST /api/admin/refresh` con header `X-Admin-Token`
+- `POST /api/admin/refresh-fast` con header `X-Admin-Token`
 
 ## Criterio de publicacion
 
