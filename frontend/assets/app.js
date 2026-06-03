@@ -239,12 +239,12 @@ function applyFilters() {
 }
 
 function renderStats() {
-  const open = filtered.filter((o) => deadlineStatus(o.deadline) === "abierta").length;
-  const closing = filtered.filter((o) => deadlineStatus(o.deadline) === "cierra pronto").length;
+  const publicCount = filtered.length;
+  const withDeadline = filtered.filter((o) => Boolean(o.deadline)).length;
   const verified = filtered.filter((o) => ["ok", "redirected"].includes(o.linkStatus)).length;
   const regions = unique(filtered.map((o) => `${o.country}:${o.region}`)).length;
-  document.getElementById("statOpen").textContent = open;
-  document.getElementById("statClosing").textContent = closing;
+  document.getElementById("statOpen").textContent = publicCount;
+  document.getElementById("statClosing").textContent = withDeadline;
   document.getElementById("statVerified").textContent = verified;
   document.getElementById("statRegions").textContent = regions;
   document.getElementById("heroOpportunities").textContent = opportunities.length;

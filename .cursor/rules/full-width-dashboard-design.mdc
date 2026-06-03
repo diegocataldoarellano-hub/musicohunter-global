@@ -1,0 +1,15 @@
+---
+description: Enforce full-width, non-stretched dashboard layout quality
+alwaysApply: true
+---
+
+# Full-Width Dashboard Design
+
+This project must treat poor width usage as a design bug, not an optional polish issue.
+
+- Use the available viewport width intentionally. Avoid narrow centered columns when the product is a dashboard, radar, map, search, calendar, or data workspace.
+- Do not make pages feel long just because sections are stacked vertically. Prefer horizontal information architecture on desktop: filters, map, results, stats, and secondary panels should share the first meaningful viewport when practical.
+- Keep hero sections compact for tools. A marketing headline must not push the actual working interface too far below the fold.
+- Avoid large empty panels. If a card exists, it must contain useful content, actions, or dense status information.
+- On desktop, target near full-width layouts (`width: min(100% - margin, maxWidth)`) and use responsive grids that expand before wrapping.
+- Before delivering frontend work, visually verify the live page at desktop width and check that it uses the full canvas without unnecessary stretching, dead space, or excessive vertical scrolling.
