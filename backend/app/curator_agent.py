@@ -447,6 +447,37 @@ def make_candidate_url(source_url: str, href: str | None) -> str:
     return urljoin(source_url, href)
 
 
+def contact_bits_from_soup(soup: BeautifulSoup, page_url: str) -> list[str]:
+    contact_bits = []
+    contact_terms = [
+        "contact",
+        "contacto",
+        "booking",
+        "programacion",
+        "programming",
+        "apply",
+        "application",
+        "submission",
+        "submit",
+        "form",
+        "postula",
+        "convocatoria",
+    ]
+    form_hosts = ("typeform", "forms.gle", "google.com/forms", "airtable", "jotform")
+    for anchor in soup.find_all("a", href=True):
+        href = anchor.get("href", "").strip()
+        label = clean_text(anchor.get_text(" ", strip=True))
+        lower = f"{label} {href}".lower()
+        absolute_url = urljoin(page_url, href)
+        if href.lower().startswith("mailto:"):
+            contact_bits.append(f"email {href}")
+        elif any(term in lower for term in contact_terms) or any(host in lower for host in form_hosts):
+            contact_bits.append(f"contact link: {label} {absolute_url}")
+        if len(contact_bits) >= 12:
+            break
+    return contact_bits
+
+
 async def inspect_candidate_text(client: httpx.AsyncClient, url: str) -> str:
     if not url.startswith(("http://", "https://")):
         return ""
@@ -459,9 +490,11 @@ async def inspect_candidate_text(client: httpx.AsyncClient, url: str) -> str:
     if "html" not in content_type and "text" not in content_type:
         return ""
     soup = BeautifulSoup(response.text, "html.parser")
+    contact_bits = contact_bits_from_soup(soup, url)
     for tag in soup(["script", "style", "noscript", "svg"]):
         tag.decompose()
-    return clean_text(soup.get_text(" ", strip=True))[:5000]
+    page_text = clean_text(soup.get_text(" ", strip=True))
+    return clean_text(f"{page_text} {' '.join(contact_bits)}")[:6500]
 
 
 async def fetch_source(source: Source) -> list[dict]:

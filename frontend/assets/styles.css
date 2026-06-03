@@ -568,6 +568,12 @@ select option {
   color: var(--text);
   font-size: 0.9rem;
   line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+.application-mini a {
+  color: var(--gold);
+  font-weight: 800;
 }
 
 .country-badge {

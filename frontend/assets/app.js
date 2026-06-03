@@ -3352,6 +3352,25 @@ function simpleApplicationSnapshot(opp) {
   };
 }
 
+function contactMarkup(contact) {
+  const value = String(contact || "No visible; abrir link oficial");
+  const email = value.match(/\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b/i)?.[0];
+  if (email) {
+    return escapeHtml(value).replace(
+      escapeHtml(email),
+      `<a href="mailto:${encodeURIComponent(email)}" onclick="event.stopPropagation()">${escapeHtml(email)}</a>`
+    );
+  }
+  const url = value.match(/https?:\/\/[^\s]+/i)?.[0];
+  if (url) {
+    return escapeHtml(value).replace(
+      escapeHtml(url),
+      `<a href="${escapeHtml(url)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">${escapeHtml(url)}</a>`
+    );
+  }
+  return escapeHtml(value);
+}
+
 function renderOpportunityCard(opp) {
   const snapshot = simpleApplicationSnapshot(opp);
   return `
@@ -3364,7 +3383,7 @@ function renderOpportunityCard(opp) {
       <div class="application-mini">
         <div><strong>Costo</strong><span>${escapeHtml(snapshot.cost)}</span></div>
         <div><strong>Requiere</strong><span>${escapeHtml(snapshot.checklist)}</span></div>
-        <div><strong>Contacto</strong><span>${escapeHtml(snapshot.contact)}</span></div>
+        <div><strong>Contacto</strong><span>${contactMarkup(snapshot.contact)}</span></div>
       </div>
       <a class="official-link" href="${escapeHtml(opp.url)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">
         Abrir y confirmar <i class="fa-solid fa-up-right-from-square"></i>

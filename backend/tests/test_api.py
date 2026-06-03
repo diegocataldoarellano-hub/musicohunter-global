@@ -1,8 +1,9 @@
 from fastapi.testclient import TestClient
+from bs4 import BeautifulSoup
 
 from app.main import app
 from app.application_inspector import build_application_snapshot, extract_contact, infer_application_cost
-from app.curator_agent import extract_application_requirements, extract_deadline_date, extract_event_date, is_navigation_noise, score_text, semantic_signal_hits
+from app.curator_agent import contact_bits_from_soup, extract_application_requirements, extract_deadline_date, extract_event_date, is_navigation_noise, score_text, semantic_signal_hits
 from app.discovery import (
     ARGENTINA_CANADA_US_DEEP_REVIEW,
     ASIA_DEEP_REVIEW_TARGETS,
@@ -48,6 +49,34 @@ def test_application_inspector_extracts_simple_result_fields():
     assert snapshot["cost"] == "Gratuito"
     assert "EPK/dossier" in snapshot["checklist"]
     assert "booking@example.org" in snapshot["summary"]
+
+
+def test_application_inspector_handles_hidden_and_form_contacts():
+    hidden = "Consultas: booking [at] festival dot org. Free application."
+    assert extract_contact(hidden) == "booking@festival.org"
+
+    mailto = "For bands use mailto:submissions%40venue.cl?subject=EPK"
+    assert extract_contact(mailto) == "submissions@venue.cl"
+
+    form = "Apply using contact link: Artist form https://forms.gle/abc123"
+    assert extract_contact(form) == "Formulario/contacto: https://forms.gle/abc123"
+
+
+def test_curator_collects_contact_links_from_html():
+    soup = BeautifulSoup(
+        """
+        <html><body>
+          <a href="mailto:booking@venue.cl">Booking</a>
+          <a href="/contact">Contact</a>
+          <a href="https://festival.typeform.com/to/apply">Apply now</a>
+        </body></html>
+        """,
+        "html.parser",
+    )
+    bits = " ".join(contact_bits_from_soup(soup, "https://venue.cl/open-call"))
+    assert "mailto:booking@venue.cl" in bits
+    assert "https://venue.cl/contact" in bits
+    assert "https://festival.typeform.com/to/apply" in bits
 
 
 def test_discovery_queries_include_social_and_public_sources():
