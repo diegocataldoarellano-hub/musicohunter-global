@@ -1818,7 +1818,7 @@ const expandedTargetOpportunities = expandedPublicTargets.map((target, index) =>
     eventDate: null,
     genres: ["rock", "folk", "fusion", "experimental", "indie", "progresivo"],
     requirements: ["Abrir busqueda publica.", "Priorizar web oficial, Instagram publico y agenda cultural reciente.", "Leer fecha de publicacion, fecha del evento, plazo/cierre, pago y contacto."],
-    url: googleSearchUrl(`"${target.query}" site:instagram.com/p OR site:instagram.com/reel OR convocatoria OR "open call"`),
+    url: generalTargetSearchUrl(target),
     sourceName: target.label,
     sourceType: target.type,
     lastChecked: null,
@@ -1835,7 +1835,7 @@ const expandedTargetSources = expandedPublicTargets.map((target, index) => ({
   country: target.country,
   region: target.region,
   type: target.type,
-  url: googleSearchUrl(`"${target.query}" convocatoria musica bandas agenda cultural`),
+  url: generalTargetSearchUrl(target),
   linkStatus: "requires_review"
 }));
 
@@ -2006,6 +2006,23 @@ function googleSearchUrl(query) {
   return `https://www.google.com/search?q=${encodeURIComponent(query)}`;
 }
 
+function targetSearchText(target) {
+  return [...new Set([
+    target.label,
+    target.city,
+    target.region,
+    target.country
+  ].filter(Boolean))].join(" ");
+}
+
+function generalTargetSearchUrl(target) {
+  return googleSearchUrl(`${targetSearchText(target)} musica conciertos programacion convocatoria artistas bandas centro cultural open call`);
+}
+
+function instagramTargetSearchUrl(target) {
+  return googleSearchUrl(`site:instagram.com ${targetSearchText(target)} musica conciertos agenda cultura bandas`);
+}
+
 function instagramHashtagUrl(tag) {
   return `https://www.instagram.com/explore/tags/${encodeURIComponent(normalizeToken(tag))}/`;
 }
@@ -2089,7 +2106,7 @@ function buildExternalSearchCards() {
       {
         title: `Mapa territorial - ${target.label}`,
         category: "radar_territorial",
-        url: googleSearchUrl(`"${target.query}" "convocatoria" OR "conciertos" OR "buscamos bandas" OR "open call" OR "international artists" OR "new sounds"`),
+        url: generalTargetSearchUrl(target),
         summary: `Busqueda por unidad territorial (${target.region}/${target.city}). Cruza comuna/municipio/departamento/provincia/estado/condado con señales de bandas internacionales, teloneros, nuevos sonidos y programacion.`,
         lat: target.lat,
         lng: target.lng,
@@ -2099,7 +2116,7 @@ function buildExternalSearchCards() {
       {
         title: `Instagram territorial - ${target.label}`,
         category: "instagram_territorial",
-        url: googleSearchUrl(`site:instagram.com/p OR site:instagram.com/reel "${target.query}" "support act" OR "opening band" OR "bandas extranjeras" OR "sonidos emergentes" after:2025-01-01`),
+        url: instagramTargetSearchUrl(target),
         summary: "Rastrea publicaciones recientes de cultura local, municipalidades, centros culturales, festivales, llamados a bandas, teloneros y nuevos sonidos.",
         lat: target.lat,
         lng: target.lng,
@@ -2119,7 +2136,7 @@ function buildExternalSearchCards() {
       {
         title: `Instagram semantico global - ${term}`,
         category: "instagram_semantico",
-        url: googleSearchUrl(`site:instagram.com/p OR site:instagram.com/reel "${queryCountry}" "${term}" bandas musica after:2025-01-01`),
+        url: googleSearchUrl(`site:instagram.com "${queryCountry}" "${term}" bandas musica convocatoria concierto`),
         summary: "Rastrea posts/reels recientes donde la oportunidad puede aparecer como publicidad, caption, busqueda de teloneros o llamado rapido a nuevos sonidos."
       }
     );
@@ -2156,7 +2173,7 @@ function buildExternalSearchCards() {
       {
         title: `Instagram publico en Google - ${target}`,
         category: "instagram_espacio_publico",
-        url: googleSearchUrl(`site:instagram.com/p OR site:instagram.com/reel "${target}" "convocatoria" OR "presentar artistas" OR "postula tu proyecto" OR "programacion artistica" music musica`),
+        url: googleSearchUrl(`site:instagram.com "${target}" convocatoria presentar artistas postula proyecto programacion artistica music musica`),
         summary: "Rastrea posts/reels publicos encontrados por Google para detectar llamados a bandas, artistas invitados, programacion y fechas reales."
       },
       {
@@ -2211,7 +2228,7 @@ function buildExternalSearchCards() {
         {
           title: `Instagram reciente - ${target.city}`,
           category: "instagram_regional",
-          url: googleSearchUrl(`site:instagram.com/p OR site:instagram.com/reel "${target.city}" ${target.query} "tocata" OR "buscamos bandas" OR "se buscan bandas" after:2025-01-01`),
+          url: googleSearchUrl(`site:instagram.com ${target.city} ${target.region} ${target.label} tocata buscamos bandas se buscan bandas conciertos musica`),
           summary: `Busqueda regional para ${target.city}. Abrir publicaciones publicas y revisar fecha del post, fecha del evento, hora, entrada y contacto.`
         },
         {
