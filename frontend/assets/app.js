@@ -169,6 +169,14 @@ function escapeHtml(value) {
 async function loadData() {
   els.backendStatus.textContent = "Conectando";
   els.backendStatus.className = "status-pill";
+  if (!API_BASE_URL) {
+    opportunities = fallbackPayload.opportunities;
+    sources = fallbackPayload.sources;
+    els.backendStatus.textContent = "Demo publico";
+    els.backendStatus.className = "status-pill offline";
+    renderAll();
+    return;
+  }
   try {
     const [oppsResponse, sourcesResponse] = await Promise.all([
       fetch(`${API_BASE_URL}/api/opportunities?limit=500`),
