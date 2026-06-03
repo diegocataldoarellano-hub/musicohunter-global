@@ -12,7 +12,8 @@ def test_split_csv_filters_empty_values():
 def test_discovery_queries_include_social_and_public_sources():
     queries = build_discovery_queries("Espana")
     joined = "\n".join(queries)
-    assert "site:instagram.com" in joined
+    assert "site:instagram.com/p" in joined
+    assert "site:instagram.com/reel" in joined
     assert "site:tiktok.com" in joined
     assert "municipio" in joined
     assert "booking" in joined

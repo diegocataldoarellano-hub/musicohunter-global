@@ -27,9 +27,10 @@ TARGET_COUNTRIES = [
 ]
 
 SEARCH_MISSION_TEMPLATES = [
-    'site:instagram.com "{country}" festival bandas rock convocatoria',
-    'site:instagram.com "{country}" buscan teloneros rock concierto',
-    'site:instagram.com "{country}" showcase bandas convocatoria musica',
+    'site:instagram.com/p "{country}" festival bandas rock convocatoria',
+    'site:instagram.com/reel "{country}" buscan teloneros rock concierto',
+    'site:instagram.com/p "{country}" showcase bandas convocatoria musica',
+    'site:instagram.com "{country}" productora booking bandas rock',
     'site:tiktok.com "{country}" festival rock bandas convocatoria',
     '"{country}" fondos musica bandas rock convocatoria',
     '"{country}" municipio centro cultural musica bandas pago',

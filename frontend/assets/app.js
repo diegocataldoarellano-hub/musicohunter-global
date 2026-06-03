@@ -6,9 +6,10 @@ const TARGET_COUNTRIES = [
 ];
 
 const SEARCH_MISSION_TEMPLATES = [
-  'site:instagram.com "{country}" festival bandas rock convocatoria',
-  'site:instagram.com "{country}" buscan teloneros rock concierto',
-  'site:instagram.com "{country}" showcase bandas convocatoria musica',
+  'site:instagram.com/p "{country}" festival bandas rock convocatoria',
+  'site:instagram.com/reel "{country}" buscan teloneros rock concierto',
+  'site:instagram.com/p "{country}" showcase bandas convocatoria musica',
+  'site:instagram.com "{country}" productora booking bandas rock',
   'site:tiktok.com "{country}" festival rock bandas convocatoria',
   '"{country}" fondos musica bandas rock convocatoria',
   '"{country}" municipio centro cultural musica bandas pago',
@@ -540,6 +541,100 @@ function buildSearchMissions(country) {
   return SEARCH_MISSION_TEMPLATES.map((template) => template.replaceAll("{country}", country));
 }
 
+function normalizeToken(value) {
+  return String(value || "")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "");
+}
+
+function searchPhrase() {
+  const parts = [
+    filters.q,
+    filters.quick,
+    filters.category !== "all" ? displayLabel(filters.category) : "",
+    filters.genre !== "all" ? filters.genre : ""
+  ].filter(Boolean);
+  return parts.length ? parts.join(" ") : "festival bandas rock convocatoria";
+}
+
+function googleSearchUrl(query) {
+  return `https://www.google.com/search?q=${encodeURIComponent(query)}`;
+}
+
+function instagramHashtagUrl(tag) {
+  return `https://www.instagram.com/explore/tags/${encodeURIComponent(normalizeToken(tag))}/`;
+}
+
+function tiktokSearchUrl(query) {
+  return `https://www.tiktok.com/search?q=${encodeURIComponent(query)}`;
+}
+
+function buildExternalSearchCards() {
+  const country = selectedSearchCountry();
+  const scope = selectedScopeLabel();
+  const phrase = searchPhrase();
+  const compactCountry = normalizeToken(country);
+  const searches = [
+    {
+      title: `Instagram posts publicos - ${country}`,
+      category: "instagram_posts",
+      url: googleSearchUrl(`site:instagram.com/p "${country}" ${phrase} teloneros showcase convocatoria`),
+      summary: "Busqueda directa en Google sobre posts publicos de Instagram. Prioriza convocatorias, teloneros, showcases, festivales y concursos."
+    },
+    {
+      title: `Instagram reels publicos - ${country}`,
+      category: "instagram_reels",
+      url: googleSearchUrl(`site:instagram.com/reel "${country}" bandas rock festival convocatoria productora`),
+      summary: "Revisa reels publicos donde productoras, festivales y salas publican llamados rapidos o busquedas de bandas."
+    },
+    {
+      title: `Hashtag Instagram #rock${compactCountry}`,
+      category: "instagram_hashtag",
+      url: instagramHashtagUrl(`rock${country}`),
+      summary: "Hashtag publico para rastrear bandas, fechas, salas y escenas locales. Usalo como puerta de entrada a perfiles activos."
+    },
+    {
+      title: `Hashtag Instagram #bandas${compactCountry}`,
+      category: "instagram_hashtag",
+      url: instagramHashtagUrl(`bandas${country}`),
+      summary: "Hashtag publico orientado a bandas. Sirve para ubicar convocatorias, colaboraciones, teloneros y perfiles de escena."
+    },
+    {
+      title: `TikTok busqueda publica - ${country}`,
+      category: "tiktok",
+      url: tiktokSearchUrl(`${country} bandas rock festival convocatoria teloneros`),
+      summary: "Busqueda publica en TikTok para detectar publicaciones rapidas de conciertos, festivales, salas y escenas emergentes."
+    },
+    {
+      title: `Productoras, booking y sellos - ${scope}`,
+      category: "booking_productoras",
+      url: googleSearchUrl(`"${country}" productora booking sello independiente bandas rock fusion experimental instagram`),
+      summary: "Busqueda ampliada de perfiles publicos de productoras, sellos, agencias de booking y medios musicales."
+    },
+    {
+      title: `Fondos, municipios y centros culturales - ${country}`,
+      category: "fondos_espacios",
+      url: googleSearchUrl(`"${country}" municipio centro cultural fondos musica bandas convocatoria pago honorarios`),
+      summary: "Busqueda de espacios publicos con pago, fondos, municipios, centros culturales y convocatorias institucionales."
+    }
+  ];
+  return searches.map((item, index) => ({
+    id: `external-${index}`,
+    ...item,
+    country,
+    region: "Busqueda publica",
+    city: scope,
+    sourceName: "Motor publico",
+    sourceType: "busqueda_externa",
+    linkStatus: "requires_review",
+    confidence: 0.58,
+    genres: ["rock", "fusion", "folk", "experimental", "progresivo"],
+    requirements: ["Abrir el enlace.", "Revisar que la publicacion sea vigente y publica.", "Validar fecha, contacto y requisitos antes de contactar."]
+  }));
+}
+
 function selectedScopeLabel() {
   if (filters.country !== "all") return filters.country;
   if (filters.continent !== "all") return filters.continent;
@@ -548,6 +643,8 @@ function selectedScopeLabel() {
 
 function selectedSearchCountry() {
   if (filters.country !== "all") return filters.country;
+  if (filters.continent === "Europa") return "Espana";
+  if (filters.continent === "Latinoamerica" || filters.continent === "all") return "Chile";
   const targets = targetCountries().filter((item) => filters.continent === "all" || item.continent === filters.continent);
   return targets[0]?.country || "Chile";
 }
@@ -691,63 +788,78 @@ function renderStats() {
   document.getElementById("heroOpportunities").textContent = opportunities.length;
   document.getElementById("heroSources").textContent = sources.length;
   document.getElementById("heroCountries").textContent = targetCountries().length;
-  els.resultCount.textContent = filtered.length;
 }
 
-function renderSearchEmptyState() {
-  const scope = selectedScopeLabel();
-  const country = selectedSearchCountry();
-  const missions = buildSearchMissions(country).slice(0, 5);
-  els.opportunityList.innerHTML = `
-    <article class="search-empty-card">
+function renderOpportunityCard(opp) {
+  const status = deadlineStatus(opp.deadline);
+  const dateText = opp.deadline ? new Date(opp.deadline + "T00:00:00").toLocaleDateString("es-CL") : "sin fecha";
+  return `
+    <article class="opportunity-card" data-id="${opp.id}" tabindex="0">
       <div class="card-top">
-        <span class="category-badge">motor conectado</span>
-        <span class="link-status requires_review">en investigacion</span>
+        <span class="country-badge">${escapeHtml(opp.country)} - ${escapeHtml(opp.region || "sin region")}</span>
+        <span class="link-status ${escapeHtml(opp.linkStatus)}">${statusLabel(opp.linkStatus)}</span>
       </div>
-      <h3>Sin oportunidades curadas todavia para ${escapeHtml(scope)}</h3>
-      <p>
-        El mapa ya esta apuntando al territorio seleccionado. El siguiente paso del agente es revisar estas
-        misiones, validar links y publicar solo fuentes utiles.
-      </p>
-      <div class="mission-list compact">
-        ${missions.map((query) => `<span class="mission-chip">${escapeHtml(query)}</span>`).join("")}
+      <h3>${escapeHtml(opp.title)}</h3>
+      <p>${escapeHtml(opp.summary || "Fuente publica curada para oportunidades musicales.")}</p>
+      <div class="card-meta">
+        <span><i class="fa-solid fa-location-dot"></i> ${escapeHtml(opp.city || opp.country)}</span>
+        <span><i class="fa-solid fa-calendar"></i> ${escapeHtml(dateText)}</span>
+        <span><i class="fa-solid fa-circle-info"></i> ${escapeHtml(status)}</span>
       </div>
+      <div class="card-actions">
+        <span class="category-badge">${escapeHtml(displayLabel(opp.category))}</span>
+        ${(opp.genres || []).slice(0, 3).map((g) => `<span class="chip">${escapeHtml(g)}</span>`).join("")}
+      </div>
+      <a class="official-link" href="${escapeHtml(opp.url)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">
+        Abrir link oficial <i class="fa-solid fa-up-right-from-square"></i>
+      </a>
+    </article>
+  `;
+}
+
+function renderExternalCard(item) {
+  return `
+    <article class="opportunity-card external-card">
+      <div class="card-top">
+        <span class="country-badge">${escapeHtml(item.country)} - busqueda publica</span>
+        <span class="link-status requires_review">revisar</span>
+      </div>
+      <h3>${escapeHtml(item.title)}</h3>
+      <p>${escapeHtml(item.summary)}</p>
+      <div class="card-actions">
+        <span class="category-badge">${escapeHtml(displayLabel(item.category))}</span>
+        <span class="chip">instagram</span>
+        <span class="chip">google</span>
+        <span class="chip">publico</span>
+      </div>
+      <a class="official-link" href="${escapeHtml(item.url)}" target="_blank" rel="noopener">
+        Revisar busqueda publica <i class="fa-solid fa-up-right-from-square"></i>
+      </a>
     </article>
   `;
 }
 
 function renderList() {
-  if (!filtered.length) {
-    renderSearchEmptyState();
-    return;
-  }
-
-  els.opportunityList.innerHTML = filtered.map((opp) => {
-    const status = deadlineStatus(opp.deadline);
-    const dateText = opp.deadline ? new Date(opp.deadline + "T00:00:00").toLocaleDateString("es-CL") : "sin fecha";
-    return `
-      <article class="opportunity-card" data-id="${opp.id}" tabindex="0">
+  const externalCards = buildExternalSearchCards();
+  els.resultCount.textContent = filtered.length + externalCards.length;
+  const curatedHtml = filtered.length
+    ? filtered.map(renderOpportunityCard).join("")
+    : `<article class="search-empty-card">
         <div class="card-top">
-          <span class="country-badge">${escapeHtml(opp.country)} - ${escapeHtml(opp.region || "sin region")}</span>
-          <span class="link-status ${escapeHtml(opp.linkStatus)}">${statusLabel(opp.linkStatus)}</span>
+          <span class="category-badge">motor conectado</span>
+          <span class="link-status requires_review">en investigacion</span>
         </div>
-        <h3>${escapeHtml(opp.title)}</h3>
-        <p>${escapeHtml(opp.summary || "Fuente publica curada para oportunidades musicales.")}</p>
-        <div class="card-meta">
-          <span><i class="fa-solid fa-location-dot"></i> ${escapeHtml(opp.city || opp.country)}</span>
-          <span><i class="fa-solid fa-calendar"></i> ${escapeHtml(dateText)}</span>
-          <span><i class="fa-solid fa-circle-info"></i> ${escapeHtml(status)}</span>
-        </div>
-        <div class="card-actions">
-          <span class="category-badge">${escapeHtml(displayLabel(opp.category))}</span>
-          ${(opp.genres || []).slice(0, 3).map((g) => `<span class="chip">${escapeHtml(g)}</span>`).join("")}
-        </div>
-        <a class="official-link" href="${escapeHtml(opp.url)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">
-          Abrir link oficial <i class="fa-solid fa-up-right-from-square"></i>
-        </a>
-      </article>
-    `;
-  }).join("");
+        <h3>No hay oportunidades curadas todavia para ${escapeHtml(selectedScopeLabel())}</h3>
+        <p>El mapa ya apunta al territorio seleccionado. Abajo tienes busquedas publicas revisables para encontrar posts, reels, hashtags, productoras, fondos y centros culturales.</p>
+      </article>`;
+  const externalHtml = `
+    <div class="external-results-heading">
+      <span>Busqueda publica revisable</span>
+      <strong>${externalCards.length} enlaces</strong>
+    </div>
+    ${externalCards.map(renderExternalCard).join("")}
+  `;
+  els.opportunityList.innerHTML = curatedHtml + externalHtml;
 }
 
 function initMap() {
