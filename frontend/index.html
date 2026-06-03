@@ -10,7 +10,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-  <link rel="stylesheet" href="./assets/styles.css?v=20260603-5" />
+  <link rel="stylesheet" href="./assets/styles.css?v=20260603-6" />
 </head>
 <body>
   <div class="page-shell">
@@ -61,7 +61,7 @@
             </div>
             <div>
               <strong id="heroCountries">0</strong>
-              <span>paises</span>
+              <span>paises objetivo</span>
             </div>
           </div>
           <p>
@@ -146,6 +146,15 @@
           </label>
 
           <div class="quick-filters" id="quickFilters"></div>
+
+          <div class="discovery-box" aria-label="Misiones de busqueda IA">
+            <div class="discovery-box-header">
+              <span>Paises objetivo</span>
+              <strong id="targetCountryCount">0</strong>
+            </div>
+            <p id="targetRegionLabel">Selecciona continente o pais para ver misiones.</p>
+            <div class="mission-list" id="missionList"></div>
+          </div>
         </aside>
 
         <section class="map-panel" aria-label="Mapa de oportunidades">
@@ -210,7 +219,7 @@
   </dialog>
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-  <script src="./assets/config.js?v=20260603-5"></script>
-  <script src="./assets/app.js?v=20260603-5"></script>
+  <script src="./assets/config.js?v=20260603-6"></script>
+  <script src="./assets/app.js?v=20260603-6"></script>
 </body>
 </html>

@@ -1,5 +1,23 @@
 const API_BASE_URL = (window.MUSIC_HUNTER_CONFIG?.API_BASE_URL || "").replace(/\/$/, "");
 
+const TARGET_COUNTRIES = [
+  ...["Argentina", "Bolivia", "Brasil", "Chile", "Colombia", "Costa Rica", "Cuba", "Ecuador", "El Salvador", "Guatemala", "Honduras", "Mexico", "Nicaragua", "Panama", "Paraguay", "Peru", "Republica Dominicana", "Uruguay", "Venezuela"].map((country) => ({ continent: "Latinoamerica", country })),
+  ...["Albania", "Alemania", "Andorra", "Armenia", "Austria", "Belgica", "Bielorrusia", "Bosnia y Herzegovina", "Bulgaria", "Chipre", "Croacia", "Dinamarca", "Eslovaquia", "Eslovenia", "Espana", "Estonia", "Finlandia", "Francia", "Georgia", "Grecia", "Hungria", "Irlanda", "Islandia", "Italia", "Kosovo", "Letonia", "Liechtenstein", "Lituania", "Luxemburgo", "Macedonia del Norte", "Malta", "Moldavia", "Monaco", "Montenegro", "Noruega", "Paises Bajos", "Polonia", "Portugal", "Reino Unido", "Republica Checa", "Rumania", "San Marino", "Serbia", "Suecia", "Suiza", "Turquia", "Ucrania", "Vaticano"].map((country) => ({ continent: "Europa", country }))
+];
+
+const SEARCH_MISSION_TEMPLATES = [
+  'site:instagram.com "{country}" festival bandas rock convocatoria',
+  'site:instagram.com "{country}" buscan teloneros rock concierto',
+  'site:instagram.com "{country}" showcase bandas convocatoria musica',
+  'site:tiktok.com "{country}" festival rock bandas convocatoria',
+  '"{country}" fondos musica bandas rock convocatoria',
+  '"{country}" municipio centro cultural musica bandas pago',
+  '"{country}" productora booking bandas rock fusion',
+  '"{country}" revista musica rock programa radio bandas',
+  '"{country}" sello independiente rock experimental booking',
+  '"{country}" intercambio musical bandas latinoamerica europa'
+];
+
 const fallbackPayload = {
   opportunities: [
     {
@@ -364,6 +382,9 @@ const els = {
   resultCount: document.getElementById("resultCount"),
   sourcesList: document.getElementById("sourcesList"),
   clearFilters: document.getElementById("clearFilters"),
+  targetCountryCount: document.getElementById("targetCountryCount"),
+  targetRegionLabel: document.getElementById("targetRegionLabel"),
+  missionList: document.getElementById("missionList"),
   detailDialog: document.getElementById("detailDialog"),
   detailContent: document.getElementById("detailContent"),
   closeDialog: document.getElementById("closeDialog"),
@@ -377,10 +398,25 @@ function unique(values) {
   return [...new Set(values.filter(Boolean))].sort((a, b) => a.localeCompare(b, "es"));
 }
 
+function targetCountries() {
+  const seen = new Set();
+  return [
+    ...TARGET_COUNTRIES,
+    ...opportunities.map((item) => ({ continent: itemContinent(item), country: item.country }))
+  ].filter((item) => {
+    const key = `${item.continent}:${item.country}`;
+    if (!item.country || seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+}
+
 function continentForCountry(country) {
   const latinAmerica = new Set(["Argentina", "Bolivia", "Brasil", "Chile", "Colombia", "Ecuador", "Mexico", "Paraguay", "Peru", "Uruguay", "Venezuela"]);
+  const europe = new Set(TARGET_COUNTRIES.filter((item) => item.continent === "Europa").map((item) => item.country));
   if (!country || country === "Global") return "Global";
   if (latinAmerica.has(country)) return "Latinoamerica";
+  if (europe.has(country)) return "Europa";
   return "Internacional";
 }
 
@@ -426,10 +462,18 @@ function displayLabel(value) {
   return String(value || "").replaceAll("_", " ");
 }
 
+function buildSearchMissions(country) {
+  return SEARCH_MISSION_TEMPLATES.map((template) => template.replaceAll("{country}", country));
+}
+
 function fillSelect(select, values, label) {
   select.innerHTML = `<option value="all">${label}</option>` + values.map((value) => (
     `<option value="${escapeHtml(value)}">${escapeHtml(displayLabel(value))}</option>`
   )).join("");
+}
+
+function keepSelectValue(select, value) {
+  select.value = [...select.options].some((option) => option.value === value) ? value : "all";
 }
 
 function escapeHtml(value) {
@@ -476,13 +520,28 @@ async function loadData() {
 }
 
 function setupFilters() {
-  fillSelect(els.continentFilter, unique(opportunities.map(itemContinent)), "Todos");
-  fillSelect(els.countryFilter, unique(opportunities.map((o) => o.country)), "Todos");
+  const targets = targetCountries();
+  const activeContinents = unique(targets.map((item) => item.continent));
+  const activeCountries = unique(targets
+    .filter((item) => filters.continent === "all" || item.continent === filters.continent)
+    .map((item) => item.country));
+  fillSelect(els.continentFilter, activeContinents, "Todos");
+  fillSelect(els.countryFilter, activeCountries, "Todos");
   fillSelect(els.regionFilter, unique(opportunities.map((o) => o.region)), "Todas");
   fillSelect(els.categoryFilter, unique(opportunities.map((o) => o.category)), "Todas");
   fillSelect(els.genreFilter, unique(opportunities.flatMap((o) => o.genres || [])), "Todos");
+  keepSelectValue(els.continentFilter, filters.continent);
+  keepSelectValue(els.countryFilter, filters.country);
+  keepSelectValue(els.regionFilter, filters.region);
+  keepSelectValue(els.categoryFilter, filters.category);
+  keepSelectValue(els.genreFilter, filters.genre);
+  filters.continent = els.continentFilter.value;
+  filters.country = els.countryFilter.value;
+  filters.region = els.regionFilter.value;
+  filters.category = els.categoryFilter.value;
+  filters.genre = els.genreFilter.value;
 
-  const quick = ["Chile", "instagram", "tiktok", "sello", "booking", "productora", "municipio", "centro cultural", "rock", "festival"];
+  const quick = ["Chile", "Europa", "instagram", "tiktok", "teloneros", "fondos", "concurso", "showcase", "gira", "sello", "booking", "productora", "municipio", "centro cultural", "rock", "festival"];
   els.quickFilters.innerHTML = quick.map((item) => (
     `<button class="chip" data-quick="${escapeHtml(item)}" type="button">${escapeHtml(item)}</button>`
   )).join("");
@@ -537,7 +596,7 @@ function renderStats() {
   document.getElementById("statRegions").textContent = regions;
   document.getElementById("heroOpportunities").textContent = opportunities.length;
   document.getElementById("heroSources").textContent = sources.length;
-  document.getElementById("heroCountries").textContent = unique(opportunities.map((o) => o.country)).length;
+  document.getElementById("heroCountries").textContent = targetCountries().length;
   els.resultCount.textContent = filtered.length;
 }
 
@@ -655,6 +714,20 @@ function renderSources() {
   `).join("");
 }
 
+function renderDiscoveryMissions() {
+  const targets = targetCountries().filter((item) => (
+    (filters.continent === "all" || item.continent === filters.continent)
+    && (filters.country === "all" || item.country === filters.country)
+  ));
+  const focusCountry = filters.country !== "all" ? filters.country : (targets[0]?.country || "Chile");
+  const scope = filters.country !== "all" ? focusCountry : (filters.continent !== "all" ? filters.continent : "Latinoamerica + Europa");
+  els.targetCountryCount.textContent = targets.length;
+  els.targetRegionLabel.textContent = `Cobertura preparada para ${scope}. El agente cruza Google, Instagram, TikTok, medios, municipios, sellos y productoras.`;
+  els.missionList.innerHTML = buildSearchMissions(focusCountry).slice(0, 6).map((query) => `
+    <span class="mission-chip">${escapeHtml(query)}</span>
+  `).join("");
+}
+
 function openDetail(id) {
   const opp = opportunities.find((item) => String(item.id) === String(id));
   if (!opp) return;
@@ -697,6 +770,7 @@ function renderAll() {
   renderMap();
   renderCalendar();
   renderSources();
+  renderDiscoveryMissions();
 }
 
 function reRenderAfterFilter() {
@@ -705,6 +779,7 @@ function reRenderAfterFilter() {
   renderList();
   renderMap();
   renderCalendar();
+  renderDiscoveryMissions();
 }
 
 function bindEvents() {
@@ -724,6 +799,10 @@ function bindEvents() {
   ].forEach(([key, select]) => {
     select.addEventListener("change", (event) => {
       filters[key] = event.target.value;
+      if (key === "continent") {
+        filters.country = "all";
+        setupFilters();
+      }
       reRenderAfterFilter();
     });
   });

@@ -9,6 +9,7 @@ from bs4 import BeautifulSoup
 from sqlalchemy import select
 
 from .database import SessionLocal, init_db
+from .discovery import discover_sources_from_search
 from .link_checker import check_url, refresh_link_statuses
 from .models import Opportunity, PublicProfile, Source
 from .open_model import summarize_with_open_model
@@ -21,13 +22,25 @@ OPPORTUNITY_TERMS = [
     "postula",
     "postulacion",
     "bases",
+    "fondos",
+    "concurso",
+    "concursos",
     "inscripcion",
     "acreditacion",
     "festival",
     "showcase",
+    "showcases",
     "booking",
     "programacion",
     "cartelera",
+    "concierto",
+    "conciertos",
+    "telonero",
+    "teloneros",
+    "gira",
+    "giras",
+    "intercambio",
+    "intercambios",
     "sala",
     "centro cultural",
     "municipio",
@@ -101,6 +114,12 @@ def infer_category(text: str, source_type: str) -> str:
     lower = normalize_text(text)
     if "fondo" in lower or "financ" in lower or "subvencion" in lower:
         return "fondo"
+    if "concurso" in lower or "certamen" in lower:
+        return "concurso"
+    if "telonero" in lower or "teloneros" in lower:
+        return "telonero"
+    if "gira" in lower or "intercambio" in lower:
+        return "circulacion"
     if "municipio" in lower or "municipalidad" in lower:
         return "municipalidad"
     if "ong" in lower or "fundacion" in lower:
@@ -241,10 +260,12 @@ async def run_curator() -> dict:
     init_db()
     settings = get_settings()
     created = 0
+    discovered_sources = 0
     reviewed = 0
     errors = []
 
     with SessionLocal() as db:
+        discovered_sources = await discover_sources_from_search(db)
         await refresh_link_statuses(db, limit=settings.curator_max_pages)
         sources = db.scalars(select(Source).order_by(Source.priority.desc()).limit(settings.curator_max_pages)).all()
         for source in sources:
@@ -266,7 +287,7 @@ async def run_curator() -> dict:
                 errors.append({"source": source.name, "error": str(exc)})
                 db.rollback()
 
-    return {"created": created, "reviewed": reviewed, "errors": errors}
+    return {"created": created, "discovered_sources": discovered_sources, "reviewed": reviewed, "errors": errors}
 
 
 def main() -> None:

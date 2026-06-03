@@ -1,6 +1,6 @@
 # Music Hunter Global
 
-Buscador publico y curado de oportunidades musicales para rock, rock fusion, progresivo, folk, experimental e indie afin. Prioriza Chile por regiones y luego oportunidades latinoamericanas.
+Buscador publico y curado de oportunidades musicales para rock, rock fusion, progresivo, folk, experimental e indie afin. Prioriza Chile por regiones y luego expande a Latinoamerica y Europa.
 
 ## Arquitectura
 
@@ -46,11 +46,26 @@ python -m app.curator_agent
 El agente:
 
 - Recorre fuentes publicas curadas.
-- Detecta posibles convocatorias, festivales, booking, prensa, radios y perfiles publicos.
+- Detecta posibles convocatorias, festivales, fondos, concursos, conciertos, teloneros, giras, intercambios, showcases, booking, prensa, radios, sellos, productoras, municipios, ONG, centros culturales y perfiles publicos.
+- Genera misiones de busqueda por pais para Google Programmable Search, incluyendo consultas sobre Instagram, TikTok, revistas de musica, booking, productoras, sellos y espacios pagados.
 - Verifica links antes de publicar.
 - Deduplica por URL.
 - Clasifica por categoria, pais, region y generos.
 - Usa un modelo open source externo si configuras `OPEN_MODEL_BASE_URL` y `OPEN_MODEL_API_KEY`.
+
+### Busqueda externa opcional
+
+Para que el agente encuentre publicaciones publicas tipo Google, configura:
+
+```env
+GOOGLE_SEARCH_API_KEY=...
+GOOGLE_SEARCH_ENGINE_ID=...
+DISCOVERY_COUNTRY_LIMIT=67
+DISCOVERY_QUERIES_PER_COUNTRY=4
+DISCOVERY_RESULTS_PER_QUERY=5
+```
+
+No se raspa Google directamente. Se usa una API de busqueda configurable para encontrar fuentes publicas y luego el checker valida cada link antes de publicarlo.
 
 ## Endpoints
 

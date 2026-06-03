@@ -12,6 +12,11 @@ class Settings(BaseSettings):
     open_model_base_url: str | None = None
     open_model_api_key: str | None = None
     open_model_name: str = "mistralai/Mistral-7B-Instruct-v0.3"
+    google_search_api_key: str | None = None
+    google_search_engine_id: str | None = None
+    discovery_country_limit: int = 67
+    discovery_queries_per_country: int = 4
+    discovery_results_per_query: int = 5
     curator_max_pages: int = 40
     request_timeout_seconds: float = 12.0
 

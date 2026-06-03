@@ -8,6 +8,7 @@ from sqlalchemy.orm import Session
 
 from .curator_agent import run_curator
 from .database import SessionLocal, get_db, init_db
+from .discovery import TARGET_COUNTRIES
 from .link_checker import refresh_link_statuses
 from .models import Opportunity, Source
 from .schemas import HealthOut, OpportunityOut, PaginatedOpportunities, PaginatedSources, SourceOut, split_csv
@@ -19,23 +20,11 @@ settings = get_settings()
 
 
 def continent_for_country(country: str | None) -> str:
-    latin_america = {
-        "Argentina",
-        "Bolivia",
-        "Brasil",
-        "Chile",
-        "Colombia",
-        "Ecuador",
-        "Mexico",
-        "Paraguay",
-        "Peru",
-        "Uruguay",
-        "Venezuela",
-    }
     if not country or country == "Global":
         return "Global"
-    if country in latin_america:
-        return "Latinoamerica"
+    for continent, target_country in TARGET_COUNTRIES:
+        if country == target_country:
+            return continent
     return "Internacional"
 
 
