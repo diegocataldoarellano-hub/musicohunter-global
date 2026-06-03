@@ -18,6 +18,27 @@ from .settings import get_settings
 settings = get_settings()
 
 
+def continent_for_country(country: str | None) -> str:
+    latin_america = {
+        "Argentina",
+        "Bolivia",
+        "Brasil",
+        "Chile",
+        "Colombia",
+        "Ecuador",
+        "Mexico",
+        "Paraguay",
+        "Peru",
+        "Uruguay",
+        "Venezuela",
+    }
+    if not country or country == "Global":
+        return "Global"
+    if country in latin_america:
+        return "Latinoamerica"
+    return "Internacional"
+
+
 @asynccontextmanager
 async def lifespan(_app: FastAPI):
     init_db()
@@ -50,6 +71,7 @@ def opportunity_to_out(item: Opportunity) -> OpportunityOut:
         id=item.id,
         title=item.title,
         category=item.category,
+        continent=continent_for_country(item.country),
         country=item.country,
         region=item.region,
         city=item.city,
@@ -70,6 +92,21 @@ def opportunity_to_out(item: Opportunity) -> OpportunityOut:
     )
 
 
+def source_to_out(item: Source) -> SourceOut:
+    return SourceOut(
+        id=item.id,
+        name=item.name,
+        url=item.url,
+        continent=continent_for_country(item.country),
+        country=item.country,
+        region=item.region,
+        type=item.type,
+        priority=item.priority,
+        linkStatus=item.link_status,
+        lastChecked=item.last_checked,
+    )
+
+
 @app.get("/api/health", response_model=HealthOut)
 def health(db: Session = Depends(get_db)) -> HealthOut:
     return HealthOut(
@@ -85,6 +122,7 @@ def health(db: Session = Depends(get_db)) -> HealthOut:
 def list_opportunities(
     db: Session = Depends(get_db),
     q: str | None = Query(default=None, max_length=200),
+    continent: str | None = None,
     country: str | None = None,
     region: str | None = None,
     category: str | None = None,
@@ -110,6 +148,9 @@ def list_opportunities(
                 Opportunity.source_name.ilike(needle),
             )
         )
+    if continent:
+        countries = [country for country in {row[0] for row in db.query(Opportunity.country).distinct()} if continent_for_country(country) == continent]
+        query = query.filter(Opportunity.country.in_(countries or ["__none__"]))
     if country:
         query = query.filter(Opportunity.country == country)
     if region:
@@ -143,6 +184,7 @@ def get_opportunity(opportunity_id: int, db: Session = Depends(get_db)) -> Oppor
 def list_sources(
     db: Session = Depends(get_db),
     q: str | None = Query(default=None, max_length=200),
+    continent: str | None = None,
     country: str | None = None,
     source_type: str | None = None,
     limit: int = Query(default=120, le=500),
@@ -152,13 +194,16 @@ def list_sources(
     if q:
         needle = f"%{q}%"
         query = query.filter(or_(Source.name.ilike(needle), Source.query_hint.ilike(needle), Source.url.ilike(needle)))
+    if continent:
+        countries = [country for country in {row[0] for row in db.query(Source.country).distinct()} if continent_for_country(country) == continent]
+        query = query.filter(Source.country.in_(countries or ["__none__"]))
     if country:
         query = query.filter(Source.country == country)
     if source_type:
         query = query.filter(Source.type == source_type)
     count = query.count()
     rows = query.order_by(Source.priority.desc(), Source.name.asc()).offset(offset).limit(limit).all()
-    return PaginatedSources(items=[SourceOut.model_validate(row) for row in rows], count=count)
+    return PaginatedSources(items=[source_to_out(row) for row in rows], count=count)
 
 
 @app.get("/api/search", response_model=PaginatedOpportunities)

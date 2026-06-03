@@ -4,29 +4,9 @@ const fallbackPayload = {
   opportunities: [
     {
       id: 1,
-      title: "Feria Pulsar / industria musical chilena",
-      category: "showcase",
-      country: "Chile",
-      region: "Los Rios",
-      city: "Valdivia",
-      lat: -39.8142,
-      lng: -73.2459,
-      deadline: null,
-      eventDate: null,
-      genres: ["rock", "folk", "fusion", "experimental"],
-      requirements: ["Revisar convocatorias y programacion vigente en la fuente oficial.", "Preparar EPK, enlaces en vivo y datos de contacto."],
-      url: "https://www.feriapulsar.cl/",
-      sourceName: "Feria Pulsar",
-      sourceType: "festival",
-      lastChecked: null,
-      linkStatus: "requires_review",
-      confidence: 0.78,
-      summary: "Fuente chilena relevante para showcases, industria musical y oportunidades de circulacion."
-    },
-    {
-      id: 2,
-      title: "Fondos de Cultura - musica y circulacion",
+      title: "Fondos de Cultura - musica, circulacion e internacionalizacion",
       category: "fondo",
+      continent: "Latinoamerica",
       country: "Chile",
       region: "Metropolitana",
       city: "Santiago",
@@ -34,20 +14,263 @@ const fallbackPayload = {
       lng: -70.6693,
       deadline: null,
       eventDate: null,
-      genres: ["rock", "folk", "fusion", "experimental", "progresivo"],
-      requirements: ["Revisar bases vigentes.", "Validar lineas de financiamiento para musica, circulacion o internacionalizacion."],
+      genres: ["rock", "folk", "fusion", "experimental", "progresivo", "indie"],
+      requirements: ["Revisar bases vigentes.", "Preparar dossier, presupuesto, EPK, material en vivo y antecedentes."],
       url: "https://www.fondosdecultura.cl/",
-      sourceName: "Ministerio de las Culturas",
+      sourceName: "Fondos de Cultura",
       sourceType: "institucion",
       lastChecked: null,
       linkStatus: "requires_review",
+      confidence: 0.86,
+      summary: "Portal oficial chileno para financiamiento, circulacion, grabacion e internacionalizacion musical."
+    },
+    {
+      id: 2,
+      title: "Feria Pulsar - showcases e industria musical chilena",
+      category: "showcase",
+      continent: "Latinoamerica",
+      country: "Chile",
+      region: "Los Rios",
+      city: "Valdivia",
+      lat: -39.8142,
+      lng: -73.2459,
+      deadline: null,
+      eventDate: null,
+      genres: ["rock", "folk", "fusion", "experimental", "indie"],
+      requirements: ["Monitorear convocatoria vigente.", "Tener EPK, redes publicas, press kit y contacto de booking."],
+      url: "https://www.feriapulsar.cl/",
+      sourceName: "Feria Pulsar",
+      sourceType: "showcase",
+      lastChecked: null,
+      linkStatus: "requires_review",
       confidence: 0.82,
-      summary: "Portal oficial para convocatorias publicas de financiamiento cultural en Chile."
+      summary: "Fuente relevante para vitrinas, ruedas de industria y circulacion nacional."
     },
     {
       id: 3,
+      title: "Fluvial - mercado y encuentro musical en Valdivia",
+      category: "mercado",
+      continent: "Latinoamerica",
+      country: "Chile",
+      region: "Los Rios",
+      city: "Valdivia",
+      lat: -39.8142,
+      lng: -73.2459,
+      deadline: null,
+      eventDate: null,
+      genres: ["rock", "folk", "fusion", "experimental", "world"],
+      requirements: ["Revisar llamados anuales.", "Preparar bio, links de audio/video, material promocional y objetivos de mercado."],
+      url: "https://fluvial.cl/",
+      sourceName: "Fluvial",
+      sourceType: "mercado",
+      lastChecked: null,
+      linkStatus: "requires_review",
+      confidence: 0.8,
+      summary: "Mercado chileno clave para artistas, sellos, programadores, festivales y exportacion musical."
+    },
+    {
+      id: 4,
+      title: "IMESUR - industria musical independiente",
+      category: "conferencia",
+      continent: "Latinoamerica",
+      country: "Chile",
+      region: "Metropolitana",
+      city: "Santiago",
+      lat: -33.4489,
+      lng: -70.6693,
+      deadline: null,
+      eventDate: null,
+      genres: ["rock", "folk", "fusion", "experimental", "indie"],
+      requirements: ["Monitorear inscripciones, ruedas y showcases.", "Preparar perfil publico y objetivos de circulacion."],
+      url: "https://imesur.cl/",
+      sourceName: "IMESUR",
+      sourceType: "mercado",
+      lastChecked: null,
+      linkStatus: "requires_review",
+      confidence: 0.76,
+      summary: "Espacio de industria musical con foco independiente y redes latinoamericanas."
+    },
+    {
+      id: 5,
+      title: "Escuelas de Rock - programas publicos y redes regionales",
+      category: "programa_publico",
+      continent: "Latinoamerica",
+      country: "Chile",
+      region: "Nacional",
+      city: "Chile",
+      lat: -33.4489,
+      lng: -70.6693,
+      deadline: null,
+      eventDate: null,
+      genres: ["rock", "folk", "fusion", "experimental", "progresivo"],
+      requirements: ["Revisar convocatorias regionales.", "Mantener perfil publico, registro en vivo y datos de contacto actualizados."],
+      url: "https://www.cultura.gob.cl/escuelasderock/",
+      sourceName: "Escuelas de Rock",
+      sourceType: "institucion",
+      lastChecked: null,
+      linkStatus: "requires_review",
+      confidence: 0.75,
+      summary: "Programa publico chileno para escenas musicales, formacion, redes y posibles espacios de circulacion."
+    },
+    {
+      id: 6,
+      title: "Balmaceda Arte Joven - espacios y convocatorias artisticas",
+      category: "centro_cultural",
+      continent: "Latinoamerica",
+      country: "Chile",
+      region: "Nacional",
+      city: "Chile",
+      lat: -33.4489,
+      lng: -70.6693,
+      deadline: null,
+      eventDate: null,
+      genres: ["rock", "folk", "fusion", "experimental", "indie"],
+      requirements: ["Monitorear sedes y convocatorias.", "Preparar propuesta de concierto, taller o residencia."],
+      url: "https://www.balmacedartejoven.cl/",
+      sourceName: "Balmaceda Arte Joven",
+      sourceType: "centro_cultural",
+      lastChecked: null,
+      linkStatus: "requires_review",
+      confidence: 0.7,
+      summary: "Red cultural chilena con sedes, actividades y posibles convocatorias para artistas jovenes."
+    },
+    {
+      id: 7,
+      title: "GAM - programacion y espacios culturales",
+      category: "centro_cultural",
+      continent: "Latinoamerica",
+      country: "Chile",
+      region: "Metropolitana",
+      city: "Santiago",
+      lat: -33.44,
+      lng: -70.639,
+      deadline: null,
+      eventDate: null,
+      genres: ["rock", "folk", "fusion", "experimental"],
+      requirements: ["Revisar lineas curatoriales y programacion.", "Preparar propuesta tecnica, EPK y dossier artistico."],
+      url: "https://gam.cl/",
+      sourceName: "GAM",
+      sourceType: "centro_cultural",
+      lastChecked: null,
+      linkStatus: "requires_review",
+      confidence: 0.68,
+      summary: "Centro cultural chileno con programacion publica y oportunidades de vinculacion artistica."
+    },
+    {
+      id: 8,
+      title: "Matucana 100 - musica, salas y programacion",
+      category: "centro_cultural",
+      continent: "Latinoamerica",
+      country: "Chile",
+      region: "Metropolitana",
+      city: "Santiago",
+      lat: -33.444,
+      lng: -70.682,
+      deadline: null,
+      eventDate: null,
+      genres: ["rock", "folk", "fusion", "experimental", "indie"],
+      requirements: ["Monitorear programacion y llamados.", "Enviar propuesta clara con ficha tecnica, enlaces y antecedentes."],
+      url: "https://www.m100.cl/",
+      sourceName: "Matucana 100",
+      sourceType: "centro_cultural",
+      lastChecked: null,
+      linkStatus: "requires_review",
+      confidence: 0.68,
+      summary: "Espacio cultural chileno para programacion y potencial circulacion escenica."
+    },
+    {
+      id: 9,
+      title: "Rockaxis - revista y medio musical",
+      category: "prensa",
+      continent: "Latinoamerica",
+      country: "Chile",
+      region: "Metropolitana",
+      city: "Santiago",
+      lat: -33.4489,
+      lng: -70.6693,
+      deadline: null,
+      eventDate: null,
+      genres: ["rock", "metal", "progresivo", "experimental", "alternativo"],
+      requirements: ["Preparar press kit, single, video o noticia verificable.", "Contactar solo por canales publicos del medio."],
+      url: "https://www.rockaxis.com/",
+      sourceName: "Rockaxis",
+      sourceType: "prensa",
+      lastChecked: null,
+      linkStatus: "requires_review",
+      confidence: 0.7,
+      summary: "Medio musical relevante para prensa, agenda, difusion y perfiles publicos de rock."
+    },
+    {
+      id: 10,
+      title: "Radio Futuro - agenda y difusion rock",
+      category: "radio",
+      continent: "Latinoamerica",
+      country: "Chile",
+      region: "Metropolitana",
+      city: "Santiago",
+      lat: -33.4489,
+      lng: -70.6693,
+      deadline: null,
+      eventDate: null,
+      genres: ["rock", "progresivo", "clasico", "alternativo"],
+      requirements: ["Mantener lanzamiento verificable y contacto publico.", "Revisar programas, agenda y canales oficiales."],
+      url: "https://www.futuro.cl/",
+      sourceName: "Radio Futuro",
+      sourceType: "radio",
+      lastChecked: null,
+      linkStatus: "requires_review",
+      confidence: 0.66,
+      summary: "Radio chilena especializada en rock, util para agenda, prensa y seguimiento de escena."
+    },
+    {
+      id: 11,
+      title: "Quemasucabeza - sello independiente chileno",
+      category: "sello",
+      continent: "Latinoamerica",
+      country: "Chile",
+      region: "Metropolitana",
+      city: "Santiago",
+      lat: -33.4489,
+      lng: -70.6693,
+      deadline: null,
+      eventDate: null,
+      genres: ["rock", "indie", "experimental", "folk", "fusion"],
+      requirements: ["Revisar catalogo y contacto publico.", "Enviar solo material alineado con linea editorial del sello."],
+      url: "https://www.quemasucabeza.com/",
+      sourceName: "Quemasucabeza",
+      sourceType: "sello",
+      lastChecked: null,
+      linkStatus: "requires_review",
+      confidence: 0.64,
+      summary: "Sello chileno independiente para investigacion de perfiles, catalogo y redes de difusion."
+    },
+    {
+      id: 12,
+      title: "Lotus Producciones - productora y cartelera",
+      category: "productora",
+      continent: "Latinoamerica",
+      country: "Chile",
+      region: "Metropolitana",
+      city: "Santiago",
+      lat: -33.4489,
+      lng: -70.6693,
+      deadline: null,
+      eventDate: null,
+      genres: ["rock", "fusion", "experimental", "alternativo"],
+      requirements: ["Investigar cartelera y contactos publicos.", "Preparar dossier profesional antes de contacto de booking."],
+      url: "https://www.lotuspro.cl/",
+      sourceName: "Lotus Producciones",
+      sourceType: "productora",
+      lastChecked: null,
+      linkStatus: "requires_review",
+      confidence: 0.62,
+      summary: "Productora chilena relevante para investigacion de circuitos, conciertos y posibles contactos profesionales."
+    },
+    {
+      id: 13,
       title: "BAFIM - mercado musical",
       category: "mercado",
+      continent: "Latinoamerica",
       country: "Argentina",
       region: "Buenos Aires",
       city: "Buenos Aires",
@@ -64,12 +287,47 @@ const fallbackPayload = {
       linkStatus: "requires_review",
       confidence: 0.74,
       summary: "Mercado musical argentino para circulacion regional, networking y programadores."
+    },
+    {
+      id: 14,
+      title: "Rock al Parque - festival publico de rock",
+      category: "festival",
+      continent: "Latinoamerica",
+      country: "Colombia",
+      region: "Bogota",
+      city: "Bogota",
+      lat: 4.711,
+      lng: -74.0721,
+      deadline: null,
+      eventDate: null,
+      genres: ["rock", "metal", "progresivo", "experimental", "alternativo"],
+      requirements: ["Monitorear convocatorias oficiales.", "Preparar EPK, material en vivo e historial de presentaciones."],
+      url: "https://www.rockalparque.gov.co/",
+      sourceName: "Rock al Parque",
+      sourceType: "festival",
+      lastChecked: null,
+      linkStatus: "requires_review",
+      confidence: 0.74,
+      summary: "Festival publico latinoamericano de alto valor para bandas de rock y sonidos alternativos."
     }
   ],
   sources: [
-    { id: 1, name: "Feria Pulsar", country: "Chile", region: "Los Rios", type: "festival", url: "https://www.feriapulsar.cl/", linkStatus: "requires_review" },
-    { id: 2, name: "Fondos de Cultura", country: "Chile", region: "Metropolitana", type: "institucion", url: "https://www.fondosdecultura.cl/", linkStatus: "requires_review" },
-    { id: 3, name: "BAFIM", country: "Argentina", region: "Buenos Aires", type: "mercado", url: "https://bafim.buenosaires.gob.ar/", linkStatus: "requires_review" }
+    { id: 1, name: "Fondos de Cultura", continent: "Latinoamerica", country: "Chile", region: "Metropolitana", type: "institucion", url: "https://www.fondosdecultura.cl/", linkStatus: "requires_review" },
+    { id: 2, name: "Feria Pulsar", continent: "Latinoamerica", country: "Chile", region: "Los Rios", type: "showcase", url: "https://www.feriapulsar.cl/", linkStatus: "requires_review" },
+    { id: 3, name: "Fluvial", continent: "Latinoamerica", country: "Chile", region: "Los Rios", type: "mercado", url: "https://fluvial.cl/", linkStatus: "requires_review" },
+    { id: 4, name: "IMESUR", continent: "Latinoamerica", country: "Chile", region: "Metropolitana", type: "mercado", url: "https://imesur.cl/", linkStatus: "requires_review" },
+    { id: 5, name: "Escuelas de Rock", continent: "Latinoamerica", country: "Chile", region: "Nacional", type: "institucion", url: "https://www.cultura.gob.cl/escuelasderock/", linkStatus: "requires_review" },
+    { id: 6, name: "Balmaceda Arte Joven", continent: "Latinoamerica", country: "Chile", region: "Nacional", type: "centro_cultural", url: "https://www.balmacedartejoven.cl/", linkStatus: "requires_review" },
+    { id: 7, name: "GAM", continent: "Latinoamerica", country: "Chile", region: "Metropolitana", type: "centro_cultural", url: "https://gam.cl/", linkStatus: "requires_review" },
+    { id: 8, name: "Matucana 100", continent: "Latinoamerica", country: "Chile", region: "Metropolitana", type: "centro_cultural", url: "https://www.m100.cl/", linkStatus: "requires_review" },
+    { id: 9, name: "Rockaxis", continent: "Latinoamerica", country: "Chile", region: "Metropolitana", type: "prensa", url: "https://www.rockaxis.com/", linkStatus: "requires_review" },
+    { id: 10, name: "Radio Futuro", continent: "Latinoamerica", country: "Chile", region: "Metropolitana", type: "radio", url: "https://www.futuro.cl/", linkStatus: "requires_review" },
+    { id: 11, name: "Quemasucabeza", continent: "Latinoamerica", country: "Chile", region: "Metropolitana", type: "sello", url: "https://www.quemasucabeza.com/", linkStatus: "requires_review" },
+    { id: 12, name: "Lotus Producciones", continent: "Latinoamerica", country: "Chile", region: "Metropolitana", type: "productora", url: "https://www.lotuspro.cl/", linkStatus: "requires_review" },
+    { id: 13, name: "Instagram - hashtag rockchileno", continent: "Latinoamerica", country: "Chile", region: "Digital", type: "red_social", url: "https://www.instagram.com/explore/tags/rockchileno/", linkStatus: "requires_review" },
+    { id: 14, name: "TikTok - hashtag rockchileno", continent: "Latinoamerica", country: "Chile", region: "Digital", type: "red_social", url: "https://www.tiktok.com/tag/rockchileno", linkStatus: "requires_review" },
+    { id: 15, name: "BAFIM", continent: "Latinoamerica", country: "Argentina", region: "Buenos Aires", type: "mercado", url: "https://bafim.buenosaires.gob.ar/", linkStatus: "requires_review" },
+    { id: 16, name: "Rock al Parque", continent: "Latinoamerica", country: "Colombia", region: "Bogota", type: "festival", url: "https://www.rockalparque.gov.co/", linkStatus: "requires_review" }
   ]
 };
 
@@ -81,6 +339,7 @@ let markers = [];
 let activeMonth = new Date();
 const filters = {
   q: "",
+  continent: "all",
   country: "all",
   region: "all",
   category: "all",
@@ -94,6 +353,7 @@ const els = {
   backendStatus: document.getElementById("backendStatus"),
   refreshButton: document.getElementById("refreshButton"),
   searchInput: document.getElementById("searchInput"),
+  continentFilter: document.getElementById("continentFilter"),
   countryFilter: document.getElementById("countryFilter"),
   regionFilter: document.getElementById("regionFilter"),
   categoryFilter: document.getElementById("categoryFilter"),
@@ -115,6 +375,17 @@ const els = {
 
 function unique(values) {
   return [...new Set(values.filter(Boolean))].sort((a, b) => a.localeCompare(b, "es"));
+}
+
+function continentForCountry(country) {
+  const latinAmerica = new Set(["Argentina", "Bolivia", "Brasil", "Chile", "Colombia", "Ecuador", "Mexico", "Paraguay", "Peru", "Uruguay", "Venezuela"]);
+  if (!country || country === "Global") return "Global";
+  if (latinAmerica.has(country)) return "Latinoamerica";
+  return "Internacional";
+}
+
+function itemContinent(item) {
+  return item.continent || continentForCountry(item.country);
 }
 
 function asDate(value) {
@@ -151,9 +422,13 @@ function statusLabel(status) {
   return labels[status] || status || "sin revisar";
 }
 
+function displayLabel(value) {
+  return String(value || "").replaceAll("_", " ");
+}
+
 function fillSelect(select, values, label) {
   select.innerHTML = `<option value="all">${label}</option>` + values.map((value) => (
-    `<option value="${escapeHtml(value)}">${escapeHtml(value)}</option>`
+    `<option value="${escapeHtml(value)}">${escapeHtml(displayLabel(value))}</option>`
   )).join("");
 }
 
@@ -201,12 +476,13 @@ async function loadData() {
 }
 
 function setupFilters() {
+  fillSelect(els.continentFilter, unique(opportunities.map(itemContinent)), "Todos");
   fillSelect(els.countryFilter, unique(opportunities.map((o) => o.country)), "Todos");
   fillSelect(els.regionFilter, unique(opportunities.map((o) => o.region)), "Todas");
   fillSelect(els.categoryFilter, unique(opportunities.map((o) => o.category)), "Todas");
   fillSelect(els.genreFilter, unique(opportunities.flatMap((o) => o.genres || [])), "Todos");
 
-  const quick = ["Chile", "rock", "folk", "fusion", "experimental", "booking", "prensa", "festival"];
+  const quick = ["Chile", "instagram", "tiktok", "sello", "booking", "productora", "municipio", "centro cultural", "rock", "festival"];
   els.quickFilters.innerHTML = quick.map((item) => (
     `<button class="chip" data-quick="${escapeHtml(item)}" type="button">${escapeHtml(item)}</button>`
   )).join("");
@@ -221,12 +497,16 @@ function matchesOpportunity(opp) {
     opp.city,
     opp.category,
     opp.sourceName,
+    opp.sourceType,
+    itemContinent(opp),
+    ...(opp.requirements || []),
     ...(opp.genres || [])
   ].join(" ").toLowerCase();
   const query = filters.q.toLowerCase();
   const quick = filters.quick?.toLowerCase();
   if (query && !text.includes(query)) return false;
   if (quick && !text.includes(quick)) return false;
+  if (filters.continent !== "all" && itemContinent(opp) !== filters.continent) return false;
   if (filters.country !== "all" && opp.country !== filters.country) return false;
   if (filters.region !== "all" && opp.region !== filters.region) return false;
   if (filters.category !== "all" && opp.category !== filters.category) return false;
@@ -284,7 +564,7 @@ function renderList() {
           <span><i class="fa-solid fa-circle-info"></i> ${escapeHtml(status)}</span>
         </div>
         <div class="card-actions">
-          <span class="category-badge">${escapeHtml(opp.category)}</span>
+          <span class="category-badge">${escapeHtml(displayLabel(opp.category))}</span>
           ${(opp.genres || []).slice(0, 3).map((g) => `<span class="chip">${escapeHtml(g)}</span>`).join("")}
         </div>
         <a class="official-link" href="${escapeHtml(opp.url)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">
@@ -363,11 +643,11 @@ function renderSources() {
   els.sourcesList.innerHTML = visibleSources.map((source) => `
     <article class="source-card">
       <div class="card-top">
-        <span class="category-badge">${escapeHtml(source.type || "fuente")}</span>
+        <span class="category-badge">${escapeHtml(displayLabel(source.type || "fuente"))}</span>
         <span class="link-status ${escapeHtml(source.linkStatus)}">${statusLabel(source.linkStatus)}</span>
       </div>
       <h3>${escapeHtml(source.name)}</h3>
-      <p>${escapeHtml(source.country || "")}${source.region ? ` - ${escapeHtml(source.region)}` : ""}</p>
+      <p>${escapeHtml(itemContinent(source))} - ${escapeHtml(source.country || "")}${source.region ? ` - ${escapeHtml(source.region)}` : ""}</p>
       <a class="official-link" href="${escapeHtml(source.url)}" target="_blank" rel="noopener">
         Abrir fuente <i class="fa-solid fa-up-right-from-square"></i>
       </a>
@@ -380,7 +660,7 @@ function openDetail(id) {
   if (!opp) return;
   els.detailContent.innerHTML = `
     <article class="detail-content">
-      <p class="eyebrow">${escapeHtml(opp.category)} - ${escapeHtml(opp.country)}</p>
+      <p class="eyebrow">${escapeHtml(displayLabel(opp.category))} - ${escapeHtml(itemContinent(opp))} - ${escapeHtml(opp.country)}</p>
       <h2>${escapeHtml(opp.title)}</h2>
       <div class="card-meta">
         <span><i class="fa-solid fa-location-dot"></i> ${escapeHtml(opp.city || "")}, ${escapeHtml(opp.region || "")}</span>
@@ -435,6 +715,7 @@ function bindEvents() {
     reRenderAfterFilter();
   });
   [
+    ["continent", els.continentFilter],
     ["country", els.countryFilter],
     ["region", els.regionFilter],
     ["category", els.categoryFilter],
@@ -457,6 +738,7 @@ function bindEvents() {
   });
   els.clearFilters.addEventListener("click", () => {
     filters.q = "";
+    filters.continent = "all";
     filters.country = "all";
     filters.region = "all";
     filters.category = "all";

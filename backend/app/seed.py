@@ -22,19 +22,47 @@ def load_json(name: str) -> list[dict]:
 
 
 def seed_database(db: Session) -> None:
-    if not db.scalar(select(Source.id).limit(1)):
-        for item in load_json("seed_sources.json"):
+    for item in load_json("seed_sources.json"):
+        existing = db.scalar(select(Source).where(Source.url == item["url"]))
+        if existing:
+            existing.name = item["name"]
+            existing.country = item["country"]
+            existing.region = item.get("region")
+            existing.type = item["type"]
+            existing.priority = item.get("priority", existing.priority)
+            existing.query_hint = item.get("query_hint")
+        else:
             db.add(Source(**item))
-        db.commit()
+    db.commit()
 
     source_by_name = {source.name: source for source in db.scalars(select(Source)).all()}
 
-    if not db.scalar(select(Opportunity.id).limit(1)):
-        for item in load_json("seed_opportunities.json"):
-            source = source_by_name.get(item["source_name"])
-            item["deadline"] = parse_date(item.get("deadline"))
-            item["event_date"] = parse_date(item.get("event_date"))
-            item["source_id"] = source.id if source else None
-            item["link_status"] = "requires_review"
+    for raw_item in load_json("seed_opportunities.json"):
+        item = raw_item.copy()
+        existing = db.scalar(select(Opportunity).where(Opportunity.url == item["url"]))
+        source = source_by_name.get(item["source_name"])
+        item["deadline"] = parse_date(item.get("deadline"))
+        item["event_date"] = parse_date(item.get("event_date"))
+        item["source_id"] = source.id if source else None
+        item["link_status"] = "requires_review"
+        if existing:
+            existing.title = item["title"]
+            existing.category = item["category"]
+            existing.country = item["country"]
+            existing.region = item.get("region")
+            existing.city = item.get("city")
+            existing.lat = item.get("lat")
+            existing.lng = item.get("lng")
+            existing.deadline = item.get("deadline")
+            existing.event_date = item.get("event_date")
+            existing.genres = item["genres"]
+            existing.requirements = item["requirements"]
+            existing.source_name = item["source_name"]
+            existing.source_type = item["source_type"]
+            existing.source_id = item.get("source_id")
+            existing.summary = item["summary"]
+            existing.confidence = item.get("confidence", existing.confidence)
+            existing.published = item.get("published", existing.published)
+        else:
             db.add(Opportunity(**item))
-        db.commit()
+    db.commit()

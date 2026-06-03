@@ -19,6 +19,11 @@ def test_health_and_public_opportunities_load():
         data = opportunities.json()
         assert data["count"] >= 1
         assert "url" in data["items"][0]
+        assert data["items"][0]["continent"] in {"Latinoamerica", "Global", "Internacional"}
+
+        latin = client.get("/api/opportunities?continent=Latinoamerica")
+        assert latin.status_code == 200
+        assert latin.json()["count"] >= 1
 
 
 def test_sources_load():
@@ -28,3 +33,4 @@ def test_sources_load():
         data = response.json()
         assert data["count"] >= 1
         assert data["items"][0]["url"].startswith("http")
+        assert "continent" in data["items"][0]

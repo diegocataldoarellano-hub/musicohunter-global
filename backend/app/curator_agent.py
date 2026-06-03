@@ -21,10 +21,28 @@ OPPORTUNITY_TERMS = [
     "postula",
     "postulacion",
     "bases",
+    "inscripcion",
+    "acreditacion",
     "festival",
     "showcase",
     "booking",
     "programacion",
+    "cartelera",
+    "sala",
+    "centro cultural",
+    "municipio",
+    "municipalidad",
+    "ong",
+    "residencia",
+    "pago",
+    "honorarios",
+    "cachet",
+    "contratacion",
+    "productora",
+    "sello",
+    "revista",
+    "instagram",
+    "tiktok",
     "bandas emergentes",
     "rueda de negocios",
     "mercado musical",
@@ -41,7 +59,25 @@ GENRE_TERMS = [
     "indie",
 ]
 
-PROFILE_TERMS = ["booking", "manager", "radio", "programa", "prensa", "medio", "festival", "sala"]
+PROFILE_TERMS = [
+    "booking",
+    "manager",
+    "radio",
+    "programa",
+    "prensa",
+    "medio",
+    "revista",
+    "festival",
+    "sala",
+    "centro cultural",
+    "municipio",
+    "municipalidad",
+    "ong",
+    "productora",
+    "sello",
+    "instagram",
+    "tiktok",
+]
 
 
 def clean_text(value: str) -> str:
@@ -57,13 +93,26 @@ def score_text(text: str) -> float:
     lower = normalize_text(text)
     opportunity_hits = sum(1 for term in OPPORTUNITY_TERMS if term in lower)
     genre_hits = sum(1 for term in GENRE_TERMS if term in lower)
-    return min(0.98, 0.24 + opportunity_hits * 0.09 + genre_hits * 0.07)
+    profile_hits = sum(1 for term in PROFILE_TERMS if term in lower)
+    return min(0.98, 0.22 + opportunity_hits * 0.08 + genre_hits * 0.06 + profile_hits * 0.05)
 
 
 def infer_category(text: str, source_type: str) -> str:
     lower = normalize_text(text)
     if "fondo" in lower or "financ" in lower or "subvencion" in lower:
         return "fondo"
+    if "municipio" in lower or "municipalidad" in lower:
+        return "municipalidad"
+    if "ong" in lower or "fundacion" in lower:
+        return "ong"
+    if "centro cultural" in lower or "residencia" in lower:
+        return "centro_cultural"
+    if "sello" in lower or "catalogo" in lower:
+        return "sello"
+    if "productora" in lower or "promotora" in lower:
+        return "productora"
+    if "instagram" in lower or "tiktok" in lower or "perfil publico" in lower:
+        return "perfil_publico"
     if "radio" in lower or "prensa" in lower or "medio" in lower:
         return "prensa"
     if "booking" in lower or "sala" in lower or "programacion" in lower:

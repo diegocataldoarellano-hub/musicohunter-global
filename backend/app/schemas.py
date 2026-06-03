@@ -14,6 +14,7 @@ class SourceOut(BaseModel):
     id: int
     name: str
     url: str
+    continent: str
     country: str
     region: str | None = None
     type: str
@@ -26,6 +27,7 @@ class OpportunityOut(BaseModel):
     id: int
     title: str
     category: str
+    continent: str
     country: str
     region: str | None = None
     city: str | None = None

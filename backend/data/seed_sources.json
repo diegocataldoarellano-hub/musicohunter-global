@@ -54,6 +54,123 @@
     "query_hint": "IMESUR industria musical Chile convocatoria"
   },
   {
+    "name": "Escuelas de Rock",
+    "url": "https://www.cultura.gob.cl/escuelasderock/",
+    "country": "Chile",
+    "region": "Nacional",
+    "type": "institucion",
+    "priority": 88,
+    "query_hint": "Escuelas de Rock Chile convocatoria bandas rock regiones site:instagram.com OR site:tiktok.com"
+  },
+  {
+    "name": "Balmaceda Arte Joven",
+    "url": "https://www.balmacedartejoven.cl/",
+    "country": "Chile",
+    "region": "Nacional",
+    "type": "centro_cultural",
+    "priority": 82,
+    "query_hint": "Balmaceda Arte Joven musica convocatoria residencia talleres conciertos Chile"
+  },
+  {
+    "name": "GAM",
+    "url": "https://gam.cl/",
+    "country": "Chile",
+    "region": "Metropolitana",
+    "type": "centro_cultural",
+    "priority": 80,
+    "query_hint": "GAM programacion musica conciertos centro cultural Chile"
+  },
+  {
+    "name": "Matucana 100",
+    "url": "https://www.m100.cl/",
+    "country": "Chile",
+    "region": "Metropolitana",
+    "type": "centro_cultural",
+    "priority": 80,
+    "query_hint": "Matucana 100 musica sala programacion convocatoria Chile"
+  },
+  {
+    "name": "Parque Cultural de Valparaiso",
+    "url": "https://parquecultural.cl/",
+    "country": "Chile",
+    "region": "Valparaiso",
+    "type": "centro_cultural",
+    "priority": 78,
+    "query_hint": "Parque Cultural Valparaiso musica convocatoria sala centro cultural"
+  },
+  {
+    "name": "Rockaxis",
+    "url": "https://www.rockaxis.com/",
+    "country": "Chile",
+    "region": "Metropolitana",
+    "type": "prensa",
+    "priority": 82,
+    "query_hint": "Rockaxis revista rock Chile prensa bandas entrevistas agenda instagram tiktok"
+  },
+  {
+    "name": "Radio Futuro",
+    "url": "https://www.futuro.cl/",
+    "country": "Chile",
+    "region": "Metropolitana",
+    "type": "radio",
+    "priority": 78,
+    "query_hint": "Radio Futuro rock Chile programa musica agenda conciertos"
+  },
+  {
+    "name": "Subela Radio",
+    "url": "https://www.subela.cl/",
+    "country": "Chile",
+    "region": "Metropolitana",
+    "type": "radio",
+    "priority": 76,
+    "query_hint": "Subela Radio Chile musica independiente programa entrevistas"
+  },
+  {
+    "name": "Quemasucabeza",
+    "url": "https://www.quemasucabeza.com/",
+    "country": "Chile",
+    "region": "Metropolitana",
+    "type": "sello",
+    "priority": 76,
+    "query_hint": "Quemasucabeza sello chileno indie rock catalogo booking perfiles publicos"
+  },
+  {
+    "name": "BYM Records",
+    "url": "https://bymrecords.com/",
+    "country": "Chile",
+    "region": "Metropolitana",
+    "type": "sello",
+    "priority": 74,
+    "query_hint": "BYM Records sello Chile rock psicodelico experimental booking"
+  },
+  {
+    "name": "Lotus Producciones",
+    "url": "https://www.lotuspro.cl/",
+    "country": "Chile",
+    "region": "Metropolitana",
+    "type": "productora",
+    "priority": 74,
+    "query_hint": "Lotus Producciones Chile conciertos productora booking cartelera"
+  },
+  {
+    "name": "Instagram hashtag rockchileno",
+    "url": "https://www.instagram.com/explore/tags/rockchileno/",
+    "country": "Chile",
+    "region": "Digital",
+    "type": "red_social",
+    "priority": 70,
+    "query_hint": "site:instagram.com Chile rock fusion folk experimental booking sala productora sello revista"
+  },
+  {
+    "name": "TikTok hashtag rockchileno",
+    "url": "https://www.tiktok.com/tag/rockchileno",
+    "country": "Chile",
+    "region": "Digital",
+    "type": "red_social",
+    "priority": 68,
+    "query_hint": "site:tiktok.com Chile rock fusion folk experimental musicos bandas"
+  },
+  {
     "name": "Rock al Parque",
     "url": "https://www.rockalparque.gov.co/",
     "country": "Colombia",
