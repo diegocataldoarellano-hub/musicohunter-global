@@ -5,6 +5,7 @@ from app.curator_agent import extract_application_requirements, extract_deadline
 from app.discovery import (
     ARGENTINA_CANADA_US_DEEP_REVIEW,
     ASIA_DEEP_REVIEW_TARGETS,
+    ASIA_FUNDS_PRODUCERS_FOREIGN_CALLS,
     CHILE_DEEP_SEARCH_TARGETS,
     CHILE_MEDIA_PROFILE_TARGETS,
     CHILE_PUBLIC_SPACE_TARGETS,
@@ -314,6 +315,28 @@ def test_all_asia_target_countries_have_deep_review_targets():
         assert len(ASIA_DEEP_REVIEW_TARGETS[country]) >= 3
         assert term in joined or term in territorial
         assert "international artists" in territorial
+
+
+def test_asia_has_funds_producers_and_foreign_band_calls():
+    asia_countries = {country for continent, country in TARGET_COUNTRIES if continent == "Asia"}
+    assert asia_countries.issubset(ASIA_FUNDS_PRODUCERS_FOREIGN_CALLS.keys())
+    checks = {
+        "Japon": ["Japan Foundation performing arts grants music", "Smash Corporation Japan booking foreign bands", "Creativeman Productions artist submissions"],
+        "Corea del Sur": ["KOCCA music export funding", "Zandari Festa foreign bands application", "MPMG Korea booking bands"],
+        "China": ["Modern Sky foreign bands booking China", "Split Works China international artists"],
+        "India": ["Only Much Louder artist booking", "Indiearth XChange international artists", "SkillBox India band submissions"],
+        "Indonesia": ["Ismaya Live international artists", "Studiorama Indonesia foreign bands"],
+        "Tailandia": ["Fungjai Thailand band submissions", "Have You Heard Bangkok booking foreign bands"],
+        "Singapur": ["National Arts Council Singapore music grants", "LAMC Productions Singapore booking"],
+        "Libano": ["AFAC Arab Fund for Arts and Culture music grants", "Beirut and Beyond international artists"],
+    }
+    for country, terms in checks.items():
+        joined = "\n".join(build_discovery_queries(country))
+        territorial = "\n".join(build_territorial_discovery_queries(country))
+        assert len(ASIA_FUNDS_PRODUCERS_FOREIGN_CALLS[country]) >= 3
+        for term in terms:
+            assert term in joined or term in territorial
+        assert "foreign artists" in joined or "foreign bands" in joined or "international artists" in joined
 
 
 def test_latam_small_country_coverage_is_not_empty():

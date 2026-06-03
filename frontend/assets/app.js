@@ -429,6 +429,57 @@ Object.entries(GREENLAND_EUROPE_ASIA_PUBLIC_SPACE_REVIEW).forEach(([country, tar
   COUNTRY_PUBLIC_SPACE_TARGETS[country] = [...new Set([...(COUNTRY_PUBLIC_SPACE_TARGETS[country] || []), ...targets])];
 });
 
+const ASIA_FUNDS_PRODUCERS_FOREIGN_CALLS = {
+  Afganistan: ["Aga Khan Music Programme Afghanistan grants", "Afghanistan National Institute of Music international collaboration", "Afghan music diaspora artist support"],
+  "Arabia Saudita": ["MDLBEAST XP artist application foreign artists", "Saudi Music Commission grants musicians", "Jeddah Season international bands"],
+  Azerbaiyan: ["Baku Jazz Festival international artists", "Azerbaijan Cultural Ministry music grants", "Baku music producers foreign bands"],
+  Bangladesh: ["Bengal Foundation music grants", "Dhaka music producers foreign artists", "Chirkutt Dhaka international collaboration"],
+  Barein: ["Spring of Culture Bahrain international artists", "Bahrain Authority for Culture music grants", "Bahrain Jazz Fest foreign artists"],
+  Brunei: ["Brunei cultural grants music artists", "Brunei youth music showcase foreign artists", "Bandar Seri Begawan cultural centre music"],
+  Butan: ["Bhutan Echoes international artists", "Bhutan cultural foundation music grants", "Thimphu music cultural exchange"],
+  Camboya: ["Cambodia Living Arts grants music", "Bonn Phum Festival foreign artists", "Phnom Penh music producers booking"],
+  China: ["Modern Sky foreign bands booking China", "Split Works China international artists", "MTA Festival foreign bands", "China Shanghai International Arts Festival international artists"],
+  "Corea del Sur": ["KOCCA music export funding", "Zandari Festa foreign bands application", "Seoul Music Week international showcase", "MPMG Korea booking bands"],
+  "Emiratos Arabes Unidos": ["Alserkal Avenue music open call", "Dubai Culture grants artists", "Abu Dhabi Festival international musicians", "Sole DXB music booking foreign artists"],
+  Filipinas: ["Karpos Multimedia international artists", "Wanderland Festival foreign bands", "Cultural Center of the Philippines music grants", "Offshore Music Philippines bands"],
+  India: ["Only Much Louder artist booking", "Indiearth XChange international artists", "Serendipity Arts Festival grants music", "SkillBox India band submissions"],
+  Indonesia: ["Ismaya Live international artists", "Studiorama Indonesia foreign bands", "Synchronize Fest band submissions", "Jakarta Arts Council music grants"],
+  Irak: ["Beit Tarkib Baghdad music grants", "Iraq cultural fund music artists", "Baghdad music producers foreign artists"],
+  Iran: ["Fajr Music Festival international artists", "Tehran music producers foreign artists", "Iran cultural centre music grants"],
+  Israel: ["Tune In Tel Aviv international showcase", "Ozen Tel Aviv booking bands", "Jerusalem Season of Culture music grants", "Yellow Submarine Jerusalem international artists"],
+  Japon: ["Japan Foundation performing arts grants music", "Smash Corporation Japan booking foreign bands", "Creativeman Productions artist submissions", "Fuji Rock Rookie A-Go-Go band submissions"],
+  Jordania: ["Al Balad Music Festival international artists", "Amman Jazz Festival foreign artists", "Jordan cultural fund music"],
+  Kazajistan: ["Qazaqstan music showcase international artists", "Almaty music producers booking", "Astana cultural grants music"],
+  Kirguistan: ["Aga Khan Music Programme Kyrgyzstan", "Bishkek Jazz Spring international artists", "Central Asia music showcase foreign bands"],
+  Kuwait: ["Sheikh Jaber Cultural Centre music booking", "Kuwait music grants artists", "Kuwait international music festival artists"],
+  Laos: ["Luang Prabang cultural festival foreign artists", "Vientiane music producers booking", "Lao cultural grants music"],
+  Libano: ["Beirut and Beyond international artists", "Metro Al Madina booking bands", "Turntables Beirut music producers", "AFAC Arab Fund for Arts and Culture music grants"],
+  Malasia: ["Livescape Malaysia international artists", "Urbanscapes band submissions", "Good Vibes Festival foreign bands", "CENDANA Malaysia music grants"],
+  Maldivas: ["Maldives music festival foreign artists", "Male cultural grants music", "Maldives arts council musicians"],
+  Mongolia: ["Playtime Festival Mongolia international artists", "Ulaanbaatar music producers booking", "Mongolian cultural grants music"],
+  Myanmar: ["Gitameit Music Center international collaboration", "Yangon music producers foreign artists", "Myanmar cultural grants music"],
+  Nepal: ["Jazzmandu international artists", "Nepal Music Festival foreign bands", "Kathmandu music producers booking"],
+  Oman: ["Royal Opera House Muscat international artists", "Muscat Festival foreign artists", "Oman cultural grants music"],
+  Pakistan: ["Lahore Music Meet artist application", "Salt Arts Pakistan booking", "Karachi Arts Council music grants", "Coke Studio Pakistan artist collaboration"],
+  Palestina: ["Palestine Music Expo international artists", "Yabous Cultural Centre music grants", "Sakakini Cultural Center music residency"],
+  Qatar: ["Katara Cultural Village music open call", "Qatar Creates music grants", "Doha music producers foreign artists"],
+  Singapur: ["National Arts Council Singapore music grants", "Esplanade Singapore music open call", "Baybeats Festival foreign bands", "LAMC Productions Singapore booking"],
+  Siria: ["Action for Hope music Syria grants", "Syrian music diaspora artist support", "Damascus cultural grants music"],
+  "Sri Lanka": ["Colombo Music Week international artists", "Galle Music Festival foreign artists", "Sri Lanka cultural grants music"],
+  Tailandia: ["Fungjai Thailand band submissions", "Have You Heard Bangkok booking foreign bands", "Maho Rasop Festival foreign artists", "Bangkok Music City international showcase"],
+  Taiwan: ["Taiwan Beats music export funding", "LUCfest international artists", "The Wall Taiwan booking bands", "StreetVoice Taiwan band submissions"],
+  Tayikistan: ["Aga Khan Music Programme Tajikistan", "Dushanbe music grants artists", "Tajikistan cultural exchange music"],
+  "Timor Oriental": ["Arte Moris Dili international artists", "Timor Leste cultural grants music", "Dili music producers foreign artists"],
+  Turkmenistan: ["Central Asia culture music Turkmenistan", "Ashgabat cultural grants music", "Turkmenistan music festival foreign artists"],
+  Uzbekistan: ["Sharq Taronalari international artists", "Uzbekistan Art and Culture Foundation music grants", "Tashkent music producers booking"],
+  Vietnam: ["Monsoon Music Festival foreign bands", "Hozo Music Festival international artists", "Hanoi Rock City booking bands", "Vietnam Music Week showcase"],
+  Yemen: ["Aga Khan Music Programme Yemen", "Yemen music diaspora artist support", "Sanaa cultural grants music"]
+};
+
+Object.entries(ASIA_FUNDS_PRODUCERS_FOREIGN_CALLS).forEach(([country, targets]) => {
+  COUNTRY_PUBLIC_SPACE_TARGETS[country] = [...new Set([...(COUNTRY_PUBLIC_SPACE_TARGETS[country] || []), ...targets])];
+});
+
 const CONTINENT_VIEWS = {
   Latinoamerica: { center: [-17.0, -64.0], zoom: 3 },
   Norteamerica: { center: [48.0, -100.0], zoom: 3 },
@@ -1232,6 +1283,24 @@ const GREENLAND_EUROPE_ASIA_TERRITORIAL_REVIEW = Object.entries(GREENLAND_EUROPE
 
 TERRITORIAL_AREA_TARGETS.push(...GREENLAND_EUROPE_ASIA_TERRITORIAL_REVIEW);
 
+const ASIA_FUNDS_PRODUCERS_TERRITORIAL_REVIEW = Object.entries(ASIA_FUNDS_PRODUCERS_FOREIGN_CALLS)
+  .flatMap(([country, targets]) => {
+    const view = COUNTRY_VIEWS[country] || CONTINENT_VIEWS.Asia;
+    const [lat, lng] = view.center;
+    return targets.slice(0, 4).map((label, index) => ({
+      country,
+      region: "Asia fondos/productoras",
+      city: country,
+      label,
+      lat: lat + (index - 1.5) * 0.18,
+      lng: lng + (index - 1.5) * 0.18,
+      type: "radar_asia_support",
+      query: `${label} ${country} music grant producer booking foreign bands international artists artist application`
+    }));
+  });
+
+TERRITORIAL_AREA_TARGETS.push(...ASIA_FUNDS_PRODUCERS_TERRITORIAL_REVIEW);
+
 const LATAM_RECOGNIZED_TARGETS = [
   ["Argentina", "Buenos Aires", "Buenos Aires", "INAMU"],
   ["Argentina", "Buenos Aires", "Buenos Aires", "BAFIM"],
@@ -1629,6 +1698,18 @@ const GREENLAND_EUROPE_ASIA_PRIORITY_REVIEW = Object.entries(GREENLAND_EUROPE_AS
   })));
 
 GLOBAL_PRIORITY_TARGETS.push(...GREENLAND_EUROPE_ASIA_PRIORITY_REVIEW);
+
+const ASIA_FUNDS_PRODUCERS_PRIORITY_REVIEW = Object.entries(ASIA_FUNDS_PRODUCERS_FOREIGN_CALLS)
+  .flatMap(([country, targets]) => targets.slice(0, 4).map((label) => ({
+    country,
+    region: "Asia fondos/productoras",
+    city: country,
+    label,
+    type: "radar_asia_support",
+    query: `${label} ${country} music grant funding producer booking foreign bands international artists band submissions`
+  })));
+
+GLOBAL_PRIORITY_TARGETS.push(...ASIA_FUNDS_PRODUCERS_PRIORITY_REVIEW);
 
 const fallbackPayload = {
   opportunities: [
