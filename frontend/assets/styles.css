@@ -299,7 +299,7 @@ h2 {
   display: grid;
   grid-template-columns: minmax(280px, 0.7fr) minmax(460px, 1.5fr) minmax(330px, 0.9fr);
   gap: 14px;
-  align-items: stretch;
+  align-items: start;
 }
 
 .control-panel,
@@ -372,40 +372,15 @@ select option {
   margin-top: 16px;
 }
 
-.discovery-box {
-  margin-top: 18px;
-  padding: 14px;
-  border: 1px solid rgba(244, 201, 93, 0.18);
-  border-radius: 20px;
-  background: rgba(244, 201, 93, 0.055);
-}
-
-.discovery-box-header {
-  display: flex;
-  justify-content: space-between;
-  gap: 12px;
-  align-items: center;
-  color: var(--muted);
-  font-weight: 800;
-}
-
-.discovery-box-header strong {
-  color: var(--gold);
-  font-family: Archivo, sans-serif;
-  font-size: 1.45rem;
-}
-
-.discovery-box p {
-  margin: 8px 0 12px;
-  color: var(--muted);
-  font-size: 0.9rem;
-}
-
 .mission-list {
   display: grid;
   gap: 7px;
   max-height: 185px;
   overflow: auto;
+}
+
+.mission-list.compact {
+  max-height: none;
 }
 
 .mission-chip {
@@ -418,6 +393,27 @@ select option {
   font-size: 0.78rem;
   line-height: 1.25;
   overflow-wrap: anywhere;
+}
+
+.search-empty-card {
+  border: 1px solid rgba(96, 165, 250, 0.22);
+  border-radius: 22px;
+  padding: 18px;
+  background:
+    radial-gradient(circle at 12% 0%, rgba(96, 165, 250, 0.18), transparent 34%),
+    rgba(96, 165, 250, 0.06);
+}
+
+.search-empty-card h3 {
+  margin: 12px 0 8px;
+  font-family: Archivo, sans-serif;
+  font-size: 1.08rem;
+}
+
+.search-empty-card p {
+  margin: 0 0 14px;
+  color: var(--muted);
+  line-height: 1.45;
 }
 
 .chip {

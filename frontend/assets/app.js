@@ -18,6 +18,82 @@ const SEARCH_MISSION_TEMPLATES = [
   '"{country}" intercambio musical bandas latinoamerica europa'
 ];
 
+const CONTINENT_VIEWS = {
+  Latinoamerica: { center: [-17.0, -64.0], zoom: 3 },
+  Europa: { center: [54.0, 15.0], zoom: 4 },
+  Global: { center: [20.0, 0.0], zoom: 2 }
+};
+
+const COUNTRY_VIEWS = {
+  Albania: { center: [41.1533, 20.1683], zoom: 7 },
+  Alemania: { center: [51.1657, 10.4515], zoom: 6 },
+  Andorra: { center: [42.5063, 1.5218], zoom: 9 },
+  Argentina: { center: [-38.4161, -63.6167], zoom: 4 },
+  Armenia: { center: [40.0691, 45.0382], zoom: 7 },
+  Austria: { center: [47.5162, 14.5501], zoom: 7 },
+  Belgica: { center: [50.5039, 4.4699], zoom: 7 },
+  Bielorrusia: { center: [53.7098, 27.9534], zoom: 6 },
+  Bolivia: { center: [-16.2902, -63.5887], zoom: 5 },
+  "Bosnia y Herzegovina": { center: [43.9159, 17.6791], zoom: 7 },
+  Brasil: { center: [-14.235, -51.9253], zoom: 4 },
+  Bulgaria: { center: [42.7339, 25.4858], zoom: 7 },
+  Chile: { center: [-35.6751, -71.543], zoom: 4 },
+  Chipre: { center: [35.1264, 33.4299], zoom: 8 },
+  Colombia: { center: [4.5709, -74.2973], zoom: 5 },
+  "Costa Rica": { center: [9.7489, -83.7534], zoom: 7 },
+  Croacia: { center: [45.1, 15.2], zoom: 7 },
+  Cuba: { center: [21.5218, -77.7812], zoom: 6 },
+  Dinamarca: { center: [56.2639, 9.5018], zoom: 7 },
+  Ecuador: { center: [-1.8312, -78.1834], zoom: 6 },
+  "El Salvador": { center: [13.7942, -88.8965], zoom: 8 },
+  Eslovaquia: { center: [48.669, 19.699], zoom: 7 },
+  Eslovenia: { center: [46.1512, 14.9955], zoom: 8 },
+  Espana: { center: [40.4637, -3.7492], zoom: 6 },
+  Estonia: { center: [58.5953, 25.0136], zoom: 7 },
+  Finlandia: { center: [61.9241, 25.7482], zoom: 5 },
+  Francia: { center: [46.2276, 2.2137], zoom: 6 },
+  Georgia: { center: [42.3154, 43.3569], zoom: 7 },
+  Grecia: { center: [39.0742, 21.8243], zoom: 6 },
+  Guatemala: { center: [15.7835, -90.2308], zoom: 7 },
+  Honduras: { center: [15.2, -86.2419], zoom: 7 },
+  Hungria: { center: [47.1625, 19.5033], zoom: 7 },
+  Irlanda: { center: [53.4129, -8.2439], zoom: 7 },
+  Islandia: { center: [64.9631, -19.0208], zoom: 6 },
+  Italia: { center: [41.8719, 12.5674], zoom: 6 },
+  Kosovo: { center: [42.6026, 20.903], zoom: 8 },
+  Letonia: { center: [56.8796, 24.6032], zoom: 7 },
+  Liechtenstein: { center: [47.166, 9.5554], zoom: 10 },
+  Lituania: { center: [55.1694, 23.8813], zoom: 7 },
+  Luxemburgo: { center: [49.8153, 6.1296], zoom: 9 },
+  "Macedonia del Norte": { center: [41.6086, 21.7453], zoom: 8 },
+  Malta: { center: [35.9375, 14.3754], zoom: 10 },
+  Mexico: { center: [23.6345, -102.5528], zoom: 5 },
+  Moldavia: { center: [47.4116, 28.3699], zoom: 7 },
+  Monaco: { center: [43.7384, 7.4246], zoom: 11 },
+  Montenegro: { center: [42.7087, 19.3744], zoom: 8 },
+  Nicaragua: { center: [12.8654, -85.2072], zoom: 7 },
+  Noruega: { center: [60.472, 8.4689], zoom: 5 },
+  "Paises Bajos": { center: [52.1326, 5.2913], zoom: 7 },
+  Panama: { center: [8.538, -80.7821], zoom: 7 },
+  Paraguay: { center: [-23.4425, -58.4438], zoom: 6 },
+  Peru: { center: [-9.19, -75.0152], zoom: 5 },
+  Polonia: { center: [51.9194, 19.1451], zoom: 6 },
+  Portugal: { center: [39.3999, -8.2245], zoom: 7 },
+  "Reino Unido": { center: [55.3781, -3.436], zoom: 6 },
+  "Republica Checa": { center: [49.8175, 15.473], zoom: 7 },
+  "Republica Dominicana": { center: [18.7357, -70.1627], zoom: 7 },
+  Rumania: { center: [45.9432, 24.9668], zoom: 6 },
+  "San Marino": { center: [43.9424, 12.4578], zoom: 11 },
+  Serbia: { center: [44.0165, 21.0059], zoom: 7 },
+  Suecia: { center: [60.1282, 18.6435], zoom: 5 },
+  Suiza: { center: [46.8182, 8.2275], zoom: 7 },
+  Turquia: { center: [38.9637, 35.2433], zoom: 5 },
+  Ucrania: { center: [48.3794, 31.1656], zoom: 6 },
+  Uruguay: { center: [-32.5228, -55.7658], zoom: 6 },
+  Vaticano: { center: [41.9029, 12.4534], zoom: 12 },
+  Venezuela: { center: [6.4238, -66.5897], zoom: 5 }
+};
+
 const fallbackPayload = {
   opportunities: [
     {
@@ -380,11 +456,9 @@ const els = {
   quickFilters: document.getElementById("quickFilters"),
   opportunityList: document.getElementById("opportunityList"),
   resultCount: document.getElementById("resultCount"),
+  mapTitle: document.getElementById("mapTitle"),
   sourcesList: document.getElementById("sourcesList"),
   clearFilters: document.getElementById("clearFilters"),
-  targetCountryCount: document.getElementById("targetCountryCount"),
-  targetRegionLabel: document.getElementById("targetRegionLabel"),
-  missionList: document.getElementById("missionList"),
   detailDialog: document.getElementById("detailDialog"),
   detailContent: document.getElementById("detailContent"),
   closeDialog: document.getElementById("closeDialog"),
@@ -464,6 +538,26 @@ function displayLabel(value) {
 
 function buildSearchMissions(country) {
   return SEARCH_MISSION_TEMPLATES.map((template) => template.replaceAll("{country}", country));
+}
+
+function selectedScopeLabel() {
+  if (filters.country !== "all") return filters.country;
+  if (filters.continent !== "all") return filters.continent;
+  return "Latinoamerica + Europa";
+}
+
+function selectedSearchCountry() {
+  if (filters.country !== "all") return filters.country;
+  const targets = targetCountries().filter((item) => filters.continent === "all" || item.continent === filters.continent);
+  return targets[0]?.country || "Chile";
+}
+
+function selectedMapView() {
+  if (filters.country !== "all") {
+    return COUNTRY_VIEWS[filters.country] || CONTINENT_VIEWS[continentForCountry(filters.country)] || CONTINENT_VIEWS.Global;
+  }
+  if (filters.continent !== "all") return CONTINENT_VIEWS[filters.continent] || CONTINENT_VIEWS.Global;
+  return CONTINENT_VIEWS.Latinoamerica;
 }
 
 function fillSelect(select, values, label) {
@@ -600,9 +694,31 @@ function renderStats() {
   els.resultCount.textContent = filtered.length;
 }
 
+function renderSearchEmptyState() {
+  const scope = selectedScopeLabel();
+  const country = selectedSearchCountry();
+  const missions = buildSearchMissions(country).slice(0, 5);
+  els.opportunityList.innerHTML = `
+    <article class="search-empty-card">
+      <div class="card-top">
+        <span class="category-badge">motor conectado</span>
+        <span class="link-status requires_review">en investigacion</span>
+      </div>
+      <h3>Sin oportunidades curadas todavia para ${escapeHtml(scope)}</h3>
+      <p>
+        El mapa ya esta apuntando al territorio seleccionado. El siguiente paso del agente es revisar estas
+        misiones, validar links y publicar solo fuentes utiles.
+      </p>
+      <div class="mission-list compact">
+        ${missions.map((query) => `<span class="mission-chip">${escapeHtml(query)}</span>`).join("")}
+      </div>
+    </article>
+  `;
+}
+
 function renderList() {
   if (!filtered.length) {
-    els.opportunityList.innerHTML = `<div class="empty-state">No hay oportunidades con esos filtros. Prueba limpiar busqueda o mostrar todos los estados de link.</div>`;
+    renderSearchEmptyState();
     return;
   }
 
@@ -647,6 +763,10 @@ function renderMap() {
   initMap();
   markers.forEach((marker) => marker.remove());
   markers = [];
+  const scope = selectedScopeLabel();
+  els.mapTitle.textContent = filters.country !== "all"
+    ? filters.country
+    : (filters.continent !== "all" ? filters.continent : "Chile, Latinoamerica y Europa");
   const bounds = [];
   filtered.forEach((opp) => {
     if (typeof opp.lat !== "number" || typeof opp.lng !== "number") return;
@@ -668,6 +788,24 @@ function renderMap() {
   });
   if (bounds.length > 1) {
     map.fitBounds(bounds, { padding: [28, 28], maxZoom: 7 });
+  } else if (bounds.length === 1) {
+    map.setView(bounds[0], 7);
+  } else {
+    const view = selectedMapView();
+    map.setView(view.center, view.zoom);
+    const marker = L.circleMarker(view.center, {
+      radius: 10,
+      color: "#60a5fa",
+      fillColor: "#60a5fa",
+      fillOpacity: 0.42,
+      weight: 2,
+      dashArray: "4 4"
+    }).addTo(map);
+    marker.bindPopup(`
+      <strong>Radar IA: ${escapeHtml(scope)}</strong><br>
+      No hay resultados curados aun. El motor ya tiene misiones de busqueda para este filtro.
+    `);
+    markers.push(marker);
   }
 }
 
@@ -714,20 +852,6 @@ function renderSources() {
   `).join("");
 }
 
-function renderDiscoveryMissions() {
-  const targets = targetCountries().filter((item) => (
-    (filters.continent === "all" || item.continent === filters.continent)
-    && (filters.country === "all" || item.country === filters.country)
-  ));
-  const focusCountry = filters.country !== "all" ? filters.country : (targets[0]?.country || "Chile");
-  const scope = filters.country !== "all" ? focusCountry : (filters.continent !== "all" ? filters.continent : "Latinoamerica + Europa");
-  els.targetCountryCount.textContent = targets.length;
-  els.targetRegionLabel.textContent = `Cobertura preparada para ${scope}. El agente cruza Google, Instagram, TikTok, medios, municipios, sellos y productoras.`;
-  els.missionList.innerHTML = buildSearchMissions(focusCountry).slice(0, 6).map((query) => `
-    <span class="mission-chip">${escapeHtml(query)}</span>
-  `).join("");
-}
-
 function openDetail(id) {
   const opp = opportunities.find((item) => String(item.id) === String(id));
   if (!opp) return;
@@ -770,7 +894,6 @@ function renderAll() {
   renderMap();
   renderCalendar();
   renderSources();
-  renderDiscoveryMissions();
 }
 
 function reRenderAfterFilter() {
@@ -779,7 +902,6 @@ function reRenderAfterFilter() {
   renderList();
   renderMap();
   renderCalendar();
-  renderDiscoveryMissions();
 }
 
 function bindEvents() {
@@ -809,9 +931,29 @@ function bindEvents() {
   els.quickFilters.addEventListener("click", (event) => {
     const button = event.target.closest("[data-quick]");
     if (!button) return;
-    filters.quick = filters.quick === button.dataset.quick ? null : button.dataset.quick;
+    const value = button.dataset.quick;
+    if (value === "Europa") {
+      filters.continent = filters.continent === "Europa" ? "all" : "Europa";
+      filters.country = "all";
+      filters.quick = null;
+      setupFilters();
+    } else if (value === "Chile") {
+      const isActive = filters.country === "Chile";
+      filters.continent = isActive ? "all" : "Latinoamerica";
+      filters.country = isActive ? "all" : "Chile";
+      filters.quick = null;
+      setupFilters();
+    } else {
+      filters.quick = filters.quick === value ? null : value;
+    }
     els.quickFilters.querySelectorAll(".chip").forEach((chip) => {
-      chip.classList.toggle("active", chip.dataset.quick === filters.quick);
+      const chipValue = chip.dataset.quick;
+      chip.classList.toggle(
+        "active",
+        chipValue === filters.quick
+          || (chipValue === "Europa" && filters.continent === "Europa" && filters.country === "all")
+          || (chipValue === "Chile" && filters.country === "Chile")
+      );
     });
     reRenderAfterFilter();
   });
@@ -826,6 +968,7 @@ function bindEvents() {
     filters.quick = null;
     els.searchInput.value = "";
     els.linkFilter.value = "public";
+    els.quickFilters.querySelectorAll(".chip").forEach((chip) => chip.classList.remove("active"));
     renderAll();
   });
   els.opportunityList.addEventListener("click", (event) => {
