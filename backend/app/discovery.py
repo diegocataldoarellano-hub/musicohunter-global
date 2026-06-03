@@ -98,9 +98,12 @@ TARGET_COUNTRIES = [
     ]],
     *[("Asia", country) for country in [
         "China", "Corea del Sur", "Japon", "Taiwan", "Vietnam", "Libano",
+        "India", "Indonesia", "Tailandia", "Filipinas", "Malasia", "Singapur",
+        "Israel", "Emiratos Arabes Unidos", "Kazajistan",
     ]],
     *[("Africa", country) for country in [
-        "Marruecos", "Sudafrica",
+        "Marruecos", "Sudafrica", "Nigeria", "Ghana", "Kenia", "Senegal",
+        "Egipto", "Tunez", "Etiopia", "Camerun",
     ]],
 ]
 
@@ -1544,6 +1547,245 @@ for country, targets in SOUTH_AMERICA_PRODUCER_BENCHMARKS.items():
     for target in targets:
         if target not in existing:
             existing.append(target)
+
+GLOBAL_RADAR_DEEP_EXPANSION = {
+    "Brasil": {
+        "territorial": [
+            "Rio de Janeiro Audio Rebel bandas independentes",
+            "Sao Paulo Centro Cultural Sao Paulo chamada artistas",
+            "Sao Paulo Sesc Pompeia programacao musical",
+            "Sao Paulo Casa Natura Musical edital artistas",
+            "Bahia Salvador Secult edital musica",
+            "Minas Gerais Circuito Liberdade musica",
+            "Rio Grande do Sul Opiniao Porto Alegre bandas",
+            "Parana Oficina de Musica de Curitiba",
+            "Amazonas Manaus cultura musica",
+            "Para Festival Se Rasgum Belem",
+        ],
+        "public_spaces": [
+            "Natura Musical edital", "Festival Se Rasgum", "Festival DoSol", "Festival Bananada",
+            "MADA Natal", "No Ar Coquetel Molotov", "Psicodalia Brasil", "Sesc Brasil musica",
+            "Centro Cultural Banco do Brasil musica", "Itau Cultural musica", "Oi Futuro musica",
+            "Audio Rebel Rio", "Opiniao Porto Alegre", "Oficina de Musica de Curitiba",
+        ],
+        "recognized": [
+            "Festival Se Rasgum Belem", "Festival Sarara Belo Horizonte", "Coala Festival Brasil",
+            "Popload Festival artistas", "Balaclava Records Brasil", "PWR Records Brasil",
+            "HBB producoes Brasil", "Queremos Brasil shows", "Natura Musical edital",
+        ],
+    },
+    "Colombia": {
+        "territorial": [
+            "Bogota Idartes convocatorias musica",
+            "Bogota Rock al Parque convocatoria bandas",
+            "BOmm Bogota Music Market showcase",
+            "Medellin Altavoz Fest convocatoria bandas",
+            "Medellin Teatro Pablo Tobon Uribe musica",
+            "Cali Festival Ajazzgo musica",
+            "Cali Secretaria de Cultura musica",
+            "Barranquilla Secretaria de Cultura musica",
+            "Cartagena Instituto de Patrimonio y Cultura musica",
+            "Bucaramanga Instituto Municipal de Cultura musica",
+            "Manizales Cultura musica",
+            "Pereira Cultura musica Eje Cafetero",
+            "Pasto Nariño Cultura musica",
+            "Ibague Capital Musical cultura",
+        ],
+        "public_spaces": [
+            "Idartes convocatorias musica", "Rock al Parque convocatoria bandas",
+            "BOmm Bogota Music Market", "Circulart Medellin", "Altavoz Fest",
+            "Teatro Pablo Tobon Uribe", "Casa del Teatro Nacional Bogota",
+            "Festival Centro Bogota", "Radionica Colombia", "Shock Musica",
+            "Llorona Records", "Suenan Las Guitarras Colombia", "Festival Estereo Picnic",
+            "Locus Festival Colombia", "Teatro Mayor Julio Mario Santo Domingo",
+        ],
+        "recognized": [
+            "Idartes musica convocatorias", "Radionica Colombia bandas", "Shock Musica convocatorias",
+            "Llorona Records Colombia", "Suenan Las Guitarras Colombia", "Biche Producciones Colombia",
+            "Paramo Presenta Colombia", "Paramo Presenta bandas", "Festival Centro Bogota",
+        ],
+    },
+    "Canada": {
+        "territorial": [
+            "Toronto Arts Council music grants", "Ontario Creates music fund", "Ontario Arts Council music",
+            "Montreal M for Montreal artist application", "Quebec music council grants",
+            "Vancouver Music BC showcase", "British Columbia Arts Council music",
+            "Calgary arts music grants", "Edmonton Arts Council music", "Ottawa music strategy",
+            "Halifax Pop Explosion artist application", "Winnipeg arts council music",
+        ],
+        "public_spaces": [
+            "Canada Council for the Arts music", "FACTOR Canada music", "Ontario Creates music fund",
+            "Toronto Arts Council music", "Harbourfront Centre music", "M for Montreal",
+            "Music BC", "Calgary Arts Development music", "Edmonton Arts Council music",
+            "Pop Montreal artist application", "Canadian Music Week", "North by Northeast artist application",
+        ],
+        "priority": [
+            "FACTOR Canada music", "Pop Montreal artist application", "North by Northeast artist application",
+            "Halifax Pop Explosion artist application", "Calgary Arts Development music",
+        ],
+    },
+    "Francia": {
+        "territorial": [
+            "Centre National de la Musique aides internationales", "Institut francais musique residencies",
+            "Paris La Gaite Lyrique appel artistes", "FGO Barbara Paris musique",
+            "Marseille Babel Music XP showcase", "Trans Musicales Rennes candidature",
+            "Nantes Stereolux appel artistes", "Lyon Ninkasi musique groupes",
+        ],
+        "public_spaces": [
+            "Centre National de la Musique", "Institut Francais musique", "La Gaite Lyrique",
+            "FGO Barbara", "Babel Music XP", "Trans Musicales Rennes", "MaMA Music Convention",
+            "Stereolux Nantes", "Ninkasi Lyon",
+        ],
+        "priority": ["Babel Music XP showcase", "Trans Musicales Rennes candidature", "FGO Barbara Paris musique"],
+    },
+    "Alemania": {
+        "territorial": [
+            "Berlin Musicboard funding artists", "Berlin Pop-Kultur Nachwuchs",
+            "Hamburg Reeperbahn Festival artist application", "Hamburg RockCity artists",
+            "Cologne c/o pop artist application", "Munich Kulturreferat Musik",
+            "Leipzig Pop Fest bands", "Goethe Institut music residency",
+        ],
+        "public_spaces": [
+            "Musicboard Berlin", "Reeperbahn Festival", "Pop-Kultur Berlin", "c/o pop Cologne",
+            "Goethe Institut Musik", "Initiative Musik Germany", "RockCity Hamburg",
+            "Kulturreferat Munchen Musik",
+        ],
+        "priority": ["Initiative Musik Germany", "Pop-Kultur Nachwuchs", "RockCity Hamburg"],
+    },
+    "Inglaterra": {
+        "territorial": [
+            "London Roundhouse emerging artists", "Southbank Centre music open call",
+            "Manchester Band on the Wall artists", "Brighton The Great Escape artist application",
+            "Bristol Exchange music bands", "Liverpool Sound City artist application",
+            "Cheltenham 2000trees band application", "Arts Council England music project grants",
+        ],
+        "public_spaces": [
+            "Roundhouse London", "Southbank Centre music", "Band on the Wall Manchester",
+            "The Great Escape Festival", "Liverpool Sound City", "2000trees band application",
+            "Arts Council England music", "PRS Foundation international music",
+        ],
+        "priority": ["PRS Foundation international music", "Liverpool Sound City artist application", "Band on the Wall Manchester"],
+    },
+    "Espana": {
+        "territorial": [
+            "Madrid Matadero musica convocatoria", "Barcelona Mercat de Musica Viva de Vic",
+            "Bilbao BIME live showcase", "Valencia La Rambleta musica", "Sevilla Monkey Week showcase",
+            "Zaragoza musica cultura", "Primavera Pro artist application", "INJUVE musica convocatoria",
+        ],
+        "public_spaces": [
+            "Primavera Pro", "BIME Bilbao", "Monkey Week showcase", "Mercat de Musica Viva de Vic",
+            "INJUVE Musica", "Matadero Madrid musica", "La Rambleta musica",
+        ],
+        "priority": ["Monkey Week showcase", "Mercat de Musica Viva de Vic", "La Rambleta musica"],
+    },
+    "Marruecos": {
+        "territorial": [
+            "Rabat Visa For Music artist application", "Casablanca L'Uzine musique",
+            "Marrakech Oasis festival artists", "Essaouira Gnaoua festival artistes",
+            "Fes culture music festival", "Agadir Timitar festival artists",
+        ],
+        "public_spaces": [
+            "Visa For Music", "Hiba Foundation", "L'Uzine Casablanca", "Gnaoua Festival Essaouira",
+            "Festival Timitar Agadir", "Jazzablanca artists", "Fes Festival music",
+        ],
+        "priority": ["L'Uzine Casablanca", "Jazzablanca artists", "Festival Timitar Agadir"],
+    },
+    "Sudafrica": {
+        "territorial": [
+            "Cape Town music office artists", "Johannesburg Bassline live artists",
+            "Johannesburg Music In Africa opportunities", "Durban music festival artists",
+            "Gauteng arts culture music grants", "Western Cape cultural affairs music",
+            "Oppikoppi festival artists", "Moshito Music Conference showcase",
+        ],
+        "public_spaces": [
+            "Music In Africa opportunities", "Moshito Music Conference", "Bassline Johannesburg",
+            "Cape Town Music Academy", "Oppikoppi festival artists", "National Arts Council South Africa music",
+            "Concerts SA mobility fund",
+        ],
+        "priority": ["Concerts SA mobility fund", "National Arts Council South Africa music", "Moshito Music Conference"],
+    },
+    "Nigeria": {
+        "territorial": ["Lagos music week artists", "Lagos culture music venues", "Abuja cultural centre music", "Felabration Lagos artists"],
+        "public_spaces": ["Felabration Lagos", "Lagos Music Week", "Alliance Francaise Lagos music", "British Council Nigeria music"],
+        "priority": ["Felabration Lagos", "Alliance Francaise Lagos music"],
+    },
+    "Ghana": {
+        "territorial": ["Accra music culture artists", "Accra Indie Filmfest music", "Chale Wote music Accra", "Alliance Francaise Accra music"],
+        "public_spaces": ["Chale Wote Accra", "Alliance Francaise Accra music", "Ghana Music Week", "Accra Cultural Arts music"],
+        "priority": ["Chale Wote Accra", "Ghana Music Week"],
+    },
+    "Kenia": {
+        "territorial": ["Nairobi music culture artists", "Nairobi Festival music", "Blankets and Wine Kenya artists", "GoDown Arts Centre music"],
+        "public_spaces": ["Blankets and Wine Kenya", "GoDown Arts Centre", "Alliance Francaise Nairobi music", "Nairobi Festival music"],
+        "priority": ["Blankets and Wine Kenya", "GoDown Arts Centre"],
+    },
+    "Senegal": {
+        "territorial": ["Dakar music festival artists", "Dakar Biennale music", "Institut Francais Dakar musique", "Saint-Louis Jazz artists"],
+        "public_spaces": ["Saint-Louis Jazz Senegal", "Institut Francais Dakar musique", "Dakar Music Expo", "Afropop Dakar music"],
+        "priority": ["Saint-Louis Jazz Senegal", "Dakar Music Expo"],
+    },
+    "Egipto": {
+        "territorial": ["Cairo Jazz Club bands", "Cairo culture music", "Bibliotheca Alexandrina music", "El Sawy Culturewheel music"],
+        "public_spaces": ["Cairo Jazz Club", "El Sawy Culturewheel", "Bibliotheca Alexandrina music", "Downtown Contemporary Arts Festival Cairo"],
+        "priority": ["El Sawy Culturewheel", "Downtown Contemporary Arts Festival Cairo"],
+    },
+    "Japon": {
+        "territorial": [
+            "Tokyo music market showcase", "Tokyo Music Lane artist application", "Fuji Rock Rookie A Go Go",
+            "Osaka music festival artists", "Kyoto cultural foundation music", "Fukuoka music month artists",
+        ],
+        "public_spaces": [
+            "Music Lane Okinawa", "Tokyo Music Market", "Fuji Rock Rookie A Go Go",
+            "Japan Foundation music", "Kansai Music Conference", "Fukuoka Music Month",
+        ],
+        "priority": ["Kansai Music Conference", "Fukuoka Music Month", "Tokyo Music Lane artist application"],
+    },
+    "Corea del Sur": {
+        "territorial": ["Seoul music week showcase", "Zandari Festa artist application", "MUCON Korea", "Busan Rock Festival artists"],
+        "public_spaces": ["Zandari Festa", "MUCON Korea", "Seoul Music Week", "Busan Rock Festival", "KOCCA music"],
+        "priority": ["KOCCA music", "Busan Rock Festival"],
+    },
+    "China": {
+        "territorial": ["Shanghai international arts festival music", "Beijing music festival artists", "Shenzhen culture music", "Chengdu music festival artists"],
+        "public_spaces": ["China Shanghai International Arts Festival", "Music China Shanghai", "Beijing Music Festival", "Modern Sky Festival China"],
+        "priority": ["Modern Sky Festival China", "Beijing Music Festival"],
+    },
+    "India": {
+        "territorial": ["Mumbai music festival artists", "Delhi music week artists", "Bangalore independent music venues", "NH7 Weekender artist application"],
+        "public_spaces": ["NH7 Weekender artist application", "Serendipity Arts Festival music", "Bacardi NH7 Weekender", "Magnetic Fields Festival artists"],
+        "priority": ["Serendipity Arts Festival music", "Magnetic Fields Festival artists"],
+    },
+    "Indonesia": {
+        "territorial": ["Jakarta music festival artists", "Bali music festival artists", "Java Jazz artist application", "Synchronize Fest artists"],
+        "public_spaces": ["Java Jazz Festival", "Synchronize Fest", "We The Fest Indonesia", "BaliSpirit Festival music"],
+        "priority": ["Java Jazz Festival", "Synchronize Fest"],
+    },
+    "Tailandia": {
+        "territorial": ["Bangkok music festival artists", "Bangkok culture centre music", "Wonderfruit artist application", "Maho Rasop Festival artists"],
+        "public_spaces": ["Wonderfruit Festival artists", "Maho Rasop Festival", "Bangkok Art and Culture Centre music", "Very Festival Thailand"],
+        "priority": ["Wonderfruit Festival artists", "Maho Rasop Festival"],
+    },
+}
+
+for country, bank in GLOBAL_RADAR_DEEP_EXPANSION.items():
+    for target in bank.get("territorial", []):
+        existing = GLOBAL_TERRITORIAL_AREA_SEEDS.setdefault(country, [])
+        if target not in existing:
+            existing.append(target)
+    for target in bank.get("public_spaces", []):
+        existing = COUNTRY_PUBLIC_SPACE_TARGETS.setdefault(country, [])
+        if target not in existing:
+            existing.append(target)
+    if country in LATAM_RECOGNIZED_TARGETS:
+        existing = LATAM_RECOGNIZED_TARGETS.setdefault(country, [])
+        for target in bank.get("recognized", []):
+            if target not in existing:
+                existing.append(target)
+    else:
+        existing = GLOBAL_PRIORITY_TARGETS.setdefault(country, [])
+        for target in bank.get("priority", []):
+            if target not in existing:
+                existing.append(target)
 
 EXPANDED_TARGET_TEMPLATES = [
     'site:instagram.com/p "{target}" musica bandas convocatoria',

@@ -9,6 +9,7 @@ from app.discovery import (
     COUNTRY_PUBLIC_SPACE_TARGETS,
     EXPANSION_PRIORITY_ORDER,
     GLOBAL_TERRITORIAL_AREA_SEEDS,
+    GLOBAL_RADAR_DEEP_EXPANSION,
     HIGH_VALUE_SEMANTIC_TERMS,
     LATAM_RECOGNIZED_TARGETS,
     SEMANTIC_INTENT_GROUPS,
@@ -193,6 +194,49 @@ def test_global_territorial_seeds_cover_priority_world_regions():
         assert "support act" in joined
 
 
+def test_brazil_and_colombia_are_reinforced_after_review():
+    checks = {
+        "Brasil": ["Natura Musical edital", "Festival Se Rasgum", "Opiniao Porto Alegre"],
+        "Colombia": ["Idartes convocatorias musica", "Rock al Parque convocatoria bandas", "Paramo Presenta bandas"],
+    }
+    for country, terms in checks.items():
+        assert country in GLOBAL_RADAR_DEEP_EXPANSION
+        joined = "\n".join(build_discovery_queries(country))
+        territorial = "\n".join(build_territorial_discovery_queries(country))
+        for term in terms:
+            assert term in joined or term in territorial
+        assert "support act" in territorial
+        assert "international bands" in territorial
+
+
+def test_canada_europe_africa_and_asia_have_deeper_priority_banks():
+    required = {
+        "Canada": ["FACTOR Canada music", "North by Northeast artist application"],
+        "Francia": ["Babel Music XP showcase", "Trans Musicales Rennes candidature"],
+        "Alemania": ["Pop-Kultur Nachwuchs", "Initiative Musik Germany"],
+        "Inglaterra": ["Liverpool Sound City artist application", "PRS Foundation international music"],
+        "Marruecos": ["L'Uzine Casablanca", "Festival Timitar Agadir"],
+        "Sudafrica": ["Concerts SA mobility fund", "Moshito Music Conference"],
+        "Nigeria": ["Felabration Lagos", "Alliance Francaise Lagos music"],
+        "Ghana": ["Chale Wote Accra", "Ghana Music Week"],
+        "Kenia": ["Blankets and Wine Kenya", "GoDown Arts Centre"],
+        "Japon": ["Kansai Music Conference", "Fukuoka Music Month"],
+        "Corea del Sur": ["KOCCA music", "Busan Rock Festival"],
+        "India": ["NH7 Weekender artist application", "Serendipity Arts Festival music"],
+        "Indonesia": ["Java Jazz Festival", "Synchronize Fest"],
+        "Tailandia": ["Wonderfruit Festival artists", "Maho Rasop Festival"],
+    }
+    by_country = {country for _, country in TARGET_COUNTRIES}
+    for country, terms in required.items():
+        assert country in GLOBAL_RADAR_DEEP_EXPANSION
+        assert country in by_country or country in {"Francia", "Alemania", "Inglaterra"}
+        joined = "\n".join(build_discovery_queries(country))
+        territorial = "\n".join(build_territorial_discovery_queries(country))
+        for term in terms:
+            assert term in joined or term in territorial
+        assert "international artists" in territorial
+
+
 def test_latam_small_country_coverage_is_not_empty():
     required = {
         "Belice": "Belize International Music and Food Festival",
@@ -286,9 +330,17 @@ def test_target_countries_include_requested_global_regions():
         "Japon": "Asia",
         "Taiwan": "Asia",
         "Vietnam": "Asia",
+        "India": "Asia",
+        "Indonesia": "Asia",
+        "Tailandia": "Asia",
         "Libano": "Asia",
         "Sudafrica": "Africa",
         "Marruecos": "Africa",
+        "Nigeria": "Africa",
+        "Ghana": "Africa",
+        "Kenia": "Africa",
+        "Senegal": "Africa",
+        "Egipto": "Africa",
         "Rusia": "Europa",
         "Inglaterra": "Europa",
         "Holanda": "Europa",

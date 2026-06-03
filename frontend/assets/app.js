@@ -243,6 +243,33 @@ Object.entries(SOUTH_AMERICA_PUBLIC_SPACE_EXPANSION).forEach(([country, targets]
   COUNTRY_PUBLIC_SPACE_TARGETS[country] = [...new Set([...(COUNTRY_PUBLIC_SPACE_TARGETS[country] || []), ...targets])];
 });
 
+const GLOBAL_PUBLIC_SPACE_EXPANSION = {
+  Colombia: ["Idartes convocatorias musica", "Rock al Parque convocatoria bandas", "BOmm Bogota Music Market", "Circulart Medellin", "Altavoz Fest", "Teatro Pablo Tobon Uribe", "Radionica Colombia", "Shock Musica", "Llorona Records", "Suenan Las Guitarras Colombia"],
+  Brasil: ["Natura Musical edital", "Festival Se Rasgum", "Festival DoSol", "Festival Bananada", "MADA Natal", "No Ar Coquetel Molotov", "Centro Cultural Banco do Brasil musica", "Itau Cultural musica", "Oi Futuro musica", "Opiniao Porto Alegre"],
+  Canada: ["FACTOR Canada music", "Ontario Creates music fund", "Pop Montreal artist application", "North by Northeast artist application", "Halifax Pop Explosion artist application", "Calgary Arts Development music", "Edmonton Arts Council music", "Winnipeg Arts Council music"],
+  Francia: ["FGO Barbara", "Babel Music XP", "Trans Musicales Rennes", "Stereolux Nantes", "Ninkasi Lyon", "Centre National de la Musique aides"],
+  Alemania: ["Initiative Musik Germany", "Pop-Kultur Berlin", "RockCity Hamburg", "c/o pop Cologne", "Kulturreferat Munchen Musik"],
+  Inglaterra: ["PRS Foundation international music", "Band on the Wall Manchester", "Liverpool Sound City", "2000trees band application", "The Great Escape Festival"],
+  Espana: ["Monkey Week showcase", "Mercat de Musica Viva de Vic", "La Rambleta musica", "Primavera Pro", "BIME Bilbao"],
+  Marruecos: ["L'Uzine Casablanca", "Jazzablanca artists", "Festival Timitar Agadir", "Visa For Music", "Gnaoua Festival Essaouira"],
+  Sudafrica: ["Concerts SA mobility fund", "National Arts Council South Africa music", "Moshito Music Conference", "Bassline Johannesburg", "Music In Africa opportunities"],
+  Nigeria: ["Felabration Lagos", "Lagos Music Week", "Alliance Francaise Lagos music", "British Council Nigeria music"],
+  Ghana: ["Chale Wote Accra", "Alliance Francaise Accra music", "Ghana Music Week", "Accra Cultural Arts music"],
+  Kenia: ["Blankets and Wine Kenya", "GoDown Arts Centre", "Alliance Francaise Nairobi music", "Nairobi Festival music"],
+  Senegal: ["Saint-Louis Jazz Senegal", "Institut Francais Dakar musique", "Dakar Music Expo"],
+  Egipto: ["Cairo Jazz Club", "El Sawy Culturewheel", "Bibliotheca Alexandrina music", "Downtown Contemporary Arts Festival Cairo"],
+  Japon: ["Kansai Music Conference", "Fukuoka Music Month", "Tokyo Music Lane artist application", "Fuji Rock Rookie A Go Go"],
+  "Corea del Sur": ["KOCCA music", "Busan Rock Festival", "Zandari Festa", "MUCON Korea"],
+  China: ["Modern Sky Festival China", "Beijing Music Festival", "China Shanghai International Arts Festival"],
+  India: ["NH7 Weekender artist application", "Serendipity Arts Festival music", "Magnetic Fields Festival artists"],
+  Indonesia: ["Java Jazz Festival", "Synchronize Fest", "We The Fest Indonesia", "BaliSpirit Festival music"],
+  Tailandia: ["Wonderfruit Festival artists", "Maho Rasop Festival", "Bangkok Art and Culture Centre music"]
+};
+
+Object.entries(GLOBAL_PUBLIC_SPACE_EXPANSION).forEach(([country, targets]) => {
+  COUNTRY_PUBLIC_SPACE_TARGETS[country] = [...new Set([...(COUNTRY_PUBLIC_SPACE_TARGETS[country] || []), ...targets])];
+});
+
 const CONTINENT_VIEWS = {
   Latinoamerica: { center: [-17.0, -64.0], zoom: 3 },
   Norteamerica: { center: [48.0, -100.0], zoom: 3 },
@@ -277,6 +304,7 @@ const COUNTRY_VIEWS = {
   "Corea del Sur": { center: [35.9078, 127.7669], zoom: 6 },
   Dinamarca: { center: [56.2639, 9.5018], zoom: 7 },
   Ecuador: { center: [-1.8312, -78.1834], zoom: 6 },
+  Egipto: { center: [26.8206, 30.8025], zoom: 5 },
   "El Salvador": { center: [13.7942, -88.8965], zoom: 8 },
   Eslovaquia: { center: [48.669, 19.699], zoom: 7 },
   Eslovenia: { center: [46.1512, 14.9955], zoom: 8 },
@@ -286,16 +314,20 @@ const COUNTRY_VIEWS = {
   Francia: { center: [46.2276, 2.2137], zoom: 6 },
   Gales: { center: [52.1307, -3.7837], zoom: 7 },
   Georgia: { center: [42.3154, 43.3569], zoom: 7 },
+  Ghana: { center: [7.9465, -1.0232], zoom: 6 },
   Grecia: { center: [39.0742, 21.8243], zoom: 6 },
   Holanda: { center: [52.1326, 5.2913], zoom: 7 },
   Guatemala: { center: [15.7835, -90.2308], zoom: 7 },
   Honduras: { center: [15.2, -86.2419], zoom: 7 },
   Hungria: { center: [47.1625, 19.5033], zoom: 7 },
+  India: { center: [20.5937, 78.9629], zoom: 4 },
+  Indonesia: { center: [-0.7893, 113.9213], zoom: 4 },
   Inglaterra: { center: [52.3555, -1.1743], zoom: 6 },
   Irlanda: { center: [53.4129, -8.2439], zoom: 7 },
   Islandia: { center: [64.9631, -19.0208], zoom: 6 },
   Italia: { center: [41.8719, 12.5674], zoom: 6 },
   Japon: { center: [36.2048, 138.2529], zoom: 5 },
+  Kenia: { center: [-0.0236, 37.9062], zoom: 6 },
   Kosovo: { center: [42.6026, 20.903], zoom: 8 },
   Letonia: { center: [56.8796, 24.6032], zoom: 7 },
   Libano: { center: [33.8547, 35.8623], zoom: 8 },
@@ -310,6 +342,7 @@ const COUNTRY_VIEWS = {
   Monaco: { center: [43.7384, 7.4246], zoom: 11 },
   Montenegro: { center: [42.7087, 19.3744], zoom: 8 },
   Nicaragua: { center: [12.8654, -85.2072], zoom: 7 },
+  Nigeria: { center: [9.082, 8.6753], zoom: 6 },
   Noruega: { center: [60.472, 8.4689], zoom: 5 },
   "Paises Bajos": { center: [52.1326, 5.2913], zoom: 7 },
   Panama: { center: [8.538, -80.7821], zoom: 7 },
@@ -323,11 +356,13 @@ const COUNTRY_VIEWS = {
   Rumania: { center: [45.9432, 24.9668], zoom: 6 },
   Rusia: { center: [61.524, 105.3188], zoom: 3 },
   "San Marino": { center: [43.9424, 12.4578], zoom: 11 },
+  Senegal: { center: [14.4974, -14.4524], zoom: 6 },
   Serbia: { center: [44.0165, 21.0059], zoom: 7 },
   Sudafrica: { center: [-30.5595, 22.9375], zoom: 5 },
   Suecia: { center: [60.1282, 18.6435], zoom: 5 },
   Suiza: { center: [46.8182, 8.2275], zoom: 7 },
   Taiwan: { center: [23.6978, 120.9605], zoom: 7 },
+  Tailandia: { center: [15.87, 100.9925], zoom: 5 },
   Turquia: { center: [38.9637, 35.2433], zoom: 5 },
   Ucrania: { center: [48.3794, 31.1656], zoom: 6 },
   Uruguay: { center: [-32.5228, -55.7658], zoom: 6 },
@@ -857,6 +892,72 @@ const SOUTH_AMERICA_TERRITORIAL_EXPANSION = [
 
 TERRITORIAL_AREA_TARGETS.push(...SOUTH_AMERICA_TERRITORIAL_EXPANSION);
 
+const GLOBAL_TERRITORIAL_EXPANSION = [
+  ["Colombia", "Bogota", "Bogota", "Idartes convocatorias musica", 4.711, -74.0721],
+  ["Colombia", "Bogota", "Bogota", "Rock al Parque convocatoria bandas", 4.711, -74.0721],
+  ["Colombia", "Bogota", "Bogota", "BOmm Bogota Music Market showcase", 4.711, -74.0721],
+  ["Colombia", "Antioquia", "Medellin", "Altavoz Fest convocatoria bandas", 6.2442, -75.5812],
+  ["Colombia", "Valle del Cauca", "Cali", "Cali Festival Ajazzgo musica", 3.4516, -76.532],
+  ["Colombia", "Atlantico", "Barranquilla", "Barranquilla Secretaria de Cultura musica", 10.9685, -74.7813],
+  ["Colombia", "Bolivar", "Cartagena", "Cartagena Instituto de Patrimonio y Cultura musica", 10.391, -75.4794],
+  ["Colombia", "Santander", "Bucaramanga", "Bucaramanga Instituto Municipal de Cultura musica", 7.1193, -73.1227],
+  ["Brasil", "Para", "Belem", "Festival Se Rasgum Belem", -1.4558, -48.4902],
+  ["Brasil", "Amazonas", "Manaus", "Manaus cultura musica", -3.119, -60.0217],
+  ["Brasil", "Rio Grande do Sul", "Porto Alegre", "Opiniao Porto Alegre bandas", -30.0346, -51.2177],
+  ["Brasil", "Parana", "Curitiba", "Oficina de Musica de Curitiba", -25.4284, -49.2733],
+  ["Brasil", "Bahia", "Salvador", "Salvador Secult edital musica", -12.9777, -38.5016],
+  ["Canada", "Ontario", "Toronto", "Toronto Arts Council music grants", 43.6532, -79.3832],
+  ["Canada", "Ontario", "Toronto", "Ontario Creates music fund", 43.6532, -79.3832],
+  ["Canada", "Quebec", "Montreal", "M for Montreal artist application", 45.5017, -73.5673],
+  ["Canada", "British Columbia", "Vancouver", "Music BC showcase", 49.2827, -123.1207],
+  ["Canada", "Alberta", "Calgary", "Calgary Arts Development music", 51.0447, -114.0719],
+  ["Canada", "Nova Scotia", "Halifax", "Halifax Pop Explosion artist application", 44.6488, -63.5752],
+  ["Francia", "Ile-de-France", "Paris", "FGO Barbara Paris musique", 48.8566, 2.3522],
+  ["Francia", "Bretagne", "Rennes", "Trans Musicales Rennes candidature", 48.1173, -1.6778],
+  ["Francia", "Provence-Alpes-Cote d'Azur", "Marseille", "Babel Music XP showcase", 43.2965, 5.3698],
+  ["Alemania", "Berlin", "Berlin", "Pop-Kultur Nachwuchs", 52.52, 13.405],
+  ["Alemania", "Hamburg", "Hamburg", "RockCity Hamburg artists", 53.5511, 9.9937],
+  ["Alemania", "Nordrhein-Westfalen", "Cologne", "c/o pop artist application", 50.9375, 6.9603],
+  ["Inglaterra", "Greater London", "London", "Roundhouse emerging artists", 51.5074, -0.1278],
+  ["Inglaterra", "Greater Manchester", "Manchester", "Band on the Wall artists", 53.4808, -2.2426],
+  ["Inglaterra", "Merseyside", "Liverpool", "Liverpool Sound City artist application", 53.4084, -2.9916],
+  ["Espana", "Madrid", "Madrid", "Matadero Madrid musica convocatoria", 40.4168, -3.7038],
+  ["Espana", "Cataluna", "Vic", "Mercat de Musica Viva de Vic", 41.9301, 2.2549],
+  ["Espana", "Andalucia", "Sevilla", "Monkey Week showcase", 37.3891, -5.9845],
+  ["Marruecos", "Rabat-Sale-Kenitra", "Rabat", "Visa For Music artist application", 34.0209, -6.8416],
+  ["Marruecos", "Casablanca-Settat", "Casablanca", "L'Uzine Casablanca musique", 33.5731, -7.5898],
+  ["Sudafrica", "Western Cape", "Cape Town", "Concerts SA mobility fund", -33.9249, 18.4241],
+  ["Sudafrica", "Gauteng", "Johannesburg", "Bassline Johannesburg artists", -26.2041, 28.0473],
+  ["Nigeria", "Lagos", "Lagos", "Felabration Lagos artists", 6.5244, 3.3792],
+  ["Ghana", "Greater Accra", "Accra", "Chale Wote Accra music", 5.6037, -0.187],
+  ["Kenia", "Nairobi", "Nairobi", "Blankets and Wine Kenya artists", -1.2921, 36.8219],
+  ["Senegal", "Dakar", "Dakar", "Saint-Louis Jazz Senegal", 14.7167, -17.4677],
+  ["Egipto", "Cairo", "Cairo", "El Sawy Culturewheel music", 30.0444, 31.2357],
+  ["Japon", "Tokyo", "Tokyo", "Tokyo Music Lane artist application", 35.6762, 139.6503],
+  ["Japon", "Fukuoka", "Fukuoka", "Fukuoka Music Month", 33.5902, 130.4017],
+  ["Corea del Sur", "Seoul", "Seoul", "KOCCA music showcase", 37.5665, 126.978],
+  ["Corea del Sur", "Busan", "Busan", "Busan Rock Festival artists", 35.1796, 129.0756],
+  ["China", "Shanghai", "Shanghai", "Modern Sky Festival China", 31.2304, 121.4737],
+  ["China", "Beijing", "Beijing", "Beijing Music Festival", 39.9042, 116.4074],
+  ["India", "Maharashtra", "Mumbai", "NH7 Weekender artist application", 19.076, 72.8777],
+  ["India", "Goa", "Goa", "Serendipity Arts Festival music", 15.2993, 74.124],
+  ["Indonesia", "Jakarta", "Jakarta", "Java Jazz Festival", -6.2088, 106.8456],
+  ["Indonesia", "Jakarta", "Jakarta", "Synchronize Fest artists", -6.2088, 106.8456],
+  ["Tailandia", "Bangkok", "Bangkok", "Maho Rasop Festival artists", 13.7563, 100.5018],
+  ["Tailandia", "Chonburi", "Pattaya", "Wonderfruit Festival artists", 12.9236, 100.8825]
+].map(([country, region, city, label, lat, lng]) => ({
+  country,
+  region,
+  city,
+  label,
+  lat,
+  lng,
+  type: "radar_territorial",
+  query: `${label} ${city} ${region} musica conciertos bandas convocatoria open call showcase international artists support act opening band new sounds`
+}));
+
+TERRITORIAL_AREA_TARGETS.push(...GLOBAL_TERRITORIAL_EXPANSION);
+
 const LATAM_RECOGNIZED_TARGETS = [
   ["Argentina", "Buenos Aires", "Buenos Aires", "INAMU"],
   ["Argentina", "Buenos Aires", "Buenos Aires", "BAFIM"],
@@ -1086,6 +1187,32 @@ const SOUTH_AMERICA_PRODUCER_BENCHMARKS = [
 
 LATAM_RECOGNIZED_TARGETS.push(...SOUTH_AMERICA_PRODUCER_BENCHMARKS);
 
+const COLOMBIA_BRASIL_REVIEW_EXPANSION = [
+  ["Colombia", "Bogota", "Bogota", "Idartes musica convocatorias"],
+  ["Colombia", "Bogota", "Bogota", "Rock al Parque convocatoria bandas"],
+  ["Colombia", "Bogota", "Bogota", "Radionica Colombia bandas"],
+  ["Colombia", "Bogota", "Bogota", "Shock Musica convocatorias"],
+  ["Colombia", "Antioquia", "Medellin", "Altavoz Fest convocatoria bandas"],
+  ["Colombia", "Antioquia", "Medellin", "Circulart Medellin"],
+  ["Colombia", "Bogota", "Bogota", "Llorona Records Colombia"],
+  ["Colombia", "Bogota", "Bogota", "Paramo Presenta bandas"],
+  ["Brasil", "Para", "Belem", "Festival Se Rasgum Belem"],
+  ["Brasil", "Minas Gerais", "Belo Horizonte", "Festival Sarara Belo Horizonte"],
+  ["Brasil", "Sao Paulo", "Sao Paulo", "Popload Festival artistas"],
+  ["Brasil", "Sao Paulo", "Sao Paulo", "Natura Musical edital"],
+  ["Brasil", "Rio Grande do Sul", "Porto Alegre", "Opiniao Porto Alegre"],
+  ["Brasil", "Parana", "Curitiba", "Oficina de Musica de Curitiba"]
+].map(([country, region, city, label]) => ({
+  country,
+  region,
+  city,
+  label,
+  type: "radar_latam",
+  query: `${label} ${city} musica festival convocatoria showcase bandas rock indie booking centro cultural sello productora`
+}));
+
+LATAM_RECOGNIZED_TARGETS.push(...COLOMBIA_BRASIL_REVIEW_EXPANSION);
+
 const GLOBAL_PRIORITY_TARGETS = [
   ["Estados Unidos", "Texas", "Austin", "SXSW Music Festival"],
   ["Estados Unidos", "New York", "New York", "Lincoln Center Open Calls"],
@@ -1131,6 +1258,45 @@ const GLOBAL_PRIORITY_TARGETS = [
   type: "radar_global",
   query: `${label} ${city} music open call band submissions showcase festival arts council booking`
 }));
+
+const GLOBAL_PRIORITY_EXPANSION = [
+  ["Canada", "Ontario", "Toronto", "FACTOR Canada music"],
+  ["Canada", "Ontario", "Toronto", "North by Northeast artist application"],
+  ["Canada", "Quebec", "Montreal", "Pop Montreal artist application"],
+  ["Canada", "Nova Scotia", "Halifax", "Halifax Pop Explosion artist application"],
+  ["Francia", "Bretagne", "Rennes", "Trans Musicales Rennes candidature"],
+  ["Francia", "Provence-Alpes-Cote d'Azur", "Marseille", "Babel Music XP showcase"],
+  ["Alemania", "Berlin", "Berlin", "Pop-Kultur Nachwuchs"],
+  ["Alemania", "Nordrhein-Westfalen", "Cologne", "c/o pop artist application"],
+  ["Inglaterra", "Merseyside", "Liverpool", "Liverpool Sound City artist application"],
+  ["Inglaterra", "Greater Manchester", "Manchester", "Band on the Wall Manchester"],
+  ["Espana", "Andalucia", "Sevilla", "Monkey Week showcase"],
+  ["Espana", "Cataluna", "Vic", "Mercat de Musica Viva de Vic"],
+  ["Marruecos", "Casablanca", "Casablanca", "L'Uzine Casablanca"],
+  ["Marruecos", "Agadir", "Agadir", "Festival Timitar Agadir"],
+  ["Sudafrica", "Western Cape", "Cape Town", "Concerts SA mobility fund"],
+  ["Sudafrica", "Gauteng", "Johannesburg", "Moshito Music Conference"],
+  ["Nigeria", "Lagos", "Lagos", "Felabration Lagos"],
+  ["Ghana", "Greater Accra", "Accra", "Chale Wote Accra"],
+  ["Kenia", "Nairobi", "Nairobi", "Blankets and Wine Kenya"],
+  ["Senegal", "Dakar", "Dakar", "Saint-Louis Jazz Senegal"],
+  ["Egipto", "Cairo", "Cairo", "El Sawy Culturewheel"],
+  ["Japon", "Fukuoka", "Fukuoka", "Fukuoka Music Month"],
+  ["Corea del Sur", "Busan", "Busan", "Busan Rock Festival"],
+  ["China", "Shanghai", "Shanghai", "Modern Sky Festival China"],
+  ["India", "Goa", "Goa", "Serendipity Arts Festival music"],
+  ["Indonesia", "Jakarta", "Jakarta", "Synchronize Fest"],
+  ["Tailandia", "Bangkok", "Bangkok", "Maho Rasop Festival"]
+].map(([country, region, city, label]) => ({
+  country,
+  region,
+  city,
+  label,
+  type: "radar_global",
+  query: `${label} ${city} music open call band submissions showcase festival arts council booking`
+}));
+
+GLOBAL_PRIORITY_TARGETS.push(...GLOBAL_PRIORITY_EXPANSION);
 
 const fallbackPayload = {
   opportunities: [
