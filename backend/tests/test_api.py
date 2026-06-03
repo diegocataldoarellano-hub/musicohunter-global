@@ -12,6 +12,7 @@ from app.discovery import (
     COUNTRY_PUBLIC_SPACE_TARGETS,
     EXPANSION_PRIORITY_ORDER,
     EUROPE_DEEP_REVIEW_TARGETS,
+    FOCUS_COUNTRY_FUNDS_PRODUCERS_FOREIGN_CALLS,
     GREENLAND_DEEP_REVIEW_TARGETS,
     GLOBAL_TERRITORIAL_AREA_SEEDS,
     GLOBAL_SUPPORT_FUNDING_PATTERNS,
@@ -337,6 +338,42 @@ def test_asia_has_funds_producers_and_foreign_band_calls():
         for term in terms:
             assert term in joined or term in territorial
         assert "foreign artists" in joined or "foreign bands" in joined or "international artists" in joined
+
+
+def test_focus_countries_have_funds_producers_and_foreign_calls():
+    checks = {
+        "Irlanda": [
+            "Culture Ireland music funding international performance",
+            "Music From Ireland export support",
+            "Ireland Music Week international showcase application",
+            "Whelans Dublin booking bands",
+        ],
+        "China": [
+            "Modern Sky Lab booking foreign bands China",
+            "Split Works China international artists booking",
+            "Midi Festival China foreign bands",
+            "Yuyintang Shanghai booking bands",
+        ],
+        "Japon": [
+            "Japan Foundation performing arts grants music international",
+            "Smash Corporation Japan booking foreign bands",
+            "Summer Sonic artist application Japan",
+            "Live Nation Japan international artists",
+        ],
+        "Canada": [
+            "Canada Council for the Arts music grants international collaboration",
+            "FACTOR Canada artist development funding",
+            "Music BC export funding international showcase",
+            "M for Montreal artist submission international",
+        ],
+    }
+    for country, terms in checks.items():
+        joined = "\n".join(build_discovery_queries(country))
+        territorial = "\n".join(build_territorial_discovery_queries(country))
+        assert len(FOCUS_COUNTRY_FUNDS_PRODUCERS_FOREIGN_CALLS[country]) >= 10
+        for term in terms:
+            assert term in joined or term in territorial
+        assert "foreign bands" in joined or "international artists" in joined or "international performance" in joined
 
 
 def test_latam_small_country_coverage_is_not_empty():

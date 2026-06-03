@@ -2115,6 +2115,59 @@ ASIA_FUNDS_PRODUCERS_FOREIGN_CALLS = {
     "Yemen": ["Aga Khan Music Programme Yemen", "Yemen music diaspora artist support", "Sanaa cultural grants music"],
 }
 
+FOCUS_COUNTRY_FUNDS_PRODUCERS_FOREIGN_CALLS = {
+    "Irlanda": [
+        "Culture Ireland music funding international performance",
+        "Music From Ireland export support",
+        "First Music Contact Ireland artist supports",
+        "Ireland Music Week international showcase application",
+        "Whelans Dublin booking bands",
+        "Levis Corner House Ballydehob music booking",
+        "IMRO Ireland music funding opportunities",
+        "Arts Council Ireland music bursary international artists",
+        "Dublin City Council arts office music grants",
+        "Galway International Arts Festival music open call",
+    ],
+    "China": [
+        "Modern Sky Lab booking foreign bands China",
+        "Split Works China international artists booking",
+        "MTA Festival foreign bands China",
+        "China Shanghai International Arts Festival international artists open call",
+        "Beijing Music Festival international musicians",
+        "Strawberry Music Festival China band booking",
+        "Midi Festival China foreign bands",
+        "Shanghai Symphony Hall international artists",
+        "Power Station of Art Shanghai music performance open call",
+        "Yuyintang Shanghai booking bands",
+    ],
+    "Japon": [
+        "Japan Foundation performing arts grants music international",
+        "Japan Arts Council artist grants music",
+        "Smash Corporation Japan booking foreign bands",
+        "Creativeman Productions artist submissions",
+        "Fuji Rock Rookie A Go-Go band submissions",
+        "Summer Sonic artist application Japan",
+        "Music Lane Okinawa international showcase",
+        "Kansai Music Conference foreign artists",
+        "Shibuya WWW Tokyo booking bands",
+        "Live Nation Japan international artists",
+    ],
+    "Canada": [
+        "Canada Council for the Arts music grants international collaboration",
+        "FACTOR Canada artist development funding",
+        "Musicaction Canada francophone music funding",
+        "SODEC musique aide artistes internationaux",
+        "Music BC export funding international showcase",
+        "BreakOut West international showcase application",
+        "M for Montreal artist submission international",
+        "Canadian Music Week artist submission foreign bands",
+        "North by Northeast artist application international bands",
+        "Pop Montreal artist application international artists",
+        "Harbourfront Centre Toronto music open call",
+        "National Arts Centre Ottawa music international artists",
+    ],
+}
+
 for target in GREENLAND_DEEP_REVIEW_TARGETS:
     for collection in (
         GLOBAL_TERRITORIAL_AREA_SEEDS.setdefault("Groenlandia", []),
@@ -2145,6 +2198,16 @@ for country, targets in ASIA_DEEP_REVIEW_TARGETS.items():
                 collection.append(target)
 
 for country, targets in ASIA_FUNDS_PRODUCERS_FOREIGN_CALLS.items():
+    for target in targets:
+        for collection in (
+            GLOBAL_TERRITORIAL_AREA_SEEDS.setdefault(country, []),
+            COUNTRY_PUBLIC_SPACE_TARGETS.setdefault(country, []),
+            GLOBAL_PRIORITY_TARGETS.setdefault(country, []),
+        ):
+            if target not in collection:
+                collection.append(target)
+
+for country, targets in FOCUS_COUNTRY_FUNDS_PRODUCERS_FOREIGN_CALLS.items():
     for target in targets:
         for collection in (
             GLOBAL_TERRITORIAL_AREA_SEEDS.setdefault(country, []),

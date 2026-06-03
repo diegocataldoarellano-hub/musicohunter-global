@@ -480,6 +480,63 @@ Object.entries(ASIA_FUNDS_PRODUCERS_FOREIGN_CALLS).forEach(([country, targets]) 
   COUNTRY_PUBLIC_SPACE_TARGETS[country] = [...new Set([...(COUNTRY_PUBLIC_SPACE_TARGETS[country] || []), ...targets])];
 });
 
+const FOCUS_COUNTRY_FUNDS_PRODUCERS_FOREIGN_CALLS = {
+  Irlanda: [
+    "Culture Ireland music funding international performance",
+    "Music From Ireland export support",
+    "First Music Contact Ireland artist supports",
+    "Ireland Music Week international showcase application",
+    "Whelans Dublin booking bands",
+    "Levis Corner House Ballydehob music booking",
+    "IMRO Ireland music funding opportunities",
+    "Arts Council Ireland music bursary international artists",
+    "Dublin City Council arts office music grants",
+    "Galway International Arts Festival music open call"
+  ],
+  China: [
+    "Modern Sky Lab booking foreign bands China",
+    "Split Works China international artists booking",
+    "MTA Festival foreign bands China",
+    "China Shanghai International Arts Festival international artists open call",
+    "Beijing Music Festival international musicians",
+    "Strawberry Music Festival China band booking",
+    "Midi Festival China foreign bands",
+    "Shanghai Symphony Hall international artists",
+    "Power Station of Art Shanghai music performance open call",
+    "Yuyintang Shanghai booking bands"
+  ],
+  Japon: [
+    "Japan Foundation performing arts grants music international",
+    "Japan Arts Council artist grants music",
+    "Smash Corporation Japan booking foreign bands",
+    "Creativeman Productions artist submissions",
+    "Fuji Rock Rookie A-Go-Go band submissions",
+    "Summer Sonic artist application Japan",
+    "Music Lane Okinawa international showcase",
+    "Kansai Music Conference foreign artists",
+    "Shibuya WWW Tokyo booking bands",
+    "Live Nation Japan international artists"
+  ],
+  Canada: [
+    "Canada Council for the Arts music grants international collaboration",
+    "FACTOR Canada artist development funding",
+    "Musicaction Canada francophone music funding",
+    "SODEC musique aide artistes internationaux",
+    "Music BC export funding international showcase",
+    "BreakOut West international showcase application",
+    "M for Montreal artist submission international",
+    "Canadian Music Week artist submission foreign bands",
+    "North by Northeast artist application international bands",
+    "Pop Montreal artist application international artists",
+    "Harbourfront Centre Toronto music open call",
+    "National Arts Centre Ottawa music international artists"
+  ]
+};
+
+Object.entries(FOCUS_COUNTRY_FUNDS_PRODUCERS_FOREIGN_CALLS).forEach(([country, targets]) => {
+  COUNTRY_PUBLIC_SPACE_TARGETS[country] = [...new Set([...(COUNTRY_PUBLIC_SPACE_TARGETS[country] || []), ...targets])];
+});
+
 const CONTINENT_VIEWS = {
   Latinoamerica: { center: [-17.0, -64.0], zoom: 3 },
   Norteamerica: { center: [48.0, -100.0], zoom: 3 },
@@ -1301,6 +1358,24 @@ const ASIA_FUNDS_PRODUCERS_TERRITORIAL_REVIEW = Object.entries(ASIA_FUNDS_PRODUC
 
 TERRITORIAL_AREA_TARGETS.push(...ASIA_FUNDS_PRODUCERS_TERRITORIAL_REVIEW);
 
+const FOCUS_COUNTRY_FUNDS_PRODUCERS_TERRITORIAL_REVIEW = Object.entries(FOCUS_COUNTRY_FUNDS_PRODUCERS_FOREIGN_CALLS)
+  .flatMap(([country, targets]) => {
+    const view = COUNTRY_VIEWS[country] || CONTINENT_VIEWS[continentForCountry(country)] || CONTINENT_VIEWS.Global;
+    const [lat, lng] = view.center;
+    return targets.slice(0, 5).map((label, index) => ({
+      country,
+      region: "Fondos/productoras foco",
+      city: country,
+      label,
+      lat: lat + (index - 2) * 0.16,
+      lng: lng + (index - 2) * 0.16,
+      type: "radar_focus_support",
+      query: `${label} ${country} music grant funding producer booking foreign bands international artists band submissions open call`
+    }));
+  });
+
+TERRITORIAL_AREA_TARGETS.push(...FOCUS_COUNTRY_FUNDS_PRODUCERS_TERRITORIAL_REVIEW);
+
 const LATAM_RECOGNIZED_TARGETS = [
   ["Argentina", "Buenos Aires", "Buenos Aires", "INAMU"],
   ["Argentina", "Buenos Aires", "Buenos Aires", "BAFIM"],
@@ -1710,6 +1785,18 @@ const ASIA_FUNDS_PRODUCERS_PRIORITY_REVIEW = Object.entries(ASIA_FUNDS_PRODUCERS
   })));
 
 GLOBAL_PRIORITY_TARGETS.push(...ASIA_FUNDS_PRODUCERS_PRIORITY_REVIEW);
+
+const FOCUS_COUNTRY_FUNDS_PRODUCERS_PRIORITY_REVIEW = Object.entries(FOCUS_COUNTRY_FUNDS_PRODUCERS_FOREIGN_CALLS)
+  .flatMap(([country, targets]) => targets.slice(0, 6).map((label) => ({
+    country,
+    region: "Fondos/productoras foco",
+    city: country,
+    label,
+    type: "radar_focus_support",
+    query: `${label} ${country} music grant funding producer booking foreign bands international artists band submissions open call`
+  })));
+
+GLOBAL_PRIORITY_TARGETS.push(...FOCUS_COUNTRY_FUNDS_PRODUCERS_PRIORITY_REVIEW);
 
 const fallbackPayload = {
   opportunities: [
