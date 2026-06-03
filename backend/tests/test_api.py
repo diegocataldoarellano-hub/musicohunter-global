@@ -1,7 +1,7 @@
 from fastapi.testclient import TestClient
 
 from app.main import app
-from app.curator_agent import extract_event_date
+from app.curator_agent import extract_deadline_date, extract_event_date
 from app.discovery import build_discovery_queries
 from app.schemas import split_csv
 
@@ -26,6 +26,9 @@ def test_chile_discovery_queries_include_regional_targets():
     assert "Valparaiso" in joined
     assert "Concepcion" in joined
     assert "Valle de Elqui" in joined
+    assert "agendacultural" in joined
+    assert "tocatasantiago" in joined
+    assert "postula hasta" in joined
 
 
 def test_extract_event_date_from_public_post_text():
@@ -37,6 +40,15 @@ def test_extract_event_date_from_public_post_text():
     assert numeric is not None
     assert numeric.month == 5
     assert numeric.day == 29
+
+
+def test_extract_deadline_date_from_call_text():
+    deadline = extract_deadline_date("Convocatoria abierta: postula hasta el 20 de junio a las 23:59")
+    event_date = extract_deadline_date("Concierto este 20 de junio a las 20:00 hrs")
+    assert deadline is not None
+    assert deadline.month == 6
+    assert deadline.day == 20
+    assert event_date is None
 
 
 def test_health_and_public_opportunities_load():

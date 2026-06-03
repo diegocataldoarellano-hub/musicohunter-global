@@ -169,6 +169,17 @@ SPANISH_MONTHS = {
     "diciembre": 12,
 }
 
+DEADLINE_TERMS = [
+    "postula hasta",
+    "postulaciones hasta",
+    "convocatoria hasta",
+    "cierre",
+    "fecha limite",
+    "plazo",
+    "bases hasta",
+    "inscripciones hasta",
+]
+
 
 def infer_year(month: int, day: int) -> int:
     today = datetime.now(timezone.utc).date()
@@ -208,6 +219,13 @@ def extract_event_date(text: str) -> date | None:
     return None
 
 
+def extract_deadline_date(text: str) -> date | None:
+    normalized = normalize_text(text)
+    if not any(term in normalized for term in DEADLINE_TERMS):
+        return None
+    return extract_event_date(text)
+
+
 def make_candidate_url(source_url: str, href: str | None) -> str:
     if not href:
         return source_url
@@ -234,6 +252,7 @@ async def fetch_source(source: Source) -> list[dict]:
         confidence = score_text(text)
         if confidence < 0.45:
             continue
+        deadline_date = extract_deadline_date(text)
         candidates.append(
             {
                 "title": label[:240],
@@ -242,7 +261,8 @@ async def fetch_source(source: Source) -> list[dict]:
                 "confidence": confidence,
                 "category": infer_category(text, source.type),
                 "genres": genre_csv(text),
-                "event_date": extract_event_date(text),
+                "event_date": None if deadline_date else extract_event_date(text),
+                "deadline": deadline_date,
             }
         )
         if len(candidates) >= 12:
@@ -256,6 +276,7 @@ def upsert_opportunity(db, source: Source, candidate: dict, link_status: str, su
         existing.summary = summary or candidate["summary"]
         existing.confidence = max(existing.confidence, candidate["confidence"])
         existing.link_status = link_status
+        existing.deadline = candidate.get("deadline") or existing.deadline
         existing.event_date = candidate.get("event_date") or existing.event_date
         existing.last_checked = datetime.now(timezone.utc)
         existing.published = link_status in {"ok", "redirected"} and existing.confidence >= 0.5
@@ -271,7 +292,7 @@ def upsert_opportunity(db, source: Source, candidate: dict, link_status: str, su
             city=source.region,
             lat=None,
             lng=None,
-            deadline=None,
+            deadline=candidate.get("deadline"),
             event_date=candidate.get("event_date"),
             genres=candidate["genres"],
             requirements="Revisar fecha de publicacion y fecha del evento en la fuente oficial; preparar EPK; validar plazo y contacto publico antes de postular.",

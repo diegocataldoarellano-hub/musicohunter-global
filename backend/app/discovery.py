@@ -54,11 +54,39 @@ CHILE_REGIONAL_TARGETS = [
     "Sur de Chile",
 ]
 
+CHILE_INSTAGRAM_TAGS = [
+    "agendacultural",
+    "panoramaschile",
+    "panoramassantiago",
+    "tocatasantiago",
+    "tocatasvalparaiso",
+    "conciertoschile",
+    "conciertossantiago",
+    "conciertosconcepcion",
+    "rockchileno",
+    "bandaschilenas",
+    "musicachilena",
+    "festivalrec",
+    "culturavalparaiso",
+    "culturabiobio",
+    "culturanuble",
+    "culturacoquimbo",
+    "valledelelqui",
+]
+
 CHILE_REGIONAL_MISSION_TEMPLATES = [
     'site:instagram.com/p "{region}" agenda cultural conciertos bandas rock',
     'site:instagram.com/reel "{region}" festival convocatoria teloneros musica',
+    'site:instagram.com/p "{region}" "postula hasta" musica bandas',
+    'site:instagram.com/p "{region}" convocatoria cierre bases cultura musica',
     '"{region}" centro cultural musica conciertos convocatoria entrada liberada',
     '"{region}" municipio cultura bandas festival musica pago honorarios',
+]
+
+CHILE_TAG_MISSION_TEMPLATES = [
+    "site:instagram.com/explore/tags/{tag}/",
+    'site:instagram.com/p "#{tag}" convocatoria musica bandas',
+    'site:instagram.com/reel "#{tag}" conciertos agenda cultural',
 ]
 
 
@@ -67,6 +95,8 @@ def build_discovery_queries(country: str) -> list[str]:
     if country == "Chile":
         for region in CHILE_REGIONAL_TARGETS:
             queries.extend(template.replace("{region}", region) for template in CHILE_REGIONAL_MISSION_TEMPLATES)
+        for tag in CHILE_INSTAGRAM_TAGS:
+            queries.extend(template.replace("{tag}", tag) for template in CHILE_TAG_MISSION_TEMPLATES)
     return queries
 
 

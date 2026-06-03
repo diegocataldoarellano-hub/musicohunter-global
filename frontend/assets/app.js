@@ -108,6 +108,26 @@ const CHILE_REGIONAL_TARGETS = [
   { region: "Sur", city: "Sur de Chile", query: "sur de Chile musica conciertos festival bandas centro cultural" }
 ];
 
+const CHILE_INSTAGRAM_PROMOTION_TAGS = [
+  { tag: "agendacultural", label: "Agenda cultural Chile", region: "Nacional" },
+  { tag: "panoramaschile", label: "Panoramas Chile", region: "Nacional" },
+  { tag: "panoramassantiago", label: "Panoramas Santiago", region: "Metropolitana" },
+  { tag: "tocatasantiago", label: "Tocatas Santiago", region: "Metropolitana" },
+  { tag: "tocatasvalparaiso", label: "Tocatas Valparaiso", region: "Valparaiso" },
+  { tag: "conciertoschile", label: "Conciertos Chile", region: "Nacional" },
+  { tag: "conciertossantiago", label: "Conciertos Santiago", region: "Metropolitana" },
+  { tag: "conciertosconcepcion", label: "Conciertos Concepcion", region: "Biobio" },
+  { tag: "rockchileno", label: "Rock chileno", region: "Nacional" },
+  { tag: "bandaschilenas", label: "Bandas chilenas", region: "Nacional" },
+  { tag: "musicachilena", label: "Musica chilena", region: "Nacional" },
+  { tag: "festivalrec", label: "Festival REC / Biobio", region: "Biobio" },
+  { tag: "culturavalparaiso", label: "Cultura Valparaiso", region: "Valparaiso" },
+  { tag: "culturabiobio", label: "Cultura Biobio", region: "Biobio" },
+  { tag: "culturanuble", label: "Cultura Nuble", region: "Nuble" },
+  { tag: "culturacoquimbo", label: "Cultura Coquimbo", region: "Coquimbo" },
+  { tag: "valledelelqui", label: "Valle de Elqui", region: "Coquimbo" }
+];
+
 const fallbackPayload = {
   opportunities: [
     {
@@ -859,6 +879,25 @@ function buildExternalSearchCards() {
     }
   ];
   if (country === "Chile") {
+    const promotionTags = CHILE_INSTAGRAM_PROMOTION_TAGS
+      .filter((item) => filters.region === "all" || item.region === "Nacional" || item.region === filters.region)
+      .slice(0, filters.region === "all" ? 12 : 8);
+    promotionTags.forEach((item) => {
+      searches.push(
+        {
+          title: `Etiqueta Instagram #${item.tag}`,
+          category: "instagram_etiqueta",
+          url: instagramHashtagUrl(item.tag),
+          summary: `${item.label}. Etiqueta usada como publicidad cultural: revisar posts recientes, fecha de publicacion, fecha del evento, plazo de postulacion y contacto.`
+        },
+        {
+          title: `Posts recientes con #${item.tag}`,
+          category: "instagram_posts_recientes",
+          url: googleSearchUrl(`site:instagram.com/p "#${item.tag}" "concierto" OR "convocatoria" OR "postula hasta" after:2025-01-01`),
+          summary: `Busqueda reciente por publicaciones con #${item.tag}. Prioriza avisos culturales, tocatas, convocatorias, bases y cierres.`
+        }
+      );
+    });
     const regionalTargets = CHILE_REGIONAL_TARGETS
       .filter((target) => filters.region === "all" || target.region === filters.region || target.city === filters.region)
       .slice(0, filters.region === "all" ? 10 : 4);
@@ -890,7 +929,7 @@ function buildExternalSearchCards() {
     linkStatus: "requires_review",
     confidence: 0.58,
     genres: ["rock", "fusion", "folk", "experimental", "progresivo"],
-    requirements: ["Abrir el enlace.", "Leer fecha de publicacion y fecha del evento.", "Validar hora, contacto, requisitos y vigencia antes de contactar."]
+    requirements: ["Abrir el enlace.", "Leer fecha de publicacion, fecha del evento y plazo/cierre.", "Validar hora, contacto, requisitos y vigencia antes de contactar."]
   }));
 }
 
@@ -991,7 +1030,7 @@ function setupFilters() {
   filters.category = els.categoryFilter.value;
   filters.genre = els.genreFilter.value;
 
-  const quick = ["Chile", "Europa", "instagram", "tiktok", "teloneros", "fondos", "concurso", "showcase", "gira", "sello", "booking", "productora", "municipio", "centro cultural", "rock", "festival"];
+  const quick = ["Chile", "Europa", "instagram", "agenda cultural", "panoramas", "tocata", "plazo", "tiktok", "teloneros", "fondos", "concurso", "showcase", "gira", "sello", "booking", "productora", "municipio", "centro cultural", "rock", "festival"];
   els.quickFilters.innerHTML = quick.map((item) => (
     `<button class="chip" data-quick="${escapeHtml(item)}" type="button">${escapeHtml(item)}</button>`
   )).join("");
