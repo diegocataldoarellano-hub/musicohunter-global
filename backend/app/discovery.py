@@ -163,6 +163,67 @@ LATAM_SEMANTIC_MISSION_TEMPLATES = [
     '"{country}" "{term}" "booking" "bandas"',
 ]
 
+ADMIN_DIVISION_TERMS = {
+    "Chile": ["region", "comuna", "municipalidad", "gobierno regional", "corporacion cultural"],
+    "Argentina": ["provincia", "municipio", "departamento", "secretaria de cultura", "centro cultural"],
+    "Uruguay": ["departamento", "municipio", "intendencia", "direccion de cultura", "centro cultural"],
+    "Paraguay": ["departamento", "municipalidad", "gobernacion", "direccion de cultura"],
+    "Bolivia": ["departamento", "municipio", "gobierno autonomo municipal", "casa de la cultura"],
+    "Peru": ["region", "municipalidad", "provincia", "distrito", "direccion desconcentrada de cultura"],
+    "Colombia": ["departamento", "municipio", "alcaldia", "secretaria de cultura", "instituto de cultura"],
+    "Brasil": ["estado", "municipio", "prefeitura", "secretaria de cultura", "sesc"],
+    "Mexico": ["estado", "municipio", "alcaldia", "secretaria de cultura", "instituto de cultura"],
+    "Estados Unidos": ["state", "county", "city arts council", "municipal arts", "cultural affairs"],
+    "Canada": ["province", "territory", "city arts council", "municipality", "cultural grants"],
+    "Inglaterra": ["county", "borough", "city council", "arts council", "cultural programme"],
+    "Reino Unido": ["county", "borough", "city council", "arts council", "cultural programme"],
+    "Irlanda": ["county", "city council", "arts office", "county council"],
+    "Gales": ["county", "council", "arts council", "cymru music"],
+    "Francia": ["region", "departement", "commune", "mairie", "drac"],
+    "Espana": ["comunidad autonoma", "provincia", "ayuntamiento", "concejalia de cultura"],
+    "Alemania": ["bundesland", "stadt", "kulturamt", "bezirk"],
+    "Australia": ["state", "territory", "local council", "arts grants"],
+}
+
+DEFAULT_ADMIN_DIVISION_TERMS = ["region", "province", "state", "municipality", "city council", "cultural center"]
+
+GLOBAL_TERRITORIAL_AREA_SEEDS = {
+    "Chile": [
+        "Region de Atacama Copiapo Caldera Chanaral Vallenar Huasco Freirina Alto del Carmen",
+        "Gobierno Regional de Atacama cultura musica",
+        "Municipalidad de Copiapo Cultura",
+        "Municipalidad de Caldera Cultura",
+        "Municipalidad de Chanaral Cultura",
+        "Municipalidad de Diego de Almagro Cultura",
+        "Municipalidad de Tierra Amarilla Cultura",
+        "Municipalidad de Vallenar Cultura",
+        "Municipalidad de Huasco Cultura",
+        "Municipalidad de Freirina Cultura",
+        "Municipalidad de Alto del Carmen Cultura",
+    ],
+    "Argentina": ["Provincia de Buenos Aires cultura musica", "Cordoba Cultura municipios", "Santa Fe Cultura Rosario", "Mendoza Cultura municipios", "Patagonia Argentina cultura musica"],
+    "Uruguay": ["Montevideo departamento cultura musica", "Canelones Cultura", "Maldonado Cultura", "Colonia Cultura", "Paysandu Cultura", "Salto Cultura"],
+    "Paraguay": ["Asuncion Cultura", "Departamento Central cultura musica", "Alto Parana Cultura", "Itapua Cultura", "Guaira Cultura"],
+    "Bolivia": ["La Paz Culturas", "Santa Cruz Cultura", "Cochabamba Cultura", "Sucre Cultura", "Tarija Cultura"],
+    "Peru": ["Lima Cultura", "Arequipa Cultura", "Cusco Cultura", "La Libertad Trujillo Cultura", "Piura Cultura"],
+    "Colombia": ["Bogota Cultura", "Antioquia Medellin Cultura", "Valle del Cauca Cali Cultura", "Atlantico Barranquilla Cultura", "Bolivar Cartagena Cultura"],
+    "Brasil": ["Sao Paulo Secretaria de Cultura musica", "Rio de Janeiro Cultura", "Minas Gerais Cultura", "Bahia Cultura", "Rio Grande do Sul Cultura"],
+    "Mexico": ["Ciudad de Mexico Cultura", "Jalisco Cultura Guadalajara", "Nuevo Leon Cultura Monterrey", "Baja California Cultura Tijuana", "Yucatan Cultura Merida"],
+    "Estados Unidos": ["Texas arts council music", "California arts council music", "New York state arts music", "Los Angeles county arts music", "Austin music commission"],
+    "Canada": ["Ontario arts council music", "Quebec music council", "British Columbia arts council music", "Toronto arts council music", "Montreal culture music"],
+}
+
+TERRITORIAL_MISSION_TEMPLATES = [
+    '"{country}" "{term}" cultura musica bandas convocatoria',
+    '"{country}" "{term}" centro cultural conciertos bandas',
+    '"{country}" "{term}" festival musica teloneros',
+    'site:instagram.com/p "{country}" "{term}" musica convocatoria',
+    'site:instagram.com/reel "{country}" "{term}" concierto bandas',
+    '"{area}" convocatoria musica bandas',
+    '"{area}" centro cultural conciertos rock',
+    'site:instagram.com/p "{area}" cultura musica bandas',
+]
+
 COUNTRY_SEARCH_ALIASES = {
     "Estados Unidos": "Estados Unidos EEUU USA United States",
     "Inglaterra": "Inglaterra England Reino Unido UK",
@@ -217,6 +278,16 @@ CHILE_REGIONAL_TARGETS = [
     "Coquimbo",
     "Antofagasta teatro municipal cultura musica conciertos",
     "Calama corporacion cultural musica conciertos",
+    "Region de Atacama Copiapo Caldera Chanaral Vallenar Huasco musica cultura",
+    "Copiapo cultura municipal musica conciertos bandas",
+    "Caldera cultura municipal musica festival bandas",
+    "Chanaral cultura municipal musica conciertos",
+    "Diego de Almagro cultura municipal musica",
+    "Tierra Amarilla cultura municipal musica",
+    "Vallenar cultura municipal musica conciertos",
+    "Huasco cultura municipal musica festival",
+    "Freirina cultura municipal musica",
+    "Alto del Carmen cultura musica valle",
     "Valdivia teatro cervantes fluvial musica conciertos",
     "Puerto Montt teatro diego rivera cultura musica conciertos",
     "Norte de Chile",
@@ -330,7 +401,19 @@ Municipalidad de Tocopilla Cultura
 Municipalidad de Mejillones Cultura
 Municipalidad de Copiapo Cultura
 Centro Cultural Atacama Copiapo
+Casa de la Cultura de Copiapo
+Centro Cultural Ser Humano Atacama
+Gobierno Regional de Atacama Cultura
+Municipalidad de Caldera Cultura
+Centro Cultural Estacion Caldera
+Municipalidad de Chanaral Cultura
+Municipalidad de Diego de Almagro Cultura
+Municipalidad de Tierra Amarilla Cultura
 Municipalidad de Vallenar Cultura
+Centro Cultural Vallenar
+Municipalidad de Huasco Cultura
+Municipalidad de Freirina Cultura
+Municipalidad de Alto del Carmen Cultura
 Municipalidad de La Serena Cultura
 Teatro Centenario La Serena
 Municipalidad de Coquimbo Cultura
@@ -497,7 +580,18 @@ Corporacion Cultural Calama
 Mejillones Cultura
 Tocopilla Cultura
 Copiapo Cultura
+Gobierno Regional de Atacama Cultura
+Casa de la Cultura de Copiapo
+Caldera Cultura
+Centro Cultural Estacion Caldera
+Chanaral Cultura
+Diego de Almagro Cultura
+Tierra Amarilla Cultura
 Vallenar Cultura
+Centro Cultural Vallenar
+Huasco Cultura
+Freirina Cultura
+Alto del Carmen Cultura
 Centro Cultural Teatro Centenario La Serena
 Coquimbo Cultura
 Centro Cultural Municipal Ovalle
@@ -956,9 +1050,24 @@ def build_semantic_discovery_queries(country: str) -> list[str]:
     ]
 
 
+def build_territorial_discovery_queries(country: str) -> list[str]:
+    search_country = COUNTRY_SEARCH_ALIASES.get(country, country)
+    admin_terms = ADMIN_DIVISION_TERMS.get(country, DEFAULT_ADMIN_DIVISION_TERMS)
+    areas = GLOBAL_TERRITORIAL_AREA_SEEDS.get(country, [])
+    queries = []
+    for term in admin_terms:
+        for template in TERRITORIAL_MISSION_TEMPLATES[:5]:
+            queries.append(template.replace("{country}", search_country).replace("{term}", term).replace("{area}", f"{search_country} {term}"))
+    for area in areas:
+        for template in TERRITORIAL_MISSION_TEMPLATES[5:]:
+            queries.append(template.replace("{country}", search_country).replace("{term}", area).replace("{area}", area))
+    return queries
+
+
 def build_discovery_queries(country: str) -> list[str]:
     search_country = COUNTRY_SEARCH_ALIASES.get(country, country)
     queries = [template.replace("{country}", search_country) for template in SEARCH_MISSION_TEMPLATES]
+    queries.extend(build_territorial_discovery_queries(country))
     if country in WORLD_EXTRA_COUNTRIES["Latinoamerica"]:
         queries.extend(build_semantic_discovery_queries(country))
     if country == "Chile":

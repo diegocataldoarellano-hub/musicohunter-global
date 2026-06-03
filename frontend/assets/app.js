@@ -287,6 +287,24 @@ const COUNTRY_VIEWS = {
   "Estados Unidos": { center: [39.8283, -98.5795], zoom: 4 }
 };
 
+const REGION_VIEWS = {
+  "Chile:Atacama": { center: [-27.3668, -70.3323], zoom: 7 },
+  "Chile:Antofagasta": { center: [-23.6509, -70.3975], zoom: 6 },
+  "Chile:Coquimbo": { center: [-29.959, -71.3389], zoom: 7 },
+  "Chile:Metropolitana": { center: [-33.4489, -70.6693], zoom: 9 },
+  "Chile:Valparaiso": { center: [-33.0472, -71.6127], zoom: 8 },
+  "Argentina:Buenos Aires": { center: [-34.6037, -58.3816], zoom: 7 },
+  "Argentina:Cordoba": { center: [-31.4201, -64.1888], zoom: 7 },
+  "Uruguay:Montevideo": { center: [-34.9011, -56.1645], zoom: 9 },
+  "Uruguay:Canelones": { center: [-34.5228, -56.2778], zoom: 8 },
+  "Estados Unidos:Texas": { center: [31.0, -99.0], zoom: 5 },
+  "Estados Unidos:California": { center: [36.7783, -119.4179], zoom: 5 },
+  "Canada:Ontario": { center: [50.0, -85.0], zoom: 5 },
+  "Brasil:Sao Paulo": { center: [-23.5505, -46.6333], zoom: 7 },
+  "Mexico:Ciudad de Mexico": { center: [19.4326, -99.1332], zoom: 9 },
+  "Colombia:Bogota": { center: [4.711, -74.0721], zoom: 8 }
+};
+
 const CHILE_REGIONAL_TARGETS = [
   { region: "Metropolitana", city: "Santiago", query: "Santiago agenda cultural conciertos bandas rock centro cultural" },
   { region: "Metropolitana", city: "GAM", query: "GAM Centro Cultural Gabriela Mistral musica conciertos convocatoria bandas" },
@@ -308,6 +326,15 @@ const CHILE_REGIONAL_TARGETS = [
   { region: "Coquimbo", city: "La Serena", query: "La Serena Coquimbo teatro centenario conciertos musica agenda" },
   { region: "Antofagasta", city: "Antofagasta", query: "Antofagasta teatro municipal corporacion cultural musica conciertos bandas" },
   { region: "Antofagasta", city: "Calama", query: "Calama corporacion cultural teatro musica conciertos bandas" },
+  { region: "Atacama", city: "Copiapo", query: "Copiapo Atacama cultura municipal musica conciertos bandas centro cultural" },
+  { region: "Atacama", city: "Caldera", query: "Caldera Atacama cultura musica festival conciertos bandas" },
+  { region: "Atacama", city: "Chanaral", query: "Chanaral Atacama cultura musica conciertos bandas municipalidad" },
+  { region: "Atacama", city: "Diego de Almagro", query: "Diego de Almagro Atacama cultura musica conciertos bandas" },
+  { region: "Atacama", city: "Tierra Amarilla", query: "Tierra Amarilla Atacama cultura musica conciertos bandas" },
+  { region: "Atacama", city: "Vallenar", query: "Vallenar Atacama centro cultural musica conciertos bandas" },
+  { region: "Atacama", city: "Huasco", query: "Huasco Atacama cultura musica festival bandas" },
+  { region: "Atacama", city: "Freirina", query: "Freirina Atacama cultura musica conciertos bandas" },
+  { region: "Atacama", city: "Alto del Carmen", query: "Alto del Carmen Atacama cultura musica valle conciertos bandas" },
   { region: "Los Rios", city: "Valdivia", query: "Valdivia Teatro Cervantes Fluvial musica conciertos bandas convocatoria" },
   { region: "Los Lagos", city: "Puerto Montt", query: "Puerto Montt Teatro Diego Rivera cultura musica conciertos bandas" },
   { region: "Norte", city: "Norte de Chile", query: "norte de Chile musica conciertos festival bandas centro cultural" },
@@ -332,6 +359,11 @@ const CHILE_INSTAGRAM_PROMOTION_TAGS = [
   { tag: "culturanuble", label: "Cultura Nuble", region: "Nuble" },
   { tag: "culturacoquimbo", label: "Cultura Coquimbo", region: "Coquimbo" },
   { tag: "valledelelqui", label: "Valle de Elqui", region: "Coquimbo" },
+  { tag: "culturaatacama", label: "Cultura Atacama", region: "Atacama" },
+  { tag: "atacama", label: "Atacama", region: "Atacama" },
+  { tag: "copiapo", label: "Copiapo", region: "Atacama" },
+  { tag: "vallenar", label: "Vallenar", region: "Atacama" },
+  { tag: "caldera", label: "Caldera", region: "Atacama" },
   { tag: "gamcl", label: "GAM / Centro Gabriela Mistral", region: "Metropolitana" },
   { tag: "lascondes", label: "Las Condes", region: "Metropolitana" },
   { tag: "providencia", label: "Providencia", region: "Metropolitana" },
@@ -381,7 +413,18 @@ const CHILE_DEEP_SEARCH_TARGETS = [
   ["Antofagasta", "Mejillones", "Mejillones Cultura"],
   ["Antofagasta", "Tocopilla", "Tocopilla Cultura"],
   ["Atacama", "Copiapo", "Copiapo Cultura"],
+  ["Atacama", "Copiapo", "Gobierno Regional de Atacama Cultura"],
+  ["Atacama", "Copiapo", "Casa de la Cultura de Copiapo"],
+  ["Atacama", "Caldera", "Caldera Cultura"],
+  ["Atacama", "Caldera", "Centro Cultural Estacion Caldera"],
+  ["Atacama", "Chanaral", "Chanaral Cultura"],
+  ["Atacama", "Diego de Almagro", "Diego de Almagro Cultura"],
+  ["Atacama", "Tierra Amarilla", "Tierra Amarilla Cultura"],
   ["Atacama", "Vallenar", "Vallenar Cultura"],
+  ["Atacama", "Vallenar", "Centro Cultural Vallenar"],
+  ["Atacama", "Huasco", "Huasco Cultura"],
+  ["Atacama", "Freirina", "Freirina Cultura"],
+  ["Atacama", "Alto del Carmen", "Alto del Carmen Cultura"],
   ["Coquimbo", "La Serena", "Centro Cultural Teatro Centenario"],
   ["Coquimbo", "Coquimbo", "Coquimbo Cultura"],
   ["Coquimbo", "Ovalle", "Centro Cultural Municipal Ovalle"],
@@ -453,6 +496,72 @@ const CHILE_DEEP_SEARCH_TARGETS = [
   label,
   type: "radar_local",
   query: `${label} ${city} musica conciertos bandas convocatoria tocata programacion centro cultural municipio`
+}));
+
+const ADMIN_DIVISION_TERMS = {
+  Chile: ["region", "comuna", "municipalidad", "gobierno regional", "corporacion cultural"],
+  Argentina: ["provincia", "municipio", "departamento", "secretaria de cultura"],
+  Uruguay: ["departamento", "municipio", "intendencia", "direccion de cultura"],
+  Paraguay: ["departamento", "municipalidad", "gobernacion"],
+  Bolivia: ["departamento", "municipio", "gobierno autonomo municipal"],
+  Peru: ["region", "municipalidad", "provincia", "distrito"],
+  Colombia: ["departamento", "municipio", "alcaldia", "secretaria de cultura"],
+  Brasil: ["estado", "municipio", "prefeitura", "secretaria de cultura"],
+  Mexico: ["estado", "municipio", "alcaldia", "secretaria de cultura"],
+  "Estados Unidos": ["state", "county", "city arts council", "cultural affairs"],
+  Canada: ["province", "territory", "city arts council", "municipality"],
+  Inglaterra: ["county", "borough", "city council", "arts council"],
+  "Reino Unido": ["county", "borough", "city council", "arts council"],
+  Irlanda: ["county", "city council", "arts office"],
+  Gales: ["county", "council", "arts council"],
+  Francia: ["region", "departement", "commune", "mairie"],
+  Espana: ["comunidad autonoma", "provincia", "ayuntamiento"],
+  Alemania: ["bundesland", "stadt", "kulturamt"],
+  Australia: ["state", "territory", "local council"]
+};
+
+const DEFAULT_ADMIN_DIVISION_TERMS = ["region", "province", "state", "municipality", "city council"];
+
+const TERRITORIAL_AREA_TARGETS = [
+  ["Chile", "Atacama", "Copiapo", "Municipalidad de Copiapo Cultura", -27.3668, -70.3323],
+  ["Chile", "Atacama", "Copiapo", "Gobierno Regional de Atacama Cultura", -27.3668, -70.3323],
+  ["Chile", "Atacama", "Copiapo", "Casa de la Cultura de Copiapo", -27.3668, -70.3323],
+  ["Chile", "Atacama", "Caldera", "Municipalidad de Caldera Cultura", -27.0667, -70.817],
+  ["Chile", "Atacama", "Caldera", "Centro Cultural Estacion Caldera", -27.0667, -70.817],
+  ["Chile", "Atacama", "Chanaral", "Municipalidad de Chanaral Cultura", -26.347, -70.624],
+  ["Chile", "Atacama", "Diego de Almagro", "Municipalidad de Diego de Almagro Cultura", -26.39, -70.05],
+  ["Chile", "Atacama", "Tierra Amarilla", "Municipalidad de Tierra Amarilla Cultura", -27.467, -70.264],
+  ["Chile", "Atacama", "Vallenar", "Municipalidad de Vallenar Cultura", -28.576, -70.759],
+  ["Chile", "Atacama", "Vallenar", "Centro Cultural Vallenar", -28.576, -70.759],
+  ["Chile", "Atacama", "Huasco", "Municipalidad de Huasco Cultura", -28.466, -71.219],
+  ["Chile", "Atacama", "Freirina", "Municipalidad de Freirina Cultura", -28.506, -71.077],
+  ["Chile", "Atacama", "Alto del Carmen", "Municipalidad de Alto del Carmen Cultura", -28.756, -70.486],
+  ["Argentina", "Buenos Aires", "Buenos Aires", "Provincia de Buenos Aires cultura musica", -34.6037, -58.3816],
+  ["Argentina", "Cordoba", "Cordoba", "Cordoba provincia cultura musica", -31.4201, -64.1888],
+  ["Argentina", "Santa Fe", "Rosario", "Santa Fe Rosario cultura musica", -32.9442, -60.6505],
+  ["Uruguay", "Montevideo", "Montevideo", "Montevideo departamento cultura musica", -34.9011, -56.1645],
+  ["Uruguay", "Canelones", "Canelones", "Canelones departamento cultura musica", -34.5228, -56.2778],
+  ["Uruguay", "Maldonado", "Maldonado", "Maldonado departamento cultura musica", -34.9, -54.95],
+  ["Estados Unidos", "Texas", "Austin", "Texas state arts council music", 30.2672, -97.7431],
+  ["Estados Unidos", "California", "Los Angeles", "Los Angeles county arts music", 34.0522, -118.2437],
+  ["Estados Unidos", "New York", "New York", "New York state arts music", 40.7128, -74.006],
+  ["Canada", "Ontario", "Toronto", "Ontario arts council music", 43.6532, -79.3832],
+  ["Canada", "Quebec", "Montreal", "Quebec culture music", 45.5017, -73.5673],
+  ["Brasil", "Sao Paulo", "Sao Paulo", "Sao Paulo estado cultura musica", -23.5505, -46.6333],
+  ["Brasil", "Rio de Janeiro", "Rio de Janeiro", "Rio de Janeiro estado cultura musica", -22.9068, -43.1729],
+  ["Mexico", "Ciudad de Mexico", "Ciudad de Mexico", "Ciudad de Mexico alcaldia cultura musica", 19.4326, -99.1332],
+  ["Mexico", "Jalisco", "Guadalajara", "Jalisco cultura musica Guadalajara", 20.6597, -103.3496],
+  ["Colombia", "Bogota", "Bogota", "Bogota secretaria de cultura musica", 4.711, -74.0721],
+  ["Colombia", "Antioquia", "Medellin", "Antioquia Medellin cultura musica", 6.2442, -75.5812]
+].map(([country, region, city, label, lat, lng]) => ({
+  country,
+  region,
+  city,
+  label,
+  lat,
+  lng,
+  type: "radar_territorial",
+  query: `${label} ${city} ${region} musica conciertos bandas convocatoria centro cultural municipio festival`
 }));
 
 const LATAM_RECOGNIZED_TARGETS = [
@@ -1478,6 +1587,7 @@ fallbackPayload.sources.push(...chileRegionalFallbackSources);
 
 const expandedPublicTargets = [
   ...CHILE_DEEP_SEARCH_TARGETS,
+  ...TERRITORIAL_AREA_TARGETS,
   ...LATAM_RECOGNIZED_TARGETS,
   ...GLOBAL_PRIORITY_TARGETS
 ];
@@ -1694,6 +1804,25 @@ function tiktokSearchUrl(query) {
   return `https://www.tiktok.com/search?q=${encodeURIComponent(query)}`;
 }
 
+function territoryTargetsForSelection(country) {
+  const specific = TERRITORIAL_AREA_TARGETS
+    .filter((target) => target.country === country)
+    .filter((target) => filters.region === "all" || target.region === filters.region || target.city === filters.region);
+  if (specific.length) return specific.slice(0, filters.region === "all" ? 14 : 18);
+
+  const view = COUNTRY_VIEWS[country] || CONTINENT_VIEWS[continentForCountry(country)] || CONTINENT_VIEWS.Global;
+  return (ADMIN_DIVISION_TERMS[country] || DEFAULT_ADMIN_DIVISION_TERMS).map((term, index) => ({
+    country,
+    region: "Territorial",
+    city: displayLabel(term),
+    label: `${displayLabel(country)} - ${term}`,
+    lat: view.center[0] + (index - 2) * 0.35,
+    lng: view.center[1] + (index - 2) * 0.35,
+    type: "radar_territorial",
+    query: `${country} ${term} cultura musica bandas convocatoria centro cultural festival`
+  }));
+}
+
 function buildExternalSearchCards() {
   const country = selectedSearchCountry();
   const queryCountry = countrySearchName(country);
@@ -1744,6 +1873,30 @@ function buildExternalSearchCards() {
       summary: "Busqueda de espacios publicos con pago, fondos, municipios, centros culturales y convocatorias institucionales."
     }
   ];
+  territoryTargetsForSelection(country).forEach((target) => {
+    searches.push(
+      {
+        title: `Mapa territorial - ${target.label}`,
+        category: "radar_territorial",
+        url: googleSearchUrl(`"${target.query}" "convocatoria" OR "conciertos" OR "buscamos bandas" OR "open call"`),
+        summary: `Busqueda por unidad territorial (${target.region}/${target.city}). Usa el concepto local: comuna, municipio, departamento, provincia, estado o condado.`,
+        lat: target.lat,
+        lng: target.lng,
+        region: target.region,
+        city: target.city
+      },
+      {
+        title: `Instagram territorial - ${target.label}`,
+        category: "instagram_territorial",
+        url: googleSearchUrl(`site:instagram.com/p OR site:instagram.com/reel "${target.query}" musica bandas after:2025-01-01`),
+        summary: "Rastrea publicaciones recientes de cultura local, municipalidades, centros culturales, festivales y llamados a bandas.",
+        lat: target.lat,
+        lng: target.lng,
+        region: target.region,
+        city: target.city
+      }
+    );
+  });
   const isLatamScope = filters.continent === "Latinoamerica" || WORLD_EXTRA_COUNTRIES.Latinoamerica.includes(country);
   if (isLatamScope) {
     LATAM_SEMANTIC_SEARCH_TERMS.forEach((term) => {
@@ -1866,8 +2019,8 @@ function buildExternalSearchCards() {
     id: `external-${index}`,
     ...item,
     country,
-    region: "Busqueda publica",
-    city: scope,
+    region: item.region || "Busqueda publica",
+    city: item.city || scope,
     sourceName: "Motor publico",
     sourceType: "busqueda_externa",
     linkStatus: "requires_review",
@@ -1893,13 +2046,18 @@ function selectedSearchCountry() {
 
 function selectedMapView() {
   if (filters.country !== "all") {
+    if (filters.region !== "all") {
+      const regionView = REGION_VIEWS[`${filters.country}:${filters.region}`];
+      if (regionView) return regionView;
+    }
     return COUNTRY_VIEWS[filters.country] || CONTINENT_VIEWS[continentForCountry(filters.country)] || CONTINENT_VIEWS.Global;
   }
   if (filters.continent !== "all") return CONTINENT_VIEWS[filters.continent] || CONTINENT_VIEWS.Global;
   return CONTINENT_VIEWS.Latinoamerica;
 }
 
-function mapPointForExternalCard(index) {
+function mapPointForExternalCard(index, item = {}) {
+  if (Number.isFinite(item.lat) && Number.isFinite(item.lng)) return [item.lat, item.lng];
   const view = selectedMapView();
   const angle = (index % 12) * (Math.PI / 6);
   const ring = 0.45 + Math.floor(index / 12) * 0.18;
@@ -2229,7 +2387,7 @@ function renderMap() {
     bounds.push([opp.lat, opp.lng]);
   });
   buildExternalSearchCards().slice(0, 36).forEach((item, index) => {
-    const point = mapPointForExternalCard(index);
+    const point = mapPointForExternalCard(index, item);
     const marker = L.circleMarker(point, {
       radius: 6,
       color: "#a78bfa",

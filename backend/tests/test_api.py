@@ -7,12 +7,14 @@ from app.discovery import (
     CHILE_MEDIA_PROFILE_TARGETS,
     CHILE_PUBLIC_SPACE_TARGETS,
     COUNTRY_PUBLIC_SPACE_TARGETS,
+    GLOBAL_TERRITORIAL_AREA_SEEDS,
     LATAM_RECOGNIZED_TARGETS,
     SEMANTIC_INTENT_GROUPS,
     TARGET_COUNTRIES,
     build_discovery_queries,
     build_global_discovery_queries,
     build_semantic_discovery_queries,
+    build_territorial_discovery_queries,
     global_mission_capacity,
 )
 from app.schemas import split_csv
@@ -50,6 +52,12 @@ def test_chile_discovery_queries_include_regional_targets():
     assert "Valdivia" in joined
     assert "Puerto Montt" in joined
     assert "Valle de Elqui" in joined
+    assert "Region de Atacama" in joined
+    assert "Caldera" in joined
+    assert "Chanaral" in joined
+    assert "Diego de Almagro" in joined
+    assert "Huasco" in joined
+    assert "Alto del Carmen" in joined
     assert "agendacultural" in joined
     assert "tocatasantiago" in joined
     assert "gamcl" in joined
@@ -62,6 +70,9 @@ def test_chile_discovery_queries_include_public_spaces_from_north_to_south():
     assert len(CHILE_PUBLIC_SPACE_TARGETS) >= 100
     assert "Municipalidad de Arica Cultura" in joined
     assert "Teatro Municipal de Antofagasta" in joined
+    assert "Casa de la Cultura de Copiapo" in joined
+    assert "Centro Cultural Estacion Caldera" in joined
+    assert "Municipalidad de Huasco Cultura" in joined
     assert "Museo de la Memoria" in joined
     assert "Teatro Regional del Maule" in joined
     assert "Teatro Diego Rivera Puerto Montt" in joined
@@ -103,6 +114,19 @@ def test_semantic_scoring_lifts_implicit_international_support_calls():
     signals = semantic_signal_hits(text)
     assert {"teloneros", "internacional", "showcase", "movilidad"}.issubset(set(signals))
     assert score_text(text) >= 0.7
+
+
+def test_territorial_queries_use_country_specific_admin_language():
+    chile = "\n".join(build_territorial_discovery_queries("Chile"))
+    argentina = "\n".join(build_territorial_discovery_queries("Argentina"))
+    uruguay = "\n".join(build_territorial_discovery_queries("Uruguay"))
+    usa = "\n".join(build_territorial_discovery_queries("Estados Unidos"))
+    assert "comuna" in chile
+    assert "Region de Atacama Copiapo Caldera Chanaral Vallenar Huasco" in chile
+    assert "provincia" in argentina
+    assert "departamento" in uruguay
+    assert "county" in usa
+    assert len(GLOBAL_TERRITORIAL_AREA_SEEDS["Chile"]) >= 10
 
 
 def test_global_discovery_bank_exceeds_100k_missions():
