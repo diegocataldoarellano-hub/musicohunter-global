@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Music Hunter Global | Radar de oportunidades musicales</title>
+  <meta name="description" content="Buscador curado de oportunidades, fuentes y perfiles publicos para bandas de rock, folk, fusion y escenas experimentales." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="./assets/styles.css" />
+</head>
+<body>
+  <div class="page-shell">
+    <header class="hero">
+      <nav class="topbar" aria-label="Navegacion principal">
+        <a class="brand" href="#top" aria-label="Music Hunter Global">
+          <span class="brand-mark"><i class="fa-solid fa-satellite-dish"></i></span>
+          <span>Music Hunter</span>
+        </a>
+        <div class="topbar-actions">
+          <a class="ghost-link" href="#sources">Fuentes vigiladas</a>
+          <button class="ghost-link" id="refreshButton" type="button">
+            <i class="fa-solid fa-rotate"></i> Actualizar
+          </button>
+        </div>
+      </nav>
+
+      <section class="hero-grid" id="top">
+        <div class="hero-copy">
+          <p class="eyebrow">Radar publico para bandas independientes</p>
+          <h1>Oportunidades reales para rock, fusion, folk y escenas experimentales.</h1>
+          <p class="hero-text">
+            Busqueda curada de festivales, booking, medios, radios, fondos y perfiles publicos.
+            Chile primero, Latinoamerica despues, siempre con link verificable.
+          </p>
+          <div class="hero-actions">
+            <a class="primary-action" href="#radar">
+              Explorar radar <i class="fa-solid fa-arrow-down"></i>
+            </a>
+            <a class="secondary-action" id="apiLink" href="#" target="_blank" rel="noopener">
+              Ver API <i class="fa-solid fa-up-right-from-square"></i>
+            </a>
+          </div>
+        </div>
+        <div class="hero-card" aria-label="Resumen del sistema">
+          <div class="signal-header">
+            <span class="pulse-dot"></span>
+            <span>Agente curador diario</span>
+          </div>
+          <div class="signal-grid">
+            <div>
+              <strong id="heroOpportunities">0</strong>
+              <span>oportunidades</span>
+            </div>
+            <div>
+              <strong id="heroSources">0</strong>
+              <span>fuentes</span>
+            </div>
+            <div>
+              <strong id="heroCountries">0</strong>
+              <span>paises</span>
+            </div>
+          </div>
+          <p>
+            Los links caidos se ocultan por defecto. Los resultados dudosos quedan para revision.
+          </p>
+        </div>
+      </section>
+    </header>
+
+    <main id="radar" class="main-layout">
+      <section class="stats-grid" aria-label="Estado del radar">
+        <article class="stat-card">
+          <i class="fa-solid fa-door-open"></i>
+          <strong id="statOpen">0</strong>
+          <span>Abiertas</span>
+        </article>
+        <article class="stat-card">
+          <i class="fa-solid fa-hourglass-half"></i>
+          <strong id="statClosing">0</strong>
+          <span>Cierran pronto</span>
+        </article>
+        <article class="stat-card">
+          <i class="fa-solid fa-shield-halved"></i>
+          <strong id="statVerified">0</strong>
+          <span>Links verificados</span>
+        </article>
+        <article class="stat-card">
+          <i class="fa-solid fa-earth-americas"></i>
+          <strong id="statRegions">0</strong>
+          <span>Regiones activas</span>
+        </article>
+      </section>
+
+      <section class="workspace">
+        <aside class="control-panel" aria-label="Filtros">
+          <div class="panel-heading">
+            <p class="eyebrow">Busqueda</p>
+            <h2>Filtra oportunidades</h2>
+          </div>
+
+          <label class="field">
+            <span>Texto libre</span>
+            <input id="searchInput" type="search" placeholder="festival, radio, booking, progresivo..." />
+          </label>
+
+          <div class="field-grid">
+            <label class="field">
+              <span>Pais</span>
+              <select id="countryFilter"></select>
+            </label>
+            <label class="field">
+              <span>Region</span>
+              <select id="regionFilter"></select>
+            </label>
+          </div>
+
+          <div class="field-grid">
+            <label class="field">
+              <span>Categoria</span>
+              <select id="categoryFilter"></select>
+            </label>
+            <label class="field">
+              <span>Genero</span>
+              <select id="genreFilter"></select>
+            </label>
+          </div>
+
+          <label class="field">
+            <span>Estado del link</span>
+            <select id="linkFilter">
+              <option value="public">Solo publicables</option>
+              <option value="all">Todos los estados</option>
+              <option value="ok">Verificado</option>
+              <option value="redirected">Redirige bien</option>
+              <option value="requires_review">Requiere revision</option>
+            </select>
+          </label>
+
+          <div class="quick-filters" id="quickFilters"></div>
+        </aside>
+
+        <section class="map-panel" aria-label="Mapa de oportunidades">
+          <div class="panel-toolbar">
+            <div>
+              <p class="eyebrow">Mapa</p>
+              <h2>Chile y Latinoamerica</h2>
+            </div>
+            <span class="status-pill" id="backendStatus">Conectando</span>
+          </div>
+          <div id="map" role="application" aria-label="Mapa interactivo"></div>
+        </section>
+
+        <section class="results-panel" aria-label="Resultados">
+          <div class="panel-toolbar">
+            <div>
+              <p class="eyebrow">Resultados</p>
+              <h2><span id="resultCount">0</span> oportunidades</h2>
+            </div>
+            <button class="small-button" id="clearFilters" type="button">Limpiar</button>
+          </div>
+          <div class="results-list" id="opportunityList"></div>
+        </section>
+      </section>
+
+      <section class="lower-grid">
+        <article class="calendar-panel">
+          <div class="panel-toolbar">
+            <div>
+              <p class="eyebrow">Calendario</p>
+              <h2 id="calendarTitle">Plazos</h2>
+            </div>
+            <div class="calendar-actions">
+              <button class="small-button" id="prevMonth" type="button" aria-label="Mes anterior"><i class="fa-solid fa-chevron-left"></i></button>
+              <button class="small-button" id="nextMonth" type="button" aria-label="Mes siguiente"><i class="fa-solid fa-chevron-right"></i></button>
+            </div>
+          </div>
+          <div class="calendar-grid calendar-head">
+            <span>Lun</span><span>Mar</span><span>Mie</span><span>Jue</span><span>Vie</span><span>Sab</span><span>Dom</span>
+          </div>
+          <div class="calendar-grid" id="calendarDays"></div>
+        </article>
+
+        <article class="sources-panel" id="sources">
+          <div class="panel-toolbar">
+            <div>
+              <p class="eyebrow">Transparencia</p>
+              <h2>Fuentes vigiladas</h2>
+            </div>
+          </div>
+          <div class="sources-list" id="sourcesList"></div>
+        </article>
+      </section>
+    </main>
+  </div>
+
+  <dialog class="detail-dialog" id="detailDialog">
+    <button class="dialog-close" id="closeDialog" type="button" aria-label="Cerrar">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
+    <div id="detailContent"></div>
+  </dialog>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="./assets/config.js"></script>
+  <script src="./assets/app.js"></script>
+</body>
+</html>

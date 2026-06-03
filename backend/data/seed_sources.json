@@ -1,0 +1,110 @@
+[
+  {
+    "name": "Fondos de Cultura",
+    "url": "https://www.fondosdecultura.cl/",
+    "country": "Chile",
+    "region": "Metropolitana",
+    "type": "institucion",
+    "priority": 96,
+    "query_hint": "fondos cultura musica convocatoria bases circulacion Chile"
+  },
+  {
+    "name": "Ministerio de las Culturas Chile",
+    "url": "https://www.cultura.gob.cl/",
+    "country": "Chile",
+    "region": "Metropolitana",
+    "type": "institucion",
+    "priority": 92,
+    "query_hint": "convocatorias musica cultura Chile regiones"
+  },
+  {
+    "name": "Sociedad Chilena de Autores e Interpretes Musicales",
+    "url": "https://www.scd.cl/",
+    "country": "Chile",
+    "region": "Metropolitana",
+    "type": "industria",
+    "priority": 88,
+    "query_hint": "SCD Chile musica convocatorias salas bandas"
+  },
+  {
+    "name": "Feria Pulsar",
+    "url": "https://www.feriapulsar.cl/",
+    "country": "Chile",
+    "region": "Los Rios",
+    "type": "showcase",
+    "priority": 90,
+    "query_hint": "Feria Pulsar convocatoria showcase industria musical Chile"
+  },
+  {
+    "name": "Fluvial",
+    "url": "https://fluvial.cl/",
+    "country": "Chile",
+    "region": "Los Rios",
+    "type": "mercado",
+    "priority": 88,
+    "query_hint": "Fluvial musica convocatoria Valdivia showcase"
+  },
+  {
+    "name": "IMESUR",
+    "url": "https://imesur.cl/",
+    "country": "Chile",
+    "region": "Metropolitana",
+    "type": "mercado",
+    "priority": 84,
+    "query_hint": "IMESUR industria musical Chile convocatoria"
+  },
+  {
+    "name": "Rock al Parque",
+    "url": "https://www.rockalparque.gov.co/",
+    "country": "Colombia",
+    "region": "Bogota",
+    "type": "festival",
+    "priority": 86,
+    "query_hint": "Rock al Parque convocatoria bandas rock latinoamerica"
+  },
+  {
+    "name": "BAFIM",
+    "url": "https://bafim.buenosaires.gob.ar/",
+    "country": "Argentina",
+    "region": "Buenos Aires",
+    "type": "mercado",
+    "priority": 86,
+    "query_hint": "BAFIM convocatoria showcase mercado musical Argentina"
+  },
+  {
+    "name": "INAMU",
+    "url": "https://inamu.musica.ar/",
+    "country": "Argentina",
+    "region": "Nacional",
+    "type": "institucion",
+    "priority": 84,
+    "query_hint": "INAMU convocatorias musica rock Argentina"
+  },
+  {
+    "name": "SIM Sao Paulo",
+    "url": "https://www.simsaopaulo.com/",
+    "country": "Brasil",
+    "region": "Sao Paulo",
+    "type": "mercado",
+    "priority": 82,
+    "query_hint": "SIM Sao Paulo showcase open call music conference"
+  },
+  {
+    "name": "Circulart",
+    "url": "https://circulart.org/",
+    "country": "Colombia",
+    "region": "Medellin",
+    "type": "mercado",
+    "priority": 82,
+    "query_hint": "Circulart convocatoria showcase musica latinoamerica"
+  },
+  {
+    "name": "BIME",
+    "url": "https://www.bime.org/",
+    "country": "Global",
+    "region": "Iberoamerica",
+    "type": "conferencia",
+    "priority": 78,
+    "query_hint": "BIME convocatoria showcase musica iberoamerica"
+  }
+]
