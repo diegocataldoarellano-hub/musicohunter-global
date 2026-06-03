@@ -13,6 +13,9 @@ from app.discovery import (
     EUROPE_DEEP_REVIEW_TARGETS,
     GREENLAND_DEEP_REVIEW_TARGETS,
     GLOBAL_TERRITORIAL_AREA_SEEDS,
+    GLOBAL_SUPPORT_FUNDING_PATTERNS,
+    GLOBAL_SUPPORT_FUNDING_TERMS,
+    GLOBAL_SUPPORT_INSTITUTION_TARGETS,
     GLOBAL_RADAR_DEEP_EXPANSION,
     HIGH_VALUE_SEMANTIC_TERMS,
     LATAM_RECOGNIZED_TARGETS,
@@ -21,6 +24,7 @@ from app.discovery import (
     TARGET_COUNTRIES,
     build_discovery_queries,
     build_global_discovery_queries,
+    build_global_support_funding_queries,
     build_semantic_discovery_queries,
     build_territorial_discovery_queries,
     global_mission_capacity,
@@ -352,6 +356,36 @@ def test_deep_research_findings_are_folded_into_territorial_queries():
 def test_global_discovery_bank_exceeds_100k_missions():
     assert len(TARGET_COUNTRIES) >= 190
     assert global_mission_capacity() >= 100_000
+
+
+def test_support_funding_layer_covers_all_target_countries():
+    assert len(GLOBAL_SUPPORT_FUNDING_TERMS) >= 30
+    assert len(GLOBAL_SUPPORT_FUNDING_PATTERNS) >= 18
+    assert len(GLOBAL_SUPPORT_INSTITUTION_TARGETS) >= 20
+    per_country_capacity = (
+        len(GLOBAL_SUPPORT_FUNDING_TERMS) * len(GLOBAL_SUPPORT_FUNDING_PATTERNS)
+        + len(GLOBAL_SUPPORT_INSTITUTION_TARGETS) * 8
+    )
+    assert len(TARGET_COUNTRIES) * per_country_capacity >= 100_000
+    for _, country in TARGET_COUNTRIES:
+        queries = "\n".join(build_global_support_funding_queries(country, limit=80))
+        assert country in queries or country in queries.replace("Canadá", "Canada")
+        assert "music grant" in queries or "fondo" in queries
+        assert "foreign" in queries or "extranjeros" in queries or "international" in queries
+
+
+def test_support_funding_queries_include_ngos_and_foreign_cultural_institutes():
+    chile = "\n".join(build_discovery_queries("Chile"))
+    japan = "\n".join(build_global_support_funding_queries("Japon"))
+    morocco = "\n".join(build_global_support_funding_queries("Marruecos"))
+    assert "NGO music fund artists" in chile
+    assert "ayuda monetaria musicos extranjeros" in chile
+    assert "On the Move mobility funding guide" in chile
+    assert "Goethe Institut music residency" in chile
+    assert "UNESCO International Fund for Cultural Diversity music" in japan
+    assert "Prince Claus Fund cultural grants" in morocco
+    assert "foreign artists" in japan
+    assert "artist residency" in morocco
 
 
 def test_expansion_priority_keeps_user_requested_order():

@@ -85,6 +85,51 @@ const GLOBAL_PUBLIC_SEARCH_TERMS = [
   "徵件 音樂 節"
 ];
 
+const GLOBAL_SUPPORT_FUNDING_TERMS = [
+  "music grant foreign musicians",
+  "funding for international musicians",
+  "travel grant foreign artists music",
+  "touring grant international musicians",
+  "artist residency grant music",
+  "music mobility fund international artists",
+  "NGO music fund artists",
+  "private foundation music grant",
+  "cultural centre artist residency music",
+  "embassy cultural fund music",
+  "foreign ministry cultural fund musicians",
+  "international cultural exchange music funding",
+  "artist stipend music residency",
+  "ayuda monetaria musicos extranjeros",
+  "fondo para musicos internacionales",
+  "beca movilidad musicos extranjeros",
+  "residencia musical artistas internacionales",
+  "fundacion privada musica artistas",
+  "ong fondo musica artistas",
+  "centro cultural residencia musica"
+];
+
+const GLOBAL_SUPPORT_INSTITUTION_TARGETS = [
+  "On the Move mobility funding guide",
+  "Res Artis artist residencies music",
+  "TransArtists residency funding music",
+  "Culture360 ASEF mobility grants music",
+  "Goethe Institut music residency",
+  "Institut Francais culture fund music",
+  "British Council music international collaboration",
+  "Pro Helvetia music residencies",
+  "Nordic Culture Point mobility funding",
+  "Creative Europe Culture cooperation music",
+  "UNESCO International Fund for Cultural Diversity music",
+  "Prince Claus Fund cultural grants",
+  "Roberto Cimetta Fund mobility artists",
+  "Art Moves Africa mobility fund music",
+  "Music In Africa opportunities grants",
+  "EUNIC cultural institutes music open call",
+  "Japan Foundation performing arts grants",
+  "Korea Foundation cultural exchange music",
+  "Ibermusicas movilidad musicos"
+];
+
 const INDUSTRY_LANGUAGE_TERMS = [
   "demo submission",
   "submit your music",
@@ -2746,6 +2791,18 @@ function buildExternalSearchCards() {
       category: "fondos_espacios",
       url: googleSearchUrl(`"${queryCountry}" municipio centro cultural fondos musica bandas convocatoria pago honorarios`),
       summary: "Busqueda de espacios publicos con pago, fondos, municipios, centros culturales y convocatorias institucionales."
+    },
+    {
+      title: `Fondos monetarios, ONG y fundaciones - ${country}`,
+      category: "fondos_monetarios_ong",
+      url: googleSearchUrl(`"${queryCountry}" "music grant" OR "funding for musicians" OR "NGO music fund" OR "private foundation" OR "ayuda monetaria musicos extranjeros"`),
+      summary: "Busca apoyo economico para musicos extranjeros: grants, becas, ONG, fundaciones privadas, institutos culturales, embajadas y travel support."
+    },
+    {
+      title: `Residencias y movilidad internacional - ${country}`,
+      category: "residencias_movilidad",
+      url: googleSearchUrl(`"${queryCountry}" "artist residency" "music" OR "mobility grant" OR "travel grant" OR "international cultural exchange"`),
+      summary: "Rastrea residencias, movilidad internacional, apoyo de viaje, intercambio cultural y programas abiertos a artistas de otros paises."
     }
   ];
   territoryTargetsForSelection(country).forEach((target) => {
@@ -2797,11 +2854,26 @@ function buildExternalSearchCards() {
       summary: "Busqueda global en ingles o idioma local para detectar convocatorias, festivales, residencias y showcases que acepten artistas de otros paises."
     });
   });
+  GLOBAL_SUPPORT_FUNDING_TERMS.slice(0, 12).forEach((term) => {
+    searches.push({
+      title: `Apoyo monetario global - ${term}`,
+      category: "fondos_monetarios_global",
+      url: googleSearchUrl(`"${queryCountry}" "${term}" rock OR folk OR fusion OR experimental OR progressive`),
+      summary: "Busqueda enfocada en dinero real: fondos, becas, honorarios, residencias pagadas, travel grants, ONG y fundaciones privadas para musicos extranjeros."
+    });
+  });
   [
     ["Instagram internacional", `site:instagram.com/p "${queryCountry}" "international artists" "open call" music`],
     ["Instagram bandas extranjeras", `site:instagram.com/reel "${queryCountry}" "foreign artists" "festival" music`],
     ["On the Move movilidad", `site:on-the-move.org "${queryCountry}" music mobility artists`],
     ["Culture360 Asia Europa", `site:culture360.asef.org "${queryCountry}" music open call artists`],
+    ["Res Artis residencias", `site:resartis.org "${queryCountry}" music residency grant`],
+    ["TransArtists residencias", `site:transartists.org "${queryCountry}" music residency funding`],
+    ["Goethe fondos culturales", `site:goethe.de "${queryCountry}" music residency funding artists`],
+    ["Institut Francais fondos", `site:institutfrancais.com "${queryCountry}" music grant artists`],
+    ["British Council music", `site:britishcouncil.org "${queryCountry}" music grant international artists`],
+    ["Pro Helvetia residencias", `site:prohelvetia.ch "${queryCountry}" music residency grant`],
+    ["UNESCO IFCD", `site:unesco.org "${queryCountry}" International Fund for Cultural Diversity music`],
     ["Submittable music", `site:submittable.com "${queryCountry}" music artist open call`],
     ["FilmFreeway music showcase", `site:filmfreeway.com "${queryCountry}" music festival submissions`],
     ["GitHub listas abiertas", `site:github.com "${queryCountry}" music opportunities open calls festivals artists`],
@@ -2812,6 +2884,14 @@ function buildExternalSearchCards() {
       category: "global_source",
       url: googleSearchUrl(query),
       summary: "Fuente global revisable para oportunidades abiertas, movilidad, showcases, festivales o postulaciones internacionales."
+    });
+  });
+  GLOBAL_SUPPORT_INSTITUTION_TARGETS.slice(0, 14).forEach((target) => {
+    searches.push({
+      title: `Organismo apoyo externo - ${target}`,
+      category: "organismo_apoyo_externo",
+      url: googleSearchUrl(`"${target}" "${queryCountry}" music grant residency mobility foreign artists international musicians`),
+      summary: "Busca organismos de otros paises, ONG, institutos culturales o fundaciones que puedan financiar movilidad, residencias, circulacion o colaboracion musical internacional."
     });
   });
   const publicTargets = (COUNTRY_PUBLIC_SPACE_TARGETS[country] || []).slice(0, country === "Chile" ? 18 : 10);

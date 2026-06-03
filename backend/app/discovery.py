@@ -2105,6 +2105,101 @@ EXPANDED_TARGET_TEMPLATES = [
     '"{target}" "open call" "music"',
 ]
 
+GLOBAL_SUPPORT_FUNDING_TERMS = [
+    "music grant foreign musicians",
+    "funding for international musicians",
+    "travel grant foreign artists music",
+    "touring grant international musicians",
+    "artist residency grant music",
+    "music mobility fund international artists",
+    "NGO music fund artists",
+    "private foundation music grant",
+    "cultural centre artist residency music",
+    "embassy cultural fund music",
+    "foreign ministry cultural fund musicians",
+    "international cultural exchange music funding",
+    "artist stipend music residency",
+    "emergency fund musicians",
+    "open call music grant international artists",
+    "ayuda monetaria musicos extranjeros",
+    "fondo para musicos internacionales",
+    "beca movilidad musicos extranjeros",
+    "residencia musical artistas internacionales",
+    "fundacion privada musica artistas",
+    "ong fondo musica artistas",
+    "centro cultural residencia musica",
+    "instituto cultural apoyo musicos",
+    "embajada fondo cultural musica",
+    "subvencion movilidad artistas internacionales",
+    "appel fonds musiciens internationaux",
+    "aide mobilite artistes etrangers musique",
+    "fonds culturel ambassade musique",
+    "musik forderung internationale kunstler",
+    "residenz stipendium musik international",
+    "fondo mobilita musicisti internazionali",
+    "apoio financeiro musicos estrangeiros",
+]
+
+GLOBAL_SUPPORT_FUNDING_PATTERNS = [
+    'site:on-the-move.org "{country}" "{term}"',
+    'site:resartis.org "{country}" "{term}"',
+    'site:transartists.org "{country}" "{term}"',
+    'site:culture360.asef.org "{country}" "{term}"',
+    'site:musicinafrica.net "{country}" "{term}"',
+    'site:goethe.de "{country}" "{term}"',
+    'site:institutfrancais.com "{country}" "{term}"',
+    'site:britishcouncil.org "{country}" "{term}"',
+    'site:prohelvetia.ch "{country}" "{term}"',
+    'site:nordiskkulturkontakt.org "{country}" "{term}"',
+    'site:creative-europe-desk.de "{country}" "{term}" music',
+    'site:culture.ec.europa.eu "{country}" "{term}" music',
+    'site:unesco.org "{country}" "{term}" music',
+    'site:princeclausfund.org "{country}" "{term}" music',
+    'site:cimettafund.org "{country}" "{term}" music',
+    'site:artmovesafrica.org "{country}" "{term}" music',
+    '"{country}" "{term}" "foreign artists"',
+    '"{country}" "{term}" "international musicians"',
+    '"{country}" "{term}" "cultural exchange"',
+    '"{country}" "{term}" "artist residency"',
+]
+
+GLOBAL_SUPPORT_INSTITUTION_TARGETS = [
+    "On the Move mobility funding guide",
+    "Res Artis artist residencies music",
+    "TransArtists residency funding music",
+    "Culture360 ASEF mobility grants music",
+    "Goethe Institut music residency",
+    "Institut Francais culture fund music",
+    "British Council music international collaboration",
+    "Pro Helvetia music residencies",
+    "Nordic Culture Point mobility funding",
+    "Creative Europe Culture cooperation music",
+    "UNESCO International Fund for Cultural Diversity music",
+    "Prince Claus Fund cultural grants",
+    "Roberto Cimetta Fund mobility artists",
+    "Art Moves Africa mobility fund music",
+    "Music In Africa opportunities grants",
+    "EUNIC cultural institutes music open call",
+    "Japan Foundation performing arts grants",
+    "Korea Foundation cultural exchange music",
+    "Ford Foundation arts culture grants",
+    "Open Society Foundations culture arts grants",
+    "Asia Europe Foundation artists mobility",
+    "Ibermusicas movilidad musicos",
+    "Iberescena ayudas artes escenicas musica",
+]
+
+GLOBAL_SUPPORT_TARGET_TEMPLATES = [
+    '"{target}" "{country}" "music"',
+    '"{target}" "{country}" "foreign artists"',
+    '"{target}" "{country}" "international artists"',
+    '"{target}" "{country}" "grant"',
+    '"{target}" "{country}" "residency"',
+    '"{target}" "{country}" "mobility"',
+    'site:instagram.com "{target}" "{country}" music grant',
+    'site:facebook.com "{target}" "{country}" music open call',
+]
+
 GLOBAL_INVITATION_TERMS = [
     "open call musicians international",
     "artist open call international music",
@@ -2210,7 +2305,12 @@ GLOBAL_SOURCE_PATTERNS = [
 
 
 def global_mission_capacity() -> int:
-    return len(TARGET_COUNTRIES) * len(GLOBAL_INVITATION_TERMS) * len(GLOBAL_SOURCE_PATTERNS)
+    public_capacity = len(TARGET_COUNTRIES) * len(GLOBAL_INVITATION_TERMS) * len(GLOBAL_SOURCE_PATTERNS)
+    support_capacity = len(TARGET_COUNTRIES) * (
+        len(GLOBAL_SUPPORT_FUNDING_TERMS) * len(GLOBAL_SUPPORT_FUNDING_PATTERNS)
+        + len(GLOBAL_SUPPORT_INSTITUTION_TARGETS) * len(GLOBAL_SUPPORT_TARGET_TEMPLATES)
+    )
+    return public_capacity + support_capacity
 
 
 def build_global_discovery_queries(country: str, limit: int | None = None) -> list[str]:
@@ -2220,6 +2320,21 @@ def build_global_discovery_queries(country: str, limit: int | None = None) -> li
         for pattern in GLOBAL_SOURCE_PATTERNS
         for term in GLOBAL_INVITATION_TERMS
     ]
+    return queries[:limit] if limit else queries
+
+
+def build_global_support_funding_queries(country: str, limit: int | None = None) -> list[str]:
+    search_country = COUNTRY_SEARCH_ALIASES.get(country, country)
+    queries = [
+        template.replace("{country}", search_country).replace("{target}", target)
+        for target in GLOBAL_SUPPORT_INSTITUTION_TARGETS
+        for template in GLOBAL_SUPPORT_TARGET_TEMPLATES
+    ]
+    queries.extend(
+        pattern.replace("{country}", search_country).replace("{term}", term)
+        for pattern in GLOBAL_SUPPORT_FUNDING_PATTERNS
+        for term in GLOBAL_SUPPORT_FUNDING_TERMS
+    )
     return queries[:limit] if limit else queries
 
 
@@ -2281,6 +2396,7 @@ def build_discovery_queries(country: str) -> list[str]:
         queries.extend(template.replace("{target}", target) for template in EXPANDED_TARGET_TEMPLATES)
     for target in COUNTRY_PUBLIC_SPACE_TARGETS.get(country, []):
         queries.extend(template.replace("{target}", target) for template in PUBLIC_SPACE_MISSION_TEMPLATES)
+    queries.extend(build_global_support_funding_queries(country, limit=260))
     queries.extend(build_global_discovery_queries(country, limit=220))
     return queries
 
