@@ -270,6 +270,16 @@ Object.entries(GLOBAL_PUBLIC_SPACE_EXPANSION).forEach(([country, targets]) => {
   COUNTRY_PUBLIC_SPACE_TARGETS[country] = [...new Set([...(COUNTRY_PUBLIC_SPACE_TARGETS[country] || []), ...targets])];
 });
 
+const ARG_CAN_US_PUBLIC_SPACE_EXPANSION = {
+  Argentina: ["Fondo Nacional de las Artes musica Argentina", "Ibermusicas Argentina convocatorias", "Fondo Metropolitano Cultura Buenos Aires musica", "Ciudad Emergente Buenos Aires", "Casa del Bicentenario musica Argentina", "Centro Cultural Nueva Uriarte", "El Emergente Almagro", "CC Richards Buenos Aires", "Strummer Bar Buenos Aires", "The Roxy Live Buenos Aires", "Uniclub Buenos Aires", "Teatro Flores Buenos Aires", "Distrito Siete Rosario", "Nave Cultural Mendoza", "Harlem Festival Santa Fe"],
+  Canada: ["Canadian Music Week artist submission", "North by Northeast artist application", "Pop Montreal artist application", "BreakOut West showcase", "Sled Island artist application", "Calgary Folk Music Festival artist submission", "Winnipeg Folk Festival artist submission", "East Coast Music Association showcase", "Music Nova Scotia showcase", "Manitoba Music showcase", "SaskMusic showcase", "Musicaction Canada", "SODEC musique", "Creative BC music fund", "Ontario Music Investment Fund", "National Arts Centre Ottawa music", "Music Yukon funding"],
+  "Estados Unidos": ["New Music USA project grants", "Mid Atlantic Arts USArtists International music", "South Arts jazz road tours", "WESTAF music", "National Endowment for the Arts music grants", "California Arts Council music grants", "Los Angeles Department of Cultural Affairs music", "New York Foundation for the Arts music", "Mondo NYC artist application", "New Colossus Festival artist application", "SXSW Music Festival artist application", "Levitation Austin bands", "Treefort Music Fest artist submission", "Folk Alliance International showcase application", "AmericanaFest artist application", "Big Ears Festival Knoxville artists", "Hopscotch Music Festival Raleigh artists", "NPR Tiny Desk Contest", "Kennedy Center Millennium Stage artists"]
+};
+
+Object.entries(ARG_CAN_US_PUBLIC_SPACE_EXPANSION).forEach(([country, targets]) => {
+  COUNTRY_PUBLIC_SPACE_TARGETS[country] = [...new Set([...(COUNTRY_PUBLIC_SPACE_TARGETS[country] || []), ...targets])];
+});
+
 const CONTINENT_VIEWS = {
   Latinoamerica: { center: [-17.0, -64.0], zoom: 3 },
   Norteamerica: { center: [48.0, -100.0], zoom: 3 },
@@ -958,6 +968,66 @@ const GLOBAL_TERRITORIAL_EXPANSION = [
 
 TERRITORIAL_AREA_TARGETS.push(...GLOBAL_TERRITORIAL_EXPANSION);
 
+const ARG_CAN_US_TERRITORIAL_EXPANSION = [
+  ["Argentina", "Buenos Aires", "Buenos Aires", "Lollapalooza Argentina bandas emergentes", -34.6037, -58.3816],
+  ["Argentina", "Buenos Aires", "Buenos Aires", "Quilmes Rock Argentina bandas", -34.6037, -58.3816],
+  ["Argentina", "Buenos Aires", "Buenos Aires", "Ciudad Emergente Buenos Aires convocatoria bandas", -34.6037, -58.3816],
+  ["Argentina", "Buenos Aires", "Buenos Aires", "El Emergente Almagro bandas", -34.6037, -58.4216],
+  ["Argentina", "Buenos Aires", "Buenos Aires", "CC Richards Buenos Aires bandas", -34.5895, -58.425],
+  ["Argentina", "Buenos Aires", "Buenos Aires", "Strummer Bar Buenos Aires bandas", -34.598, -58.439],
+  ["Argentina", "Buenos Aires", "Buenos Aires", "The Roxy Live Buenos Aires bandas", -34.579, -58.435],
+  ["Argentina", "Buenos Aires", "Buenos Aires", "Fondo Nacional de las Artes musica Argentina", -34.6037, -58.3816],
+  ["Argentina", "Buenos Aires", "Buenos Aires", "Ibermusicas Argentina convocatorias", -34.6037, -58.3816],
+  ["Argentina", "Santa Fe", "Rosario", "Distrito Siete Rosario bandas", -32.9442, -60.6505],
+  ["Argentina", "Santa Fe", "Santa Fe", "Harlem Festival Santa Fe bandas", -31.6333, -60.7],
+  ["Argentina", "Mendoza", "Mendoza", "Nave Cultural Mendoza musica", -32.8895, -68.8458],
+  ["Argentina", "Jujuy", "San Salvador de Jujuy", "Jujuy Cultura musica", -24.1858, -65.2995],
+  ["Argentina", "Misiones", "Posadas", "Misiones Posadas cultura musica", -27.3621, -55.9009],
+  ["Canada", "Ontario", "Toronto", "Canadian Music Week artist submission", 43.6532, -79.3832],
+  ["Canada", "Ontario", "Toronto", "North by Northeast artist application", 43.6532, -79.3832],
+  ["Canada", "Ontario", "Toronto", "Ontario Music Investment Fund", 43.6532, -79.3832],
+  ["Canada", "Quebec", "Montreal", "Pop Montreal artist application", 45.5017, -73.5673],
+  ["Canada", "Quebec", "Montreal", "Musicaction Canada francophone music funding", 45.5017, -73.5673],
+  ["Canada", "British Columbia", "Vancouver", "BreakOut West showcase", 49.2827, -123.1207],
+  ["Canada", "British Columbia", "Vancouver", "Creative BC music fund", 49.2827, -123.1207],
+  ["Canada", "Alberta", "Calgary", "Sled Island artist application", 51.0447, -114.0719],
+  ["Canada", "Manitoba", "Winnipeg", "Manitoba Music showcase", 49.8951, -97.1384],
+  ["Canada", "Nova Scotia", "Halifax", "East Coast Music Association showcase", 44.6488, -63.5752],
+  ["Canada", "Yukon", "Whitehorse", "Music Yukon funding", 60.7212, -135.0568],
+  ["Estados Unidos", "National", "New York", "New Music USA project grants", 40.7128, -74.006],
+  ["Estados Unidos", "National", "Washington", "National Endowment for the Arts music grants", 38.9072, -77.0369],
+  ["Estados Unidos", "National", "Baltimore", "Mid Atlantic Arts USArtists International music", 39.2904, -76.6122],
+  ["Estados Unidos", "South", "Atlanta", "South Arts jazz road tours", 33.749, -84.388],
+  ["Estados Unidos", "California", "Los Angeles", "Los Angeles Department of Cultural Affairs music", 34.0522, -118.2437],
+  ["Estados Unidos", "California", "San Francisco", "San Francisco Grants for the Arts music", 37.7749, -122.4194],
+  ["Estados Unidos", "Washington", "Seattle", "The Crocodile Seattle bands", 47.6062, -122.3321],
+  ["Estados Unidos", "Oregon", "Portland", "Doug Fir Lounge Portland bands", 45.5152, -122.6784],
+  ["Estados Unidos", "Texas", "Austin", "SXSW Music Festival artist application", 30.2672, -97.7431],
+  ["Estados Unidos", "Texas", "Austin", "Levitation Austin bands", 30.2672, -97.7431],
+  ["Estados Unidos", "New York", "New York", "Mondo NYC artist application", 40.7128, -74.006],
+  ["Estados Unidos", "New York", "New York", "New Colossus Festival artist application", 40.7128, -74.006],
+  ["Estados Unidos", "Illinois", "Chicago", "Empty Bottle Chicago bands", 41.8781, -87.6298],
+  ["Estados Unidos", "Minnesota", "Minneapolis", "First Avenue Minneapolis bands", 44.9778, -93.265],
+  ["Estados Unidos", "Tennessee", "Nashville", "AmericanaFest artist application", 36.1627, -86.7816],
+  ["Estados Unidos", "Tennessee", "Knoxville", "Big Ears Festival Knoxville artists", 35.9606, -83.9207],
+  ["Estados Unidos", "North Carolina", "Raleigh", "Hopscotch Music Festival Raleigh artists", 35.7796, -78.6382],
+  ["Estados Unidos", "Idaho", "Boise", "Treefort Music Fest artist submission", 43.615, -116.2023],
+  ["Estados Unidos", "Missouri", "Kansas City", "Folk Alliance International showcase application", 39.0997, -94.5786],
+  ["Estados Unidos", "National", "Washington", "NPR Tiny Desk Contest", 38.9072, -77.0369],
+  ["Estados Unidos", "National", "Washington", "Kennedy Center Millennium Stage artists", 38.9072, -77.0369]
+].map(([country, region, city, label, lat, lng]) => ({
+  country,
+  region,
+  city,
+  label,
+  lat,
+  lng,
+  type: "radar_territorial",
+  query: `${label} ${city} ${region} music musica open call artist application band submissions showcase support act opening band international artists grants`
+}));
+
+TERRITORIAL_AREA_TARGETS.push(...ARG_CAN_US_TERRITORIAL_EXPANSION);
+
 const LATAM_RECOGNIZED_TARGETS = [
   ["Argentina", "Buenos Aires", "Buenos Aires", "INAMU"],
   ["Argentina", "Buenos Aires", "Buenos Aires", "BAFIM"],
@@ -1213,6 +1283,26 @@ const COLOMBIA_BRASIL_REVIEW_EXPANSION = [
 
 LATAM_RECOGNIZED_TARGETS.push(...COLOMBIA_BRASIL_REVIEW_EXPANSION);
 
+const ARGENTINA_REVIEW_RECOGNIZED = [
+  ["Argentina", "Buenos Aires", "Buenos Aires", "Lollapalooza Argentina bandas emergentes"],
+  ["Argentina", "Buenos Aires", "Buenos Aires", "Quilmes Rock Argentina bandas"],
+  ["Argentina", "Buenos Aires", "Buenos Aires", "Ciudad Emergente Buenos Aires convocatoria bandas"],
+  ["Argentina", "Buenos Aires", "Buenos Aires", "Fondo Nacional de las Artes musica Argentina"],
+  ["Argentina", "Buenos Aires", "Buenos Aires", "Ibermusicas Argentina convocatorias"],
+  ["Argentina", "Buenos Aires", "Buenos Aires", "El Emergente Almagro bandas"],
+  ["Argentina", "Buenos Aires", "Buenos Aires", "CC Richards Buenos Aires"],
+  ["Argentina", "Santa Fe", "Santa Fe", "Harlem Festival Santa Fe"]
+].map(([country, region, city, label]) => ({
+  country,
+  region,
+  city,
+  label,
+  type: "radar_latam",
+  query: `${label} ${city} musica festival convocatoria showcase bandas rock indie booking centro cultural sello productora`
+}));
+
+LATAM_RECOGNIZED_TARGETS.push(...ARGENTINA_REVIEW_RECOGNIZED);
+
 const GLOBAL_PRIORITY_TARGETS = [
   ["Estados Unidos", "Texas", "Austin", "SXSW Music Festival"],
   ["Estados Unidos", "New York", "New York", "Lincoln Center Open Calls"],
@@ -1297,6 +1387,32 @@ const GLOBAL_PRIORITY_EXPANSION = [
 }));
 
 GLOBAL_PRIORITY_TARGETS.push(...GLOBAL_PRIORITY_EXPANSION);
+
+const CANADA_US_PRIORITY_REVIEW = [
+  ["Canada", "Ontario", "Toronto", "Canadian Music Week artist submission"],
+  ["Canada", "Ontario", "Toronto", "North by Northeast artist application"],
+  ["Canada", "Quebec", "Montreal", "Pop Montreal artist application"],
+  ["Canada", "British Columbia", "Vancouver", "BreakOut West showcase"],
+  ["Canada", "Alberta", "Calgary", "Sled Island artist application"],
+  ["Canada", "Nova Scotia", "Halifax", "East Coast Music Association showcase"],
+  ["Estados Unidos", "National", "New York", "New Music USA project grants"],
+  ["Estados Unidos", "National", "Baltimore", "Mid Atlantic Arts USArtists International music"],
+  ["Estados Unidos", "South", "Atlanta", "South Arts jazz road tours"],
+  ["Estados Unidos", "New York", "New York", "Mondo NYC artist application"],
+  ["Estados Unidos", "New York", "New York", "New Colossus Festival artist application"],
+  ["Estados Unidos", "Idaho", "Boise", "Treefort Music Fest artist submission"],
+  ["Estados Unidos", "Missouri", "Kansas City", "Folk Alliance International showcase application"],
+  ["Estados Unidos", "National", "Washington", "NPR Tiny Desk Contest"]
+].map(([country, region, city, label]) => ({
+  country,
+  region,
+  city,
+  label,
+  type: "radar_global",
+  query: `${label} ${city} music open call band submissions showcase festival arts council booking grants`
+}));
+
+GLOBAL_PRIORITY_TARGETS.push(...CANADA_US_PRIORITY_REVIEW);
 
 const fallbackPayload = {
   opportunities: [

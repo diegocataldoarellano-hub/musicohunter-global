@@ -3,6 +3,7 @@ from fastapi.testclient import TestClient
 from app.main import app
 from app.curator_agent import extract_application_requirements, extract_deadline_date, extract_event_date, is_navigation_noise, score_text, semantic_signal_hits
 from app.discovery import (
+    ARGENTINA_CANADA_US_DEEP_REVIEW,
     CHILE_DEEP_SEARCH_TARGETS,
     CHILE_MEDIA_PROFILE_TARGETS,
     CHILE_PUBLIC_SPACE_TARGETS,
@@ -235,6 +236,24 @@ def test_canada_europe_africa_and_asia_have_deeper_priority_banks():
         for term in terms:
             assert term in joined or term in territorial
         assert "international artists" in territorial
+
+
+def test_argentina_canada_and_usa_have_review_depth():
+    required = {
+        "Argentina": ["Fondo Nacional de las Artes musica Argentina", "Ciudad Emergente Buenos Aires convocatoria bandas", "Harlem Festival Santa Fe"],
+        "Canada": ["Canadian Music Week artist submission", "BreakOut West showcase", "Musicaction Canada"],
+        "Estados Unidos": ["New Music USA project grants", "USArtists International music", "NPR Tiny Desk Contest"],
+    }
+    for country, terms in required.items():
+        bank = ARGENTINA_CANADA_US_DEEP_REVIEW[country]
+        assert len(bank["territorial"]) >= 20
+        assert len(bank["public_spaces"]) >= 15
+        joined = "\n".join(build_discovery_queries(country))
+        territorial = "\n".join(build_territorial_discovery_queries(country))
+        for term in terms:
+            assert term in joined or term in territorial
+        assert "support act" in territorial
+        assert "international bands" in territorial
 
 
 def test_latam_small_country_coverage_is_not_empty():

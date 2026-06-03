@@ -1787,6 +1787,170 @@ for country, bank in GLOBAL_RADAR_DEEP_EXPANSION.items():
             if target not in existing:
                 existing.append(target)
 
+ARGENTINA_CANADA_US_DEEP_REVIEW = {
+    "Argentina": {
+        "territorial": [
+            "Lollapalooza Argentina bandas emergentes",
+            "Quilmes Rock Argentina bandas",
+            "Festival Buena Vibra Argentina artistas",
+            "Harlem Festival Santa Fe bandas",
+            "Music Wins Festival Argentina artistas",
+            "Ciudad Emergente Buenos Aires convocatoria bandas",
+            "El Emergente Almagro bandas",
+            "CC Richards Buenos Aires bandas",
+            "Strummer Bar Buenos Aires bandas",
+            "The Roxy Live Buenos Aires bandas",
+            "Uniclub Buenos Aires bandas",
+            "Humboldt Niceto Club Buenos Aires bandas",
+            "Teatro Flores Buenos Aires bandas rock",
+            "Centro Cultural Nueva Uriarte musica",
+            "Casa del Bicentenario musica Argentina",
+            "Instituto Nacional del Teatro Argentina musica escena",
+            "Ibermusicas Argentina convocatorias",
+            "Fondo Nacional de las Artes musica Argentina",
+            "Fondo Metropolitano Cultura Buenos Aires musica",
+            "Provincia de Cordoba cultura musica festivales",
+            "Rosario Distrito Siete bandas",
+            "Mendoza Nave Cultural musica",
+            "Jujuy Cultura musica",
+            "Misiones Posadas cultura musica",
+        ],
+        "recognized": [
+            "Lollapalooza Argentina bandas emergentes", "Quilmes Rock Argentina bandas",
+            "Festival Buena Vibra Argentina", "Harlem Festival Santa Fe", "Music Wins Festival Argentina",
+            "Ciudad Emergente Buenos Aires convocatoria bandas", "El Emergente Almagro bandas",
+            "CC Richards Buenos Aires", "Strummer Bar Buenos Aires", "The Roxy Live Buenos Aires",
+            "Fondo Nacional de las Artes musica Argentina", "Ibermusicas Argentina convocatorias",
+        ],
+        "public_spaces": [
+            "Fondo Nacional de las Artes musica Argentina", "Ibermusicas Argentina convocatorias",
+            "Fondo Metropolitano Cultura Buenos Aires musica", "Ciudad Emergente Buenos Aires",
+            "Casa del Bicentenario musica Argentina", "Centro Cultural Nueva Uriarte",
+            "El Emergente Almagro", "CC Richards Buenos Aires", "Strummer Bar Buenos Aires",
+            "The Roxy Live Buenos Aires", "Uniclub Buenos Aires", "Teatro Flores Buenos Aires",
+            "Distrito Siete Rosario", "Nave Cultural Mendoza", "Harlem Festival Santa Fe",
+        ],
+    },
+    "Canada": {
+        "territorial": [
+            "Toronto North by Northeast artist application",
+            "Toronto Canadian Music Week artist submission",
+            "Toronto City Cultural Hotspot music",
+            "Ontario Music Investment Fund",
+            "Montreal Pop Montreal artist application",
+            "Montreal Conseil des arts music",
+            "Quebec SODEC musique aide",
+            "Musicaction Canada francophone music funding",
+            "Vancouver BreakOut West showcase",
+            "Vancouver Civic Theatres music",
+            "British Columbia Creative BC music fund",
+            "Calgary Sled Island artist application",
+            "Calgary Folk Music Festival artist submission",
+            "Edmonton Folk Music Festival artist submission",
+            "Winnipeg Folk Festival artist submission",
+            "Manitoba Music showcase",
+            "SaskMusic showcase",
+            "Halifax Pop Explosion artist submission",
+            "Music Nova Scotia showcase",
+            "East Coast Music Association showcase",
+            "Ottawa Bluesfest artist submission",
+            "National Arts Centre Ottawa music",
+            "Yukon Arts Centre music",
+            "Music Yukon funding",
+        ],
+        "public_spaces": [
+            "Canadian Music Week artist submission", "North by Northeast artist application",
+            "Pop Montreal artist application", "BreakOut West showcase", "Sled Island artist application",
+            "Calgary Folk Music Festival artist submission", "Winnipeg Folk Festival artist submission",
+            "East Coast Music Association showcase", "Music Nova Scotia showcase", "Manitoba Music showcase",
+            "SaskMusic showcase", "Musicaction Canada", "SODEC musique", "Creative BC music fund",
+            "Ontario Music Investment Fund", "National Arts Centre Ottawa music", "Music Yukon funding",
+        ],
+        "priority": [
+            "Canadian Music Week artist submission", "BreakOut West showcase",
+            "Sled Island artist application", "East Coast Music Association showcase",
+            "Musicaction Canada", "Ontario Music Investment Fund",
+        ],
+    },
+    "Estados Unidos": {
+        "territorial": [
+            "New Music USA project grants",
+            "Mid Atlantic Arts USArtists International music",
+            "South Arts jazz road tours",
+            "Western States Arts Federation WESTAF music",
+            "California Arts Council music grants",
+            "Los Angeles Department of Cultural Affairs music",
+            "San Francisco Grants for the Arts music",
+            "Seattle Office of Arts music",
+            "The Crocodile Seattle bands",
+            "Portland Regional Arts and Culture Council music",
+            "Doug Fir Lounge Portland bands",
+            "Austin Music Commission grants",
+            "Texas Music Office opportunities",
+            "SXSW Music Festival artist application",
+            "Levitation Austin bands",
+            "Hotel Vegas Austin bands",
+            "New York Foundation for the Arts music",
+            "Mondo NYC artist application",
+            "New Colossus Festival artist application",
+            "Brooklyn Academy of Music music",
+            "Baby's All Right Brooklyn bands",
+            "Chicago Department of Cultural Affairs music",
+            "Empty Bottle Chicago bands",
+            "Metro Chicago bands",
+            "First Avenue Minneapolis bands",
+            "Walker Art Center music",
+            "Nashville Metro Arts music",
+            "AmericanaFest artist application",
+            "Big Ears Festival Knoxville artists",
+            "Hopscotch Music Festival Raleigh artists",
+            "Treefort Music Fest artist submission",
+            "Folk Alliance International showcase application",
+            "NPR Tiny Desk Contest",
+            "Kennedy Center Millennium Stage artists",
+            "National Endowment for the Arts music grants",
+            "Creative Capital music performing arts",
+        ],
+        "public_spaces": [
+            "New Music USA project grants", "Mid Atlantic Arts USArtists International music",
+            "South Arts jazz road tours", "WESTAF music", "National Endowment for the Arts music grants",
+            "California Arts Council music grants", "Los Angeles Department of Cultural Affairs music",
+            "New York Foundation for the Arts music", "Mondo NYC artist application",
+            "New Colossus Festival artist application", "SXSW Music Festival artist application",
+            "Levitation Austin bands", "Treefort Music Fest artist submission",
+            "Folk Alliance International showcase application", "AmericanaFest artist application",
+            "Big Ears Festival Knoxville artists", "Hopscotch Music Festival Raleigh artists",
+            "NPR Tiny Desk Contest", "Kennedy Center Millennium Stage artists",
+        ],
+        "priority": [
+            "New Music USA project grants", "USArtists International music",
+            "South Arts jazz road tours", "Mondo NYC artist application",
+            "New Colossus Festival artist application", "Treefort Music Fest artist submission",
+            "Folk Alliance International showcase application", "NPR Tiny Desk Contest",
+        ],
+    },
+}
+
+for country, bank in ARGENTINA_CANADA_US_DEEP_REVIEW.items():
+    for target in bank.get("territorial", []):
+        existing = GLOBAL_TERRITORIAL_AREA_SEEDS.setdefault(country, [])
+        if target not in existing:
+            existing.append(target)
+    for target in bank.get("public_spaces", []):
+        existing = COUNTRY_PUBLIC_SPACE_TARGETS.setdefault(country, [])
+        if target not in existing:
+            existing.append(target)
+    if country in LATAM_RECOGNIZED_TARGETS:
+        existing = LATAM_RECOGNIZED_TARGETS.setdefault(country, [])
+        for target in bank.get("recognized", []):
+            if target not in existing:
+                existing.append(target)
+    else:
+        existing = GLOBAL_PRIORITY_TARGETS.setdefault(country, [])
+        for target in bank.get("priority", []):
+            if target not in existing:
+                existing.append(target)
+
 EXPANDED_TARGET_TEMPLATES = [
     'site:instagram.com/p "{target}" musica bandas convocatoria',
     'site:instagram.com/reel "{target}" concierto bandas tocata',
