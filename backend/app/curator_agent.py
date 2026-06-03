@@ -9,6 +9,7 @@ import httpx
 from bs4 import BeautifulSoup
 from sqlalchemy import select
 
+from .application_inspector import build_application_snapshot
 from .database import SessionLocal, init_db
 from .discovery import discover_sources_from_search
 from .link_checker import check_url, refresh_link_statuses
@@ -446,6 +447,23 @@ def make_candidate_url(source_url: str, href: str | None) -> str:
     return urljoin(source_url, href)
 
 
+async def inspect_candidate_text(client: httpx.AsyncClient, url: str) -> str:
+    if not url.startswith(("http://", "https://")):
+        return ""
+    try:
+        response = await client.get(url)
+        response.raise_for_status()
+    except Exception:
+        return ""
+    content_type = response.headers.get("content-type", "")
+    if "html" not in content_type and "text" not in content_type:
+        return ""
+    soup = BeautifulSoup(response.text, "html.parser")
+    for tag in soup(["script", "style", "noscript", "svg"]):
+        tag.decompose()
+    return clean_text(soup.get_text(" ", strip=True))[:5000]
+
+
 async def fetch_source(source: Source) -> list[dict]:
     settings = get_settings()
     headers = {"User-Agent": "RadarComeGuagaBot/1.0 (+public curated music opportunities)"}
@@ -468,17 +486,22 @@ async def fetch_source(source: Source) -> list[dict]:
         confidence = score_text(text)
         if confidence < 0.45:
             continue
-        deadline_date = extract_deadline_date(text)
+        candidate_url = make_candidate_url(source.url, anchor.get("href"))
+        detail_text = await inspect_candidate_text(client, candidate_url)
+        inspected_text = f"{text} {detail_text}"
+        requirements = extract_application_requirements(inspected_text, source.type)
+        snapshot = build_application_snapshot(label, inspected_text, requirements, candidate_url)
+        deadline_date = extract_deadline_date(inspected_text)
         candidates.append(
             {
                 "title": label[:240],
-                "url": make_candidate_url(source.url, anchor.get("href")),
-                "summary": context[:700],
-                "confidence": confidence,
-                "category": infer_category(text, source.type),
-                "genres": genre_csv(text),
-                "requirements": extract_application_requirements(text, source.type),
-                "event_date": None if deadline_date else extract_event_date(text),
+                "url": candidate_url,
+                "summary": f"{snapshot['summary']} {(detail_text or context)[:520]}",
+                "confidence": max(confidence, score_text(inspected_text)),
+                "category": infer_category(inspected_text, source.type),
+                "genres": genre_csv(inspected_text),
+                "requirements": requirements,
+                "event_date": None if deadline_date else extract_event_date(inspected_text),
                 "deadline": deadline_date,
             }
         )

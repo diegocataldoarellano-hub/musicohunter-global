@@ -41,6 +41,9 @@ class OpportunityOut(BaseModel):
     sourceName: str
     sourceType: str
     summary: str
+    applicationCost: str
+    applicationContact: str
+    applicationChecklist: list[str]
     linkStatus: str
     confidence: float
     published: bool

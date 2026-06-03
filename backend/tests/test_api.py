@@ -1,6 +1,7 @@
 from fastapi.testclient import TestClient
 
 from app.main import app
+from app.application_inspector import build_application_snapshot, extract_contact, infer_application_cost
 from app.curator_agent import extract_application_requirements, extract_deadline_date, extract_event_date, is_navigation_noise, score_text, semantic_signal_hits
 from app.discovery import (
     ARGENTINA_CANADA_US_DEEP_REVIEW,
@@ -37,6 +38,16 @@ from app.seed import load_seed_sources
 
 def test_split_csv_filters_empty_values():
     assert split_csv("rock, folk, ,experimental") == ["rock", "folk", "experimental"]
+
+
+def test_application_inspector_extracts_simple_result_fields():
+    text = "Open call free application. Send EPK, bio, video and links to booking@example.org before deadline."
+    snapshot = build_application_snapshot("Festival", text, "Prepare EPK and application form", "https://example.org")
+    assert infer_application_cost(text) == "Gratuito"
+    assert extract_contact(text) == "booking@example.org"
+    assert snapshot["cost"] == "Gratuito"
+    assert "EPK/dossier" in snapshot["checklist"]
+    assert "booking@example.org" in snapshot["summary"]
 
 
 def test_discovery_queries_include_social_and_public_sources():
@@ -594,6 +605,9 @@ def test_health_and_public_opportunities_load():
         data = opportunities.json()
         assert data["count"] >= 1
         assert "url" in data["items"][0]
+        assert data["items"][0]["applicationCost"]
+        assert data["items"][0]["applicationContact"]
+        assert data["items"][0]["applicationChecklist"]
         assert data["items"][0]["continent"] in {"Latinoamerica", "Global", "Internacional"}
 
         latin = client.get("/api/opportunities?continent=Latinoamerica")

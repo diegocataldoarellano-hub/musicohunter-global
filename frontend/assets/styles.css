@@ -540,6 +540,36 @@ select option {
   color: var(--muted);
 }
 
+.application-mini {
+  display: grid;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.application-mini div {
+  display: grid;
+  grid-template-columns: 88px minmax(0, 1fr);
+  gap: 10px;
+  align-items: start;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  padding: 9px 10px;
+  background: rgba(15, 23, 42, 0.48);
+}
+
+.application-mini strong {
+  color: #fef3c7;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.application-mini span {
+  color: var(--text);
+  font-size: 0.9rem;
+  line-height: 1.35;
+}
+
 .country-badge {
   color: #dbeafe;
   background: rgba(96, 165, 250, 0.15);

@@ -6,6 +6,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy import or_, select
 from sqlalchemy.orm import Session
 
+from .application_inspector import build_application_snapshot
 from .curator_agent import run_curator
 from .database import SessionLocal, get_db, init_db
 from .discovery import TARGET_COUNTRIES
@@ -56,6 +57,8 @@ def verify_admin(x_admin_token: Annotated[str | None, Header()] = None) -> None:
 
 
 def opportunity_to_out(item: Opportunity) -> OpportunityOut:
+    requirements = split_csv(item.requirements.replace(";", ","))
+    snapshot = build_application_snapshot(item.title, item.summary, requirements, item.url)
     return OpportunityOut(
         id=item.id,
         title=item.title,
@@ -69,11 +72,14 @@ def opportunity_to_out(item: Opportunity) -> OpportunityOut:
         deadline=item.deadline,
         eventDate=item.event_date,
         genres=split_csv(item.genres),
-        requirements=split_csv(item.requirements.replace(";", ",")),
+        requirements=requirements,
         url=item.url,
         sourceName=item.source_name,
         sourceType=item.source_type,
         summary=item.summary,
+        applicationCost=str(snapshot["cost"]),
+        applicationContact=str(snapshot["contact"]),
+        applicationChecklist=list(snapshot["checklist"]),
         linkStatus=item.link_status,
         confidence=item.confidence,
         published=item.published,

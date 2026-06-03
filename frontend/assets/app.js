@@ -3341,10 +3341,19 @@ function renderStats() {
   document.getElementById("heroCountries").textContent = targetCountries().length;
 }
 
+function simpleApplicationSnapshot(opp) {
+  const checklist = (opp.applicationChecklist && opp.applicationChecklist.length)
+    ? opp.applicationChecklist
+    : (opp.requirements || ["revisar bases/formulario"]).slice(0, 3);
+  return {
+    cost: opp.applicationCost || "Por confirmar",
+    contact: opp.applicationContact || "No visible; abrir link oficial",
+    checklist: checklist.slice(0, 4).join(", ")
+  };
+}
+
 function renderOpportunityCard(opp) {
-  const status = deadlineStatus(opp.deadline);
-  const dateValue = opp.deadline || opp.eventDate;
-  const dateText = dateValue ? new Date(dateValue + "T00:00:00").toLocaleDateString("es-CL") : "fecha por revisar";
+  const snapshot = simpleApplicationSnapshot(opp);
   return `
     <article class="opportunity-card" data-id="${opp.id}" tabindex="0">
       <div class="card-top">
@@ -3352,22 +3361,14 @@ function renderOpportunityCard(opp) {
         <span class="link-status ${escapeHtml(opp.linkStatus)}">${statusLabel(opp.linkStatus)}</span>
       </div>
       <h3>${escapeHtml(opp.title)}</h3>
-      <p>${escapeHtml(opp.summary || "Fuente publica curada para oportunidades musicales.")}</p>
-      <div class="card-meta">
-        <span><i class="fa-solid fa-location-dot"></i> ${escapeHtml(opp.city || opp.country)}</span>
-        <span><i class="fa-solid fa-calendar"></i> ${escapeHtml(dateText)}</span>
-        <span><i class="fa-solid fa-circle-info"></i> ${escapeHtml(status)}</span>
-      </div>
-      <div class="card-actions">
-        <span class="category-badge">${escapeHtml(displayLabel(opp.category))}</span>
-        ${(opp.genres || []).slice(0, 3).map((g) => `<span class="chip">${escapeHtml(g)}</span>`).join("")}
+      <div class="application-mini">
+        <div><strong>Costo</strong><span>${escapeHtml(snapshot.cost)}</span></div>
+        <div><strong>Requiere</strong><span>${escapeHtml(snapshot.checklist)}</span></div>
+        <div><strong>Contacto</strong><span>${escapeHtml(snapshot.contact)}</span></div>
       </div>
       <a class="official-link" href="${escapeHtml(opp.url)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">
-        Abrir link oficial <i class="fa-solid fa-up-right-from-square"></i>
+        Abrir y confirmar <i class="fa-solid fa-up-right-from-square"></i>
       </a>
-      <button class="inline-action" type="button" data-guide-id="${escapeHtml(String(opp.id))}" onclick="event.stopPropagation()">
-        Ver como postular <i class="fa-solid fa-book-open"></i>
-      </button>
     </article>
   `;
 }
@@ -3380,15 +3381,13 @@ function renderExternalCard(item) {
         <span class="link-status requires_review">revisar</span>
       </div>
       <h3>${escapeHtml(item.title)}</h3>
-      <p>${escapeHtml(item.summary)}</p>
-      <div class="card-actions">
-        <span class="category-badge">${escapeHtml(displayLabel(item.category))}</span>
-        <span class="chip">instagram</span>
-        <span class="chip">google</span>
-        <span class="chip">publico</span>
+      <div class="application-mini">
+        <div><strong>Costo</strong><span>Por confirmar</span></div>
+        <div><strong>Requiere</strong><span>abrir resultado oficial, bases/formulario, EPK</span></div>
+        <div><strong>Contacto</strong><span>buscar correo o formulario en la fuente</span></div>
       </div>
       <a class="official-link" href="${escapeHtml(item.url)}" target="_blank" rel="noopener">
-        Revisar busqueda publica <i class="fa-solid fa-up-right-from-square"></i>
+        Abrir busqueda y confirmar <i class="fa-solid fa-up-right-from-square"></i>
       </a>
     </article>
   `;
