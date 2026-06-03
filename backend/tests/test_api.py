@@ -1,16 +1,18 @@
 from fastapi.testclient import TestClient
 
 from app.main import app
-from app.curator_agent import extract_application_requirements, extract_deadline_date, extract_event_date, is_navigation_noise
+from app.curator_agent import extract_application_requirements, extract_deadline_date, extract_event_date, is_navigation_noise, score_text, semantic_signal_hits
 from app.discovery import (
     CHILE_DEEP_SEARCH_TARGETS,
     CHILE_MEDIA_PROFILE_TARGETS,
     CHILE_PUBLIC_SPACE_TARGETS,
     COUNTRY_PUBLIC_SPACE_TARGETS,
     LATAM_RECOGNIZED_TARGETS,
+    SEMANTIC_INTENT_GROUPS,
     TARGET_COUNTRIES,
     build_discovery_queries,
     build_global_discovery_queries,
+    build_semantic_discovery_queries,
     global_mission_capacity,
 )
 from app.schemas import split_csv
@@ -82,7 +84,25 @@ def test_chile_discovery_queries_include_media_profiles_and_partners():
 def test_expanded_target_lists_have_required_depth():
     latam_target_count = sum(len(targets) for targets in LATAM_RECOGNIZED_TARGETS.values())
     assert len(CHILE_DEEP_SEARCH_TARGETS) >= 100
-    assert latam_target_count >= 100
+    assert latam_target_count >= 220
+
+
+def test_latam_semantic_queries_detect_support_international_and_mobility():
+    joined = "\n".join(build_semantic_discovery_queries("Argentina"))
+    assert len(SEMANTIC_INTENT_GROUPS["teloneros"]) >= 10
+    assert "support act" in joined
+    assert "opening band" in joined
+    assert "foreign artists" in joined
+    assert "music market" in joined
+    assert "touring grant" in joined
+    assert "site:instagram.com/reel" in joined
+
+
+def test_semantic_scoring_lifts_implicit_international_support_calls():
+    text = "Festival busca opening band para international artists from abroad con showcase application y touring support."
+    signals = semantic_signal_hits(text)
+    assert {"teloneros", "internacional", "showcase", "movilidad"}.issubset(set(signals))
+    assert score_text(text) >= 0.7
 
 
 def test_global_discovery_bank_exceeds_100k_missions():

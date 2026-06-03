@@ -178,6 +178,30 @@ CONTACT_SIGNAL_TERMS = [
     "media partner",
 ]
 
+SEMANTIC_SIGNAL_GROUPS = {
+    "teloneros": [
+        "telonero", "teloneros", "banda soporte", "banda invitada", "artista invitado",
+        "abrir concierto", "abrir show", "buscamos bandas", "se buscan bandas",
+        "support act", "opening act", "opening band", "support slot", "warm up band",
+    ],
+    "internacional": [
+        "bandas internacionales", "artistas internacionales", "bandas extranjeras",
+        "artistas de otros paises", "proyectos internacionales", "latinoamerica",
+        "iberoamerica", "foreign artists", "international artists", "artists from abroad",
+        "overseas artists", "touring artists", "from other countries",
+    ],
+    "showcase": [
+        "showcase", "music market", "mercado musical", "rueda de negocios",
+        "delegacion artistica", "artist application", "band submissions",
+        "apply to play", "festival submissions", "postulacion showcase",
+    ],
+    "movilidad": [
+        "gira", "giras", "tour", "touring", "residencia", "residency",
+        "intercambio", "movilidad", "circulacion", "itinerancia",
+        "mobility grant", "touring grant", "artist residency", "coproduccion internacional",
+    ],
+}
+
 
 def clean_text(value: str) -> str:
     return " ".join(value.split())
@@ -188,35 +212,56 @@ def normalize_text(value: str) -> str:
     return "".join(char for char in decomposed if not unicodedata.combining(char)).lower()
 
 
+def contains_any(text: str, terms: list[str]) -> bool:
+    return any(normalize_text(term) in text for term in terms)
+
+
+def semantic_signal_hits(text: str) -> list[str]:
+    lower = normalize_text(text)
+    return [
+        group
+        for group, terms in SEMANTIC_SIGNAL_GROUPS.items()
+        if contains_any(lower, terms)
+    ]
+
+
 def score_text(text: str) -> float:
     lower = normalize_text(text)
-    opportunity_hits = sum(1 for term in OPPORTUNITY_TERMS if term in lower)
-    genre_hits = sum(1 for term in GENRE_TERMS if term in lower)
-    profile_hits = sum(1 for term in PROFILE_TERMS if term in lower)
-    return min(0.98, 0.22 + opportunity_hits * 0.08 + genre_hits * 0.06 + profile_hits * 0.05)
+    opportunity_hits = sum(1 for term in OPPORTUNITY_TERMS if normalize_text(term) in lower)
+    genre_hits = sum(1 for term in GENRE_TERMS if normalize_text(term) in lower)
+    profile_hits = sum(1 for term in PROFILE_TERMS if normalize_text(term) in lower)
+    semantic_hits = len(semantic_signal_hits(text))
+    return min(0.98, 0.2 + opportunity_hits * 0.07 + genre_hits * 0.05 + profile_hits * 0.04 + semantic_hits * 0.12)
 
 
 def is_navigation_noise(text: str) -> bool:
     lower = normalize_text(text)
-    return any(term in lower for term in IGNORED_NAV_TERMS)
+    return contains_any(lower, IGNORED_NAV_TERMS)
 
 
 def extract_application_requirements(text: str, source_type: str) -> str:
     lower = normalize_text(text)
     requirements = []
-    if any(term in lower for term in APPLICATION_SIGNAL_TERMS):
+    signals = semantic_signal_hits(text)
+    if contains_any(lower, APPLICATION_SIGNAL_TERMS):
         requirements.append("Entrar a la pagina oficial y buscar bases, formulario, plazo y condiciones de postulacion.")
-    if any(term in lower for term in ["epk", "press kit", "dossier", "bio", "video", "links", "material"]):
+    if contains_any(lower, ["epk", "press kit", "dossier", "bio", "video", "links", "material"]):
         requirements.append("Preparar EPK/dossier: bio breve, links de audio/video, registro en vivo, fotos, redes publicas y contacto.")
-    if any(term in lower for term in ["bandas", "solistas", "artists", "musicians", "support act", "opening act"]):
+    if contains_any(lower, ["bandas", "solistas", "artists", "musicians", "support act", "opening act"]) or "teloneros" in signals:
         requirements.append("Confirmar si aceptan bandas, solistas o artistas extranjeros y que generos estan buscando.")
-    if any(term in lower for term in CONTACT_SIGNAL_TERMS):
+    if contains_any(lower, CONTACT_SIGNAL_TERMS):
         requirements.append("Usar solo el correo/formulario/canal de booking indicado por la fuente; no enviar mensajes genericos.")
-    if any(term in lower for term in ["prensa", "radio", "media partner", "entrevista", "enviar single", "nota de prensa", "comunicado de prensa"]):
+    if contains_any(lower, ["prensa", "radio", "media partner", "entrevista", "enviar single", "nota de prensa", "comunicado de prensa"]):
         requirements.append("Para prensa/radio: preparar comunicado breve, fecha de lanzamiento o concierto, EPK, links publicos y una propuesta de nota/entrevista concreta.")
-    if any(term in lower for term in DEADLINE_TERMS) or any(term in lower for term in ["deadline", "apply by", "applications close"]):
+    if "internacional" in signals:
+        requirements.append("Como hay senal internacional, confirmar si aceptan artistas de otros paises, visa/viaje, idioma de postulacion y disponibilidad de gira.")
+    if "showcase" in signals:
+        requirements.append("Para showcase/mercado: preparar pitch exportable, objetivos de networking, links en vivo y disponibilidad para reuniones.")
+    if "movilidad" in signals:
+        requirements.append("Para movilidad/gira: revisar financiamiento, fechas, rutas, carta de invitacion y requisitos de residencia o intercambio.")
+    if contains_any(lower, DEADLINE_TERMS) or contains_any(lower, ["deadline", "apply by", "applications close"]):
         requirements.append("Verificar fecha de publicacion, cierre de convocatoria, fecha del evento y zona horaria.")
-    if any(term in lower for term in ["productora", "booking", "agency", "sello", "label", "a&r", "roster", "demo"]):
+    if contains_any(lower, ["productora", "booking", "agency", "sello", "label", "a&r", "roster", "demo"]):
         requirements.append("Enviar pitch corto alineado al catalogo/lineup: sonido, ciudad, logros, links y propuesta de valor.")
     if not requirements:
         requirements.append("Abrir la fuente y ubicar seccion de postulacion, contacto, programacion o convocatoria antes de escribir.")
@@ -227,6 +272,13 @@ def extract_application_requirements(text: str, source_type: str) -> str:
 
 def infer_category(text: str, source_type: str) -> str:
     lower = normalize_text(text)
+    signals = semantic_signal_hits(text)
+    if "teloneros" in signals:
+        return "telonero"
+    if "showcase" in signals:
+        return "showcase"
+    if "internacional" in signals or "movilidad" in signals:
+        return "circulacion"
     if "fondo" in lower or "financ" in lower or "subvencion" in lower:
         return "fondo"
     if "concurso" in lower or "certamen" in lower:

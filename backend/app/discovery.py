@@ -128,6 +128,41 @@ SEARCH_MISSION_TEMPLATES = [
     '"{country}" "buscamos bandas" "productora"',
 ]
 
+SEMANTIC_INTENT_GROUPS = {
+    "teloneros": [
+        "teloneros", "telonero", "banda soporte", "banda invitada", "artista invitado",
+        "support act", "opening act", "opening band", "warm up band", "buscamos bandas",
+        "se buscan bandas", "abrir concierto", "abrir show", "support slot",
+    ],
+    "internacional": [
+        "bandas internacionales", "artistas internacionales", "bandas extranjeras",
+        "artistas de otros paises", "foreign artists", "international artists",
+        "from abroad", "overseas artists", "latam artists", "iberoamerica",
+        "mercado internacional", "circulacion internacional",
+    ],
+    "showcase": [
+        "showcase", "music market", "mercado musical", "rueda de negocios",
+        "delegacion artistica", "artist application", "band submissions",
+        "apply to play", "festival submissions", "postulacion showcase",
+    ],
+    "movilidad": [
+        "gira", "tour", "touring", "residencia", "intercambio", "movilidad",
+        "mobility grant", "touring grant", "residency", "artist residency",
+        "circulacion", "itinerancia", "coproduccion internacional",
+    ],
+}
+
+LATAM_SEMANTIC_MISSION_TEMPLATES = [
+    'site:instagram.com/p "{country}" "{term}" musica bandas',
+    'site:instagram.com/reel "{country}" "{term}" rock festival',
+    'site:facebook.com/events "{country}" "{term}" bandas',
+    '"{country}" "{term}" "rock" OR "folk" OR "fusion" OR "experimental"',
+    '"{country}" "{term}" "convocatoria" "bandas"',
+    '"{country}" "{term}" "showcase" "artists"',
+    '"{country}" "{term}" "festival" "apply"',
+    '"{country}" "{term}" "booking" "bandas"',
+]
+
 COUNTRY_SEARCH_ALIASES = {
     "Estados Unidos": "Estados Unidos EEUU USA United States",
     "Inglaterra": "Inglaterra England Reino Unido UK",
@@ -550,6 +585,94 @@ LATAM_RECOGNIZED_TARGETS = {
     "Venezuela": ["Centro Cultural BOD", "Caracas Cultura"],
 }
 
+LATAM_EXTRA_RECOGNIZED_TARGETS = {
+    "Argentina": [
+        "MICA Mercado de Industrias Culturales Argentinas", "Club Paraguay Cordoba",
+        "Teatro Vorterix", "CC Matienzo", "Makena Buenos Aires", "Festival Bandera Rosario",
+        "Cosquin Rock convocatoria bandas", "Centro Cultural San Martin musica",
+        "La Tangente Buenos Aires", "Camping Buenos Aires musica",
+    ],
+    "Brasil": [
+        "SIM Sao Paulo showcase", "Festival Bananada", "DoSol Natal", "Psicodalia Brasil",
+        "MADA Natal", "No Ar Coquetel Molotov", "Casa Natura Musical", "Sesc Avenida Paulista",
+        "Audio Rebel Rio", "A Autentica Belo Horizonte", "Balaclava Records",
+    ],
+    "Colombia": [
+        "Festival Estereo Picnic", "Altavoz Fest", "Shock Musica", "Radionica Colombia",
+        "Teatro Pablo Tobon Uribe", "Casa del Teatro Nacional Bogota", "Festival Centro Bogota",
+        "Suenan Las Guitarras Colombia", "Llorona Records", "Locus Festival Colombia",
+    ],
+    "Peru": [
+        "Festival Selvamomos convocatoria", "Lima Music Fest", "La Noche de Barranco",
+        "Yield Rock Lima", "Sargento Pimienta Barranco", "Ministerio de Cultura Estimulos Economicos Peru",
+        "Asociacion Cultural Peruano Britanica musica", "ICPNA Cultural musica",
+    ],
+    "Mexico": [
+        "Festival Nrmal", "Festival Marvin", "Foro Indie Rocks", "Bajo Circuito CDMX",
+        "Caradura CDMX", "Departamento Studio Bar", "Semana Indie Rocks", "IMJUVE musica",
+        "Circuito Indio", "FIM GDL", "NODO Cultura Guadalajara",
+    ],
+    "Uruguay": [
+        "Montevideo Music Box", "Sala del Museo", "Bluzz Live Montevideo", "Inmigrantes Uruguay",
+        "MVD Music", "La Trastienda Montevideo", "Centro Cultural Florencio Sanchez",
+        "Usina Cultural Uruguay", "Tundra Bar Montevideo",
+    ],
+    "Paraguay": [
+        "ReciclArte Paraguay", "Kilkenny Asuncion musica", "La Chispa Asuncion",
+        "FestiRock Paraguay", "Teatro Municipal Ignacio A Pane", "Centro Cultural Manzana de la Rivera",
+    ],
+    "Bolivia": [
+        "FestiJazz Bolivia", "Alive Music Bar La Paz", "Teatro Nuna La Paz",
+        "Centro Simon I Patino", "Casa Grito La Paz", "Sonidos de la Tierra Bolivia",
+    ],
+    "Ecuador": [
+        "QuitoFest convocatoria", "Teatro Capitol Quito", "Casa de la Musica Quito",
+        "Borkis Entertainment", "Festivalfff Ecuador", "Manso Guayaquil musica",
+    ],
+    "Costa Rica": [
+        "Festival Epicentro Costa Rica", "Jazz Cafe Escazu", "Mundoloco El Chante",
+        "Amon Solar Costa Rica", "Steinvorth San Jose", "Parque Viva conciertos",
+    ],
+    "Panama": [
+        "Teatro Amador Panama", "Danilo's Jazz Club Panama", "Festival MUPA Panama",
+        "Rock and Folk Panama", "Ateneo Ciudad del Saber musica",
+    ],
+    "Cuba": [
+        "Havana World Music", "Agencia Cubana de Rock", "Casa de las Americas musica",
+        "Centro Cultural Bertolt Brecht musica",
+    ],
+    "Republica Dominicana": [
+        "Festival Presidente musica", "Casa de Teatro Santo Domingo", "Hard Rock Cafe Santo Domingo",
+        "Centro Leon musica", "Dominican Fiesta musica",
+    ],
+    "Guatemala": [
+        "Festival Centro Historico Guatemala", "TrovaJazz Guatemala", "El Ataque Guatemala",
+        "Rock'ol Vuh Guatemala", "Centro Cultural de Espana Guatemala musica",
+    ],
+    "Honduras": [
+        "Festival Nuestras Raices Honduras", "Centro Cultural de Espana Tegucigalpa musica",
+        "Rocktober Fest Honduras", "Teatro Nacional Manuel Bonilla musica",
+    ],
+    "Nicaragua": [
+        "Festival Internacional Boleros Nicaragua", "Ruta Maya Managua", "Teatro Nacional Ruben Dario musica",
+        "Centro Cultural de Espana Nicaragua musica",
+    ],
+    "El Salvador": [
+        "Secretaria de Cultura El Salvador musica", "La Casa Tomada musica", "Centro Cultural de Espana El Salvador",
+        "Teatro Nacional San Salvador musica",
+    ],
+    "Venezuela": [
+        "Festival Nuevas Bandas", "Teatro Teresa Carreno musica", "Centro Cultural Chacao musica",
+        "Cusica Venezuela", "Centro Cultural BOD conciertos",
+    ],
+}
+
+for country, targets in LATAM_EXTRA_RECOGNIZED_TARGETS.items():
+    existing = LATAM_RECOGNIZED_TARGETS.setdefault(country, [])
+    for target in targets:
+        if target not in existing:
+            existing.append(target)
+
 GLOBAL_PRIORITY_TARGETS = {
     "Estados Unidos": ["SXSW Music Festival", "Lincoln Center Open Calls", "Brooklyn Academy of Music", "The Echo Los Angeles", "Chicago Cultural Center"],
     "Canada": ["Canadian Music Week", "M for Montreal", "Music BC"],
@@ -819,9 +942,25 @@ def build_global_discovery_queries(country: str, limit: int | None = None) -> li
     return queries[:limit] if limit else queries
 
 
+def build_semantic_discovery_queries(country: str) -> list[str]:
+    search_country = COUNTRY_SEARCH_ALIASES.get(country, country)
+    semantic_terms = [
+        term
+        for terms in SEMANTIC_INTENT_GROUPS.values()
+        for term in terms
+    ]
+    return [
+        template.replace("{country}", search_country).replace("{term}", term)
+        for term in semantic_terms
+        for template in LATAM_SEMANTIC_MISSION_TEMPLATES
+    ]
+
+
 def build_discovery_queries(country: str) -> list[str]:
     search_country = COUNTRY_SEARCH_ALIASES.get(country, country)
     queries = [template.replace("{country}", search_country) for template in SEARCH_MISSION_TEMPLATES]
+    if country in WORLD_EXTRA_COUNTRIES["Latinoamerica"]:
+        queries.extend(build_semantic_discovery_queries(country))
     if country == "Chile":
         for region in CHILE_REGIONAL_TARGETS:
             queries.extend(template.replace("{region}", region) for template in CHILE_REGIONAL_MISSION_TEMPLATES)

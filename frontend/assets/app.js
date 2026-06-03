@@ -92,6 +92,19 @@ const INDUSTRY_LANGUAGE_TERMS = [
   "band submissions",
   "opening act",
   "support act",
+  "opening band",
+  "support slot",
+  "bandas extranjeras",
+  "international artists",
+  "foreign artists",
+  "artists from abroad",
+  "music market",
+  "mercado musical",
+  "rueda de negocios",
+  "mobility grant",
+  "touring grant",
+  "artist residency",
+  "circulacion internacional",
   "A&R",
   "artist roster",
   "booking inquiry",
@@ -104,6 +117,33 @@ const INDUSTRY_LANGUAGE_TERMS = [
   "buscamos bandas",
   "se buscan bandas",
   "llamado a bandas"
+];
+
+const SEMANTIC_SIGNAL_GROUPS = {
+  teloneros: ["telonero", "teloneros", "banda soporte", "banda invitada", "abrir concierto", "abrir show", "support act", "opening act", "opening band", "support slot", "warm up band", "buscamos bandas", "se buscan bandas"],
+  internacional: ["bandas internacionales", "artistas internacionales", "bandas extranjeras", "artistas de otros paises", "foreign artists", "international artists", "artists from abroad", "overseas artists", "latam artists", "iberoamerica"],
+  showcase: ["showcase", "music market", "mercado musical", "rueda de negocios", "artist application", "band submissions", "apply to play", "festival submissions"],
+  movilidad: ["gira", "tour", "touring", "residencia", "intercambio", "movilidad", "mobility grant", "touring grant", "artist residency", "circulacion"]
+};
+
+const LATAM_SEMANTIC_SEARCH_TERMS = [
+  "buscamos bandas",
+  "se buscan bandas",
+  "teloneros",
+  "banda soporte",
+  "support act",
+  "opening act",
+  "bandas extranjeras",
+  "artistas internacionales",
+  "foreign artists",
+  "international artists",
+  "showcase application",
+  "band submissions",
+  "mercado musical",
+  "rueda de negocios",
+  "movilidad musical",
+  "touring grant",
+  "artist residency"
 ];
 
 const CHILE_MEDIA_PROFILE_TARGETS = [
@@ -1704,6 +1744,25 @@ function buildExternalSearchCards() {
       summary: "Busqueda de espacios publicos con pago, fondos, municipios, centros culturales y convocatorias institucionales."
     }
   ];
+  const isLatamScope = filters.continent === "Latinoamerica" || WORLD_EXTRA_COUNTRIES.Latinoamerica.includes(country);
+  if (isLatamScope) {
+    LATAM_SEMANTIC_SEARCH_TERMS.forEach((term) => {
+      searches.push(
+        {
+          title: `Radar semantico LatAm - ${term}`,
+          category: "radar_semantico",
+          url: googleSearchUrl(`"${queryCountry}" "${term}" rock OR folk OR fusion OR experimental OR progresivo`),
+          summary: "Busqueda sensible a sinonimos de oportunidad: teloneros, bandas extranjeras, showcases, movilidad, residencias y llamados internacionales."
+        },
+        {
+          title: `Instagram semantico LatAm - ${term}`,
+          category: "instagram_semantico",
+          url: googleSearchUrl(`site:instagram.com/p OR site:instagram.com/reel "${queryCountry}" "${term}" bandas musica after:2025-01-01`),
+          summary: "Rastrea posts/reels recientes donde la oportunidad puede aparecer como publicidad, caption o llamado rapido."
+        }
+      );
+    });
+  }
   const globalTerms = GLOBAL_PUBLIC_SEARCH_TERMS.slice(0, filters.continent === "Global" ? 14 : 8);
   globalTerms.forEach((term) => {
     searches.push({
@@ -2065,7 +2124,11 @@ function detectedIndustrySignals(opp) {
     opp.sourceType,
     ...(opp.requirements || [])
   ].join(" ").toLowerCase();
-  return INDUSTRY_LANGUAGE_TERMS.filter((term) => text.includes(term.toLowerCase())).slice(0, 6);
+  const literalSignals = INDUSTRY_LANGUAGE_TERMS.filter((term) => text.includes(term.toLowerCase()));
+  const semanticSignals = Object.entries(SEMANTIC_SIGNAL_GROUPS)
+    .filter(([, terms]) => terms.some((term) => text.includes(term.toLowerCase())))
+    .map(([group]) => group);
+  return [...new Set([...semanticSignals, ...literalSignals])].slice(0, 8);
 }
 
 function applicationGuide(opp) {
@@ -2080,6 +2143,19 @@ function applicationGuide(opp) {
   }
   if (category.includes("showcase") || category.includes("festival") || category.includes("booking")) {
     steps.push("Prepara EPK: bio corta, links de musica/video, registro en vivo, ciudad/base, redes publicas y contacto de booking.");
+  }
+  const signals = detectedIndustrySignals(opp);
+  if (signals.includes("teloneros")) {
+    steps.push("Si es telonero/soporte, confirma duracion del set, backline, prueba de sonido, pago, entradas y compatibilidad con el artista principal.");
+  }
+  if (signals.includes("internacional")) {
+    steps.push("Si aceptan artistas de otros paises, confirma visa, viaje, alojamiento, idioma de postulacion y disponibilidad de gira.");
+  }
+  if (signals.includes("showcase")) {
+    steps.push("Para showcase/mercado, prepara pitch exportable, objetivos de reuniones, links en vivo, press kit en ingles/espanol y disponibilidad para networking.");
+  }
+  if (signals.includes("movilidad")) {
+    steps.push("Para movilidad o residencia, revisa financiamiento, carta de invitacion, ruta, fechas y requisitos de intercambio.");
   }
   if (category.includes("sello") || sourceType.includes("sello") || sourceType.includes("label")) {
     steps.push("Revisa catalogo/roster antes de enviar material; explica por que tu sonido calza con la linea del sello.");
