@@ -38,7 +38,7 @@ WORLD_EXTRA_COUNTRIES = {
         "Reino Unido", "Republica Checa", "Rumania", "Rusia", "San Marino", "Serbia",
         "Suecia", "Suiza", "Turquia", "Ucrania", "Vaticano",
     ],
-    "Norteamerica": ["Canada", "Estados Unidos"],
+    "Norteamerica": ["Canada", "Estados Unidos", "Groenlandia"],
     "Latinoamerica": [
         "Antigua y Barbuda", "Argentina", "Bahamas", "Barbados", "Belice", "Bolivia",
         "Brasil", "Chile", "Colombia", "Costa Rica", "Cuba", "Dominica", "Ecuador",
@@ -238,6 +238,7 @@ ADMIN_DIVISION_TERMS = {
     "Mexico": ["estado", "municipio", "alcaldia", "secretaria de cultura", "instituto de cultura"],
     "Estados Unidos": ["state", "county", "city arts council", "municipal arts", "cultural affairs"],
     "Canada": ["province", "territory", "city arts council", "municipality", "cultural grants"],
+    "Groenlandia": ["kommune", "municipality", "cultural centre", "arts council", "Nordic culture"],
     "Inglaterra": ["county", "borough", "city council", "arts council", "cultural programme"],
     "Reino Unido": ["county", "borough", "city council", "arts council", "cultural programme"],
     "Irlanda": ["county", "city council", "arts office", "county council"],
@@ -393,6 +394,7 @@ COUNTRY_SEARCH_ALIASES = {
     "Irlanda": "Irlanda Ireland Eire",
     "Australia": "Australia",
     "Canada": "Canada Canadá",
+    "Groenlandia": "Groenlandia Greenland Kalaallit Nunaat Nuuk Sisimiut",
     "Rusia": "Rusia Russia Россия",
     "Gales": "Gales Wales Cymru",
     "Brasil": "Brasil Brazil",
@@ -1950,6 +1952,150 @@ for country, bank in ARGENTINA_CANADA_US_DEEP_REVIEW.items():
         for target in bank.get("priority", []):
             if target not in existing:
                 existing.append(target)
+
+GREENLAND_DEEP_REVIEW_TARGETS = [
+    "Katuaq Cultural Centre Nuuk music",
+    "NAPA Nordic Institute in Greenland music grants",
+    "Arctic Sounds Festival Sisimiut artist application",
+    "Nuuk Nordic Culture Festival music",
+    "Taseralik Culture House Sisimiut music",
+    "Kommuneqarfik Sermersooq culture music",
+    "Qeqqata Kommunia culture music",
+    "Avannaata Kommunia culture music",
+    "Kujalleq Kommune culture music",
+    "Nunatta Isiginnaartitsisarfia Greenland National Theatre music",
+]
+
+EUROPE_DEEP_REVIEW_TARGETS = {
+    "Albania": ["Tirana International Guitar Festival artist application", "Reja Tirana cultural center music", "Balkan Trafik Albania music"],
+    "Alemania": ["Reeperbahn Festival artist application", "Musicboard Berlin funding", "Initiative Musik Germany export", "c/o pop Cologne showcase"],
+    "Andorra": ["Andorra la Vella cultura musica", "Escena Nacional Andorra musica", "Andorra Sax Fest artist application"],
+    "Armenia": ["Yerevan Music Week showcase", "TUMO Center Yerevan music", "Golden Apricot Yerevan music events"],
+    "Austria": ["Waves Vienna artist application", "Austrian Music Export showcase", "Music Austria mica funding", "Donauinselfest band application"],
+    "Belgica": ["Botanique Brussels music", "Ancienne Belgique artist application", "Flanders Arts Institute music", "Wallonie Bruxelles Musiques"],
+    "Bielorrusia": ["Minsk cultural center music", "Belarus music festival open call", "Eastern Partnership culture Belarus music"],
+    "Bosnia y Herzegovina": ["OK Fest Bosnia artist application", "Sarajevo Jazz Festival music", "Mostar cultural center music"],
+    "Bulgaria": ["Sofia Live Festival artist application", "A to JazZ Festival Sofia", "National Culture Fund Bulgaria music"],
+    "Chipre": ["Rialto Theatre Cyprus music", "Fengaros Festival Cyprus artist application", "Cyprus Deputy Ministry of Culture music"],
+    "Croacia": ["INmusic Festival Croatia artist application", "Zagreb Music Export", "Culture Hub Croatia music"],
+    "Dinamarca": ["SPOT Festival Denmark artist application", "Roskilde Festival band application", "Danish Arts Foundation music", "Music Export Denmark"],
+    "Eslovaquia": ["Pohoda Festival artist application", "Sharpe Festival Bratislava showcase", "Slovak Arts Council music"],
+    "Eslovenia": ["MENT Ljubljana artist application", "Kino Siska Ljubljana music", "Slovenian Music Information Centre"],
+    "Espana": ["Mad Cool Festival bandas emergentes", "Primavera Pro showcase", "Monkey Week artist application", "INAEM ayudas musica"],
+    "Estonia": ["Tallinn Music Week artist application", "Music Estonia showcase", "Estonian Culture Endowment music"],
+    "Finlandia": ["Music Finland export", "Flow Festival Helsinki artist application", "Tuska Festival bands", "Taike Finland music grants"],
+    "Francia": ["Babel Music XP showcase", "Trans Musicales Rennes candidature", "Centre National de la Musique aides", "Printemps de Bourges iNOUiS"],
+    "Georgia": ["Tbilisi Open Air band application", "Tbilisi Music Week showcase", "Creative Georgia music"],
+    "Gales": ["Focus Wales artist application", "Arts Council of Wales music", "Wales Millennium Centre music"],
+    "Grecia": ["Athens Music Week showcase", "Release Athens artist application", "Onassis Stegi music open call"],
+    "Holanda": ["Eurosonic Noorderslag artist application", "Dutch Music Export", "Melkweg Amsterdam bands", "Paradiso Amsterdam open call"],
+    "Hungria": ["Sziget Festival artist application", "Budapest Music Center", "Hangveto Hungary music"],
+    "Inglaterra": ["The Great Escape artist application", "PRS Foundation open fund music", "SXSW London artist application", "Roundhouse London music"],
+    "Irlanda": ["First Music Contact Ireland", "Culture Ireland music funding", "Ireland Music Week artist application", "Whelans Dublin bands"],
+    "Islandia": ["Iceland Airwaves artist application", "Iceland Music Export", "Reykjavik Arts Festival music"],
+    "Italia": ["Linecheck Milan Music Meeting", "MI AMI Festival artist application", "Italia Music Export", "MEI Faenza artist application"],
+    "Kosovo": ["Prishtina Music Conference", "Sunny Hill Festival artist application", "Termokiss Prishtina music"],
+    "Letonia": ["Music Latvia export", "Positivus Festival artist application", "Riga cultural center music"],
+    "Liechtenstein": ["Vaduz culture music", "FL1 Life Festival artist application", "Kulturstiftung Liechtenstein music"],
+    "Lituania": ["Vilnius Music Week showcase", "Loftas Vilnius music", "Lithuanian Culture Council music"],
+    "Luxemburgo": ["Kultur lx music export", "Rockhal Luxembourg open call", "Sonic Visions Luxembourg"],
+    "Macedonia del Norte": ["Skopje Jazz Festival music", "PIN Music Conference Skopje", "MKC Skopje music"],
+    "Malta": ["Malta Arts Council music", "Earth Garden Malta artist application", "Valletta Cultural Agency music"],
+    "Moldavia": ["Moldova National Youth Orchestra music", "Chisinau cultural center music", "Moldova music festival open call"],
+    "Monaco": ["Monte Carlo Jazz Festival artist application", "Monaco cultural affairs music", "Grimaldi Forum music"],
+    "Montenegro": ["Lake Fest Niksic artist application", "Sea Dance Festival Montenegro", "Podgorica cultural center music"],
+    "Noruega": ["by:Larm Oslo artist application", "Music Norway export", "Norwegian Arts Council music"],
+    "Paises Bajos": ["Eurosonic Noorderslag artist application", "Buma Cultuur music export", "Le Guess Who artist application", "Roadburn Festival bands"],
+    "Polonia": ["OFF Festival Katowice artist application", "Great September Lodz showcase", "Music Export Poland", "Adam Mickiewicz Institute music"],
+    "Portugal": ["Westway LAB Portugal showcase", "MIL Lisbon artist application", "GDA Foundation music", "Serralves em Festa music"],
+    "Reino Unido": ["PRS Foundation international music", "British Council music", "Liverpool Sound City artist application", "Wide Days Edinburgh showcase"],
+    "Republica Checa": ["Nouvelle Prague showcase", "Czech Music Crossroads", "SoundCzech music export", "Colours of Ostrava artist application"],
+    "Rumania": ["Mastering the Music Business Bucharest", "Control Club Bucharest bands", "Electric Castle artist application"],
+    "Rusia": ["Moscow Music Week showcase", "Ural Music Night artist application", "St Petersburg cultural center music"],
+    "San Marino": ["San Marino cultural institutes music", "San Marino music festival", "Titano Theatre music"],
+    "Serbia": ["Exit Festival artist application", "Kontakt Conference Belgrade", "Belgrade Youth Center music"],
+    "Suecia": ["Future Echoes artist application", "Export Music Sweden showcase", "Way Out West artist application", "Kulturraadet music grants Sweden"],
+    "Suiza": ["m4music Festival artist application", "Pro Helvetia music", "Swiss Music Export", "Palp Festival artists"],
+    "Turquia": ["Istanbul Jazz Festival artist application", "Zorlu PSM music open call", "Istanbul Music Week showcase"],
+    "Ucrania": ["Atlas Weekend artist application", "Music Export Ukraine", "Ukrainian Institute music", "Respublica Fest bands"],
+    "Vaticano": ["Vatican concerts music culture", "Auditorium Conciliazione Rome music", "Cortile dei Gentili music dialogue"],
+}
+
+ASIA_DEEP_REVIEW_TARGETS = {
+    "Afganistan": ["Afghanistan National Institute of Music", "Kabul cultural center music", "Aga Khan Music Programme Afghanistan"],
+    "Arabia Saudita": ["MDLBEAST XP Music Futures", "Saudi Music Commission opportunities", "Jeddah Season music artists"],
+    "Azerbaiyan": ["Baku Jazz Festival artist application", "Baku International Music Festival", "Azerbaijan cultural center music"],
+    "Bangladesh": ["Dhaka Lit Fest music", "Bengal Foundation music Bangladesh", "Chirkutt Dhaka music scene"],
+    "Barein": ["Bahrain Authority for Culture music", "Spring of Culture Bahrain music", "Bahrain Jazz Fest artists"],
+    "Brunei": ["Brunei Arts and Culture Festival music", "Bandar Seri Begawan music events", "Brunei youth music showcase"],
+    "Butan": ["Royal Textile Academy Bhutan cultural music", "Thimphu Tshechu music culture", "Bhutan Echoes music"],
+    "Camboya": ["Cambodia Living Arts music", "Phnom Penh cultural center music", "Bonn Phum Festival music"],
+    "China": ["China Shanghai International Arts Festival", "Modern Sky Festival China artists", "MTA Festival China bands", "Beijing Music Festival"],
+    "Corea del Sur": ["Seoul Music Week artist application", "Zandari Festa artist application", "Busan Rock Festival bands", "KOCCA music export"],
+    "Emiratos Arabes Unidos": ["Dubai Culture music open call", "Alserkal Avenue music", "Abu Dhabi Festival music artists", "Sharjah Art Foundation music"],
+    "Filipinas": ["Fete de la Musique Philippines bands", "Wanderland Music Festival artists", "B-Side Manila bands", "Cultural Center of the Philippines music"],
+    "India": ["NH7 Weekender artist application", "Serendipity Arts Festival music", "Indiearth XChange showcase", "Ziro Festival artist application"],
+    "Indonesia": ["Java Jazz Festival artists", "Synchronize Fest artist application", "Maho Rasop Indonesia", "Jakarta Arts Council music"],
+    "Irak": ["Baghdad cultural center music", "Iraq music festival open call", "Beit Tarkib Baghdad music"],
+    "Iran": ["Tehran music festival artists", "Fajr Music Festival Iran", "Iran cultural center music"],
+    "Israel": ["Tune In Tel Aviv showcase", "Jerusalem Season of Culture music", "Tel Aviv municipality music"],
+    "Japon": ["Tokyo Music Market artist application", "Fuji Rock Rookie A Go-Go", "Summer Sonic artist application", "Kansai Music Conference"],
+    "Jordania": ["Amman Jazz Festival artists", "Al Balad Music Festival Jordan", "King Hussein Cultural Center music"],
+    "Kazajistan": ["Almaty music festival artists", "Astana cultural center music", "Qazaqstan music showcase"],
+    "Kirguistan": ["Bishkek Jazz Spring music", "Kyrgyzstan cultural center music", "Central Asia music showcase"],
+    "Kuwait": ["Sheikh Jaber Al Ahmad Cultural Centre music", "Kuwait music festival artists", "Dar al Athar al Islamiyyah music"],
+    "Laos": ["Vientiane music festival artists", "Lao cultural center music", "Luang Prabang cultural festival music"],
+    "Libano": ["Beirut and Beyond artist application", "Metro Al Madina Beirut music", "Beirut Music and Art Festival"],
+    "Malasia": ["Good Vibes Festival Malaysia artists", "Urbanscapes Kuala Lumpur music", "Malaysia Music Week showcase"],
+    "Maldivas": ["Maldives music festival artists", "Male cultural center music", "Maldives arts council music"],
+    "Mongolia": ["Playtime Festival Mongolia artist application", "Ulaanbaatar cultural center music", "Mongolian music showcase"],
+    "Myanmar": ["Yangon music festival artists", "Myanmar cultural center music", "Gitameit Music Center Myanmar"],
+    "Nepal": ["Jazzmandu Nepal artist application", "Kathmandu Triennale music", "Nepal Music Festival bands"],
+    "Oman": ["Royal Opera House Muscat music", "Muscat Festival music", "Oman cultural center music"],
+    "Pakistan": ["Lahore Music Meet artist application", "Coke Studio Pakistan artists", "Karachi Arts Council music"],
+    "Palestina": ["Palestine Music Expo artist application", "Sakakini Cultural Center music", "Yabous Cultural Centre music"],
+    "Qatar": ["Qatar Creates music", "Katara Cultural Village music", "Doha music festival artists"],
+    "Singapur": ["Music Matters Singapore showcase", "Esplanade Singapore music open call", "Baybeats Festival artist application"],
+    "Siria": ["Syrian cultural center music", "Damascus music festival", "Action for Hope music Syria"],
+    "Sri Lanka": ["Colombo Music Week showcase", "Galle Music Festival artists", "Sri Lanka cultural center music"],
+    "Tailandia": ["Maho Rasop Festival artist application", "Wonderfruit Festival artists", "Bangkok Music City showcase", "Big Mountain Music Festival bands"],
+    "Taiwan": ["LUCfest Tainan artist application", "Taiwan Beats showcase", "Taipei Music Center open call", "Megaport Festival bands"],
+    "Tayikistan": ["Dushanbe cultural center music", "Tajikistan music festival artists", "Aga Khan Music Programme Tajikistan"],
+    "Timor Oriental": ["Dili cultural center music", "Timor Leste music festival artists", "Arte Moris Dili music"],
+    "Turkmenistan": ["Ashgabat cultural center music", "Turkmenistan music festival", "Central Asia culture music Turkmenistan"],
+    "Uzbekistan": ["Sharq Taronalari Samarkand music festival", "Tashkent cultural center music", "Uzbekistan art and culture foundation music"],
+    "Vietnam": ["Monsoon Music Festival Vietnam", "Hozo Music Festival Ho Chi Minh", "Hanoi Rock City bands", "Vietnam Music Week showcase"],
+    "Yemen": ["Yemen cultural music diaspora", "Sanaa cultural center music", "Aga Khan Music Programme Yemen"],
+}
+
+for target in GREENLAND_DEEP_REVIEW_TARGETS:
+    for collection in (
+        GLOBAL_TERRITORIAL_AREA_SEEDS.setdefault("Groenlandia", []),
+        COUNTRY_PUBLIC_SPACE_TARGETS.setdefault("Groenlandia", []),
+        GLOBAL_PRIORITY_TARGETS.setdefault("Groenlandia", []),
+    ):
+        if target not in collection:
+            collection.append(target)
+
+for country, targets in EUROPE_DEEP_REVIEW_TARGETS.items():
+    for target in targets:
+        for collection in (
+            GLOBAL_TERRITORIAL_AREA_SEEDS.setdefault(country, []),
+            COUNTRY_PUBLIC_SPACE_TARGETS.setdefault(country, []),
+            GLOBAL_PRIORITY_TARGETS.setdefault(country, []),
+        ):
+            if target not in collection:
+                collection.append(target)
+
+for country, targets in ASIA_DEEP_REVIEW_TARGETS.items():
+    for target in targets:
+        for collection in (
+            GLOBAL_TERRITORIAL_AREA_SEEDS.setdefault(country, []),
+            COUNTRY_PUBLIC_SPACE_TARGETS.setdefault(country, []),
+            GLOBAL_PRIORITY_TARGETS.setdefault(country, []),
+        ):
+            if target not in collection:
+                collection.append(target)
 
 EXPANDED_TARGET_TEMPLATES = [
     'site:instagram.com/p "{target}" musica bandas convocatoria',

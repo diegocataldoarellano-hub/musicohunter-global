@@ -4,11 +4,14 @@ from app.main import app
 from app.curator_agent import extract_application_requirements, extract_deadline_date, extract_event_date, is_navigation_noise, score_text, semantic_signal_hits
 from app.discovery import (
     ARGENTINA_CANADA_US_DEEP_REVIEW,
+    ASIA_DEEP_REVIEW_TARGETS,
     CHILE_DEEP_SEARCH_TARGETS,
     CHILE_MEDIA_PROFILE_TARGETS,
     CHILE_PUBLIC_SPACE_TARGETS,
     COUNTRY_PUBLIC_SPACE_TARGETS,
     EXPANSION_PRIORITY_ORDER,
+    EUROPE_DEEP_REVIEW_TARGETS,
+    GREENLAND_DEEP_REVIEW_TARGETS,
     GLOBAL_TERRITORIAL_AREA_SEEDS,
     GLOBAL_RADAR_DEEP_EXPANSION,
     HIGH_VALUE_SEMANTIC_TERMS,
@@ -254,6 +257,59 @@ def test_argentina_canada_and_usa_have_review_depth():
             assert term in joined or term in territorial
         assert "support act" in territorial
         assert "international bands" in territorial
+
+
+def test_greenland_has_cultural_music_radar():
+    by_country = {country: continent for continent, country in TARGET_COUNTRIES}
+    joined = "\n".join(build_discovery_queries("Groenlandia"))
+    territorial = "\n".join(build_territorial_discovery_queries("Groenlandia"))
+    assert by_country["Groenlandia"] == "Norteamerica"
+    assert len(GREENLAND_DEEP_REVIEW_TARGETS) >= 8
+    assert "Katuaq Cultural Centre Nuuk music" in joined
+    assert "Arctic Sounds Festival Sisimiut artist application" in territorial
+    assert "Kalaallit Nunaat" in joined
+    assert "international bands" in territorial
+
+
+def test_all_europe_target_countries_have_deep_review_targets():
+    europe_countries = {country for continent, country in TARGET_COUNTRIES if continent == "Europa"}
+    assert europe_countries.issubset(EUROPE_DEEP_REVIEW_TARGETS.keys())
+    required = {
+        "Dinamarca": "SPOT Festival Denmark artist application",
+        "Portugal": "MIL Lisbon artist application",
+        "Italia": "Linecheck Milan Music Meeting",
+        "Polonia": "OFF Festival Katowice artist application",
+        "Suecia": "Future Echoes artist application",
+        "Suiza": "Pro Helvetia music",
+        "Ucrania": "Music Export Ukraine",
+    }
+    for country, term in required.items():
+        joined = "\n".join(build_discovery_queries(country))
+        territorial = "\n".join(build_territorial_discovery_queries(country))
+        assert len(EUROPE_DEEP_REVIEW_TARGETS[country]) >= 3
+        assert term in joined or term in territorial
+        assert "support act" in territorial
+        assert "international bands" in territorial
+
+
+def test_all_asia_target_countries_have_deep_review_targets():
+    asia_countries = {country for continent, country in TARGET_COUNTRIES if continent == "Asia"}
+    assert asia_countries.issubset(ASIA_DEEP_REVIEW_TARGETS.keys())
+    required = {
+        "China": "China Shanghai International Arts Festival",
+        "Corea del Sur": "Zandari Festa artist application",
+        "Japon": "Fuji Rock Rookie A Go-Go",
+        "Filipinas": "Wanderland Music Festival artists",
+        "Malasia": "Malaysia Music Week showcase",
+        "Palestina": "Palestine Music Expo artist application",
+        "Uzbekistan": "Sharq Taronalari Samarkand music festival",
+    }
+    for country, term in required.items():
+        joined = "\n".join(build_discovery_queries(country))
+        territorial = "\n".join(build_territorial_discovery_queries(country))
+        assert len(ASIA_DEEP_REVIEW_TARGETS[country]) >= 3
+        assert term in joined or term in territorial
+        assert "international artists" in territorial
 
 
 def test_latam_small_country_coverage_is_not_empty():
