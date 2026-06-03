@@ -230,6 +230,19 @@ const COUNTRY_PUBLIC_SPACE_TARGETS = {
   Vietnam: ["Ho Chi Minh City music open call", "HOZO Music Festival", "Hanoi music open call"]
 };
 
+const SOUTH_AMERICA_PUBLIC_SPACE_EXPANSION = {
+  Argentina: ["Ministerio de Cultura Argentina convocatorias musica", "Instituto Nacional de la Musica INAMU", "MICA Argentina musica", "Usina del Arte Buenos Aires", "Centro Cultural San Martin", "Centro Cultural Borges", "Tecnopolis musica", "Centro Cultural Kirchner musica", "Teatro Vorterix", "C Complejo Art Media", "La Tangente Buenos Aires", "Camping Buenos Aires musica", "Club Paraguay Cordoba", "Festival Bandera Rosario", "Mar del Plata Cultura", "Salta Cultura musica", "Tucuman Cultura musica", "Neuquen Cultura musica", "Bariloche Cultura musica", "Tierra del Fuego Cultura musica"],
+  Uruguay: ["Intendencia de Montevideo Cultura", "INMUS Uruguay", "Usinas Culturales Uruguay", "Montevideo Music Box", "La Trastienda Montevideo", "Sala del Museo", "Bluzz Live Montevideo", "Centro Cultural Florencio Sanchez", "Canelones Cultura", "Maldonado Cultura", "Rocha Cultura", "Colonia Cultura", "Paysandu Cultura", "Salto Cultura", "Tacuarembo Cultura", "Rivera Cultura", "Durazno Rock"],
+  Paraguay: ["Secretaria Nacional de Cultura Paraguay", "Municipalidad de Asuncion Cultura", "Centro Cultural Juan de Salazar", "Manzana de la Rivera", "Teatro Municipal Ignacio A Pane", "Asuncionico", "ReciclArte Paraguay", "Kilkenny Asuncion musica", "La Chispa Asuncion", "San Lorenzo Cultura", "Aregua Cultura", "Ciudad del Este Cultura", "Encarnacion Cultura", "Villarrica Paraguay Cultura", "Concepcion Paraguay Cultura"],
+  Bolivia: ["Ministerio de Culturas Bolivia", "La Paz Culturas", "Teatro Municipal Alberto Saavedra Perez", "Centro Cultural de Espana La Paz", "Centro Simon I Patino", "Teatro Nuna La Paz", "Alive Music Bar La Paz", "Casa Grito La Paz", "El Alto Cultura musica", "Santa Cruz Cultura", "Cochabamba Cultura", "mARTadero Cochabamba", "Sucre Cultura", "Tarija Cultura", "Oruro Cultura", "Potosi Cultura"],
+  Peru: ["Ministerio de Cultura Peru", "Estimulos Economicos Cultura Peru musica", "Gran Teatro Nacional Peru", "Centro Cultural de Espana en Lima", "ICPNA Cultural musica", "Asociacion Cultural Peruano Britanica musica", "Municipalidad de Lima Cultura", "Barranco Cultura", "La Noche de Barranco", "Sargento Pimienta Barranco", "Yield Rock Lima", "Festival Selvamomos", "Cusco Cultura", "Arequipa Cultura", "Trujillo Cultura", "Chiclayo Cultura", "Piura Cultura", "Iquitos Cultura", "Puno Cultura", "Huancayo Cultura"],
+  Brasil: ["FUNARTE musica edital", "SESC Sao Paulo", "SESC Pompeia", "Centro Cultural Sao Paulo", "Casa Natura Musical", "SIM Sao Paulo", "Rio de Janeiro Cultura", "Circo Voador", "Fundicao Progresso", "Audio Rebel Rio", "Belo Horizonte Cultura", "A Autentica Belo Horizonte", "Salvador Cultura", "Recife Cultura", "Porto Musical", "No Ar Coquetel Molotov", "Fortaleza Cultura", "Curitiba Cultura", "Porto Alegre Cultura", "Florianopolis Cultura", "Brasilia Cultura", "Belem Cultura", "Festival Bananada", "DoSol Natal", "MADA Natal"]
+};
+
+Object.entries(SOUTH_AMERICA_PUBLIC_SPACE_EXPANSION).forEach(([country, targets]) => {
+  COUNTRY_PUBLIC_SPACE_TARGETS[country] = [...new Set([...(COUNTRY_PUBLIC_SPACE_TARGETS[country] || []), ...targets])];
+});
+
 const CONTINENT_VIEWS = {
   Latinoamerica: { center: [-17.0, -64.0], zoom: 3 },
   Norteamerica: { center: [48.0, -100.0], zoom: 3 },
@@ -759,6 +772,91 @@ const TERRITORIAL_AREA_TARGETS = [
   query: `${label} ${city} ${region} musica conciertos bandas convocatoria centro cultural municipio festival international artists support act opening band new sounds`
 }));
 
+const SOUTH_AMERICA_TERRITORIAL_EXPANSION = [
+  ["Argentina", "Buenos Aires", "Buenos Aires", "Usina del Arte convocatorias musica", -34.6286, -58.3626],
+  ["Argentina", "Buenos Aires", "Buenos Aires", "Centro Cultural Recoleta musica convocatoria bandas", -34.5842, -58.3932],
+  ["Argentina", "Buenos Aires", "Buenos Aires", "Centro Cultural San Martin programacion musica", -34.6044, -58.3854],
+  ["Argentina", "Buenos Aires", "Buenos Aires", "MICA Mercado de Industrias Culturales Argentinas", -34.6037, -58.3816],
+  ["Argentina", "Buenos Aires", "La Plata", "Instituto Cultural Provincia de Buenos Aires musica", -34.9214, -57.9544],
+  ["Argentina", "Buenos Aires", "Mar del Plata", "Mar del Plata cultura musica convocatoria bandas", -38.0055, -57.5426],
+  ["Argentina", "Cordoba", "Cordoba", "Club Paraguay Cordoba bandas", -31.4201, -64.1888],
+  ["Argentina", "Santa Fe", "Rosario", "Festival Bandera Rosario bandas", -32.9442, -60.6505],
+  ["Argentina", "Mendoza", "Mendoza", "Mendoza Cultura musica municipios", -32.8895, -68.8458],
+  ["Argentina", "Salta", "Salta", "Salta Cultura musica municipios", -24.7821, -65.4232],
+  ["Argentina", "Tucuman", "San Miguel de Tucuman", "Tucuman Cultura musica municipios", -26.8083, -65.2176],
+  ["Argentina", "Neuquen", "Neuquen", "Neuquen Cultura musica Patagonia", -38.9516, -68.0591],
+  ["Argentina", "Rio Negro", "Bariloche", "Bariloche Cultura musica Patagonia", -41.1335, -71.3103],
+  ["Argentina", "Tierra del Fuego", "Ushuaia", "Tierra del Fuego Cultura musica Ushuaia", -54.8019, -68.303],
+  ["Uruguay", "Montevideo", "Montevideo", "INMUS Uruguay musica convocatorias", -34.9011, -56.1645],
+  ["Uruguay", "Montevideo", "Montevideo", "Sala Zitarrosa programacion musica", -34.9063, -56.1957],
+  ["Uruguay", "Montevideo", "Montevideo", "Usinas Culturales Uruguay musica", -34.9011, -56.1645],
+  ["Uruguay", "Montevideo", "Montevideo", "Montevideo Music Box bandas", -34.8865, -56.1438],
+  ["Uruguay", "Canelones", "Canelones", "Canelones Cultura musica", -34.5228, -56.2778],
+  ["Uruguay", "Maldonado", "Maldonado", "Maldonado Cultura musica Punta del Este", -34.9, -54.95],
+  ["Uruguay", "Rocha", "Rocha", "Rocha Cultura musica La Paloma", -34.4833, -54.3333],
+  ["Uruguay", "Colonia", "Colonia del Sacramento", "Colonia Cultura musica", -34.4714, -57.8442],
+  ["Uruguay", "Paysandu", "Paysandu", "Paysandu Cultura musica", -32.3214, -58.0756],
+  ["Uruguay", "Salto", "Salto", "Salto Cultura musica", -31.3833, -57.9667],
+  ["Paraguay", "Asuncion", "Asuncion", "Secretaria Nacional de Cultura Paraguay convocatorias musica", -25.2637, -57.5759],
+  ["Paraguay", "Asuncion", "Asuncion", "Centro Cultural Juan de Salazar musica", -25.2867, -57.6359],
+  ["Paraguay", "Asuncion", "Asuncion", "Manzana de la Rivera musica Asuncion", -25.2802, -57.6371],
+  ["Paraguay", "Asuncion", "Asuncion", "Teatro Municipal Ignacio A Pane musica", -25.2822, -57.6361],
+  ["Paraguay", "Central", "San Lorenzo", "San Lorenzo Cultura musica", -25.3397, -57.5088],
+  ["Paraguay", "Central", "Aregua", "Aregua Cultura musica", -25.3125, -57.3847],
+  ["Paraguay", "Alto Parana", "Ciudad del Este", "Ciudad del Este Cultura musica", -25.5167, -54.6167],
+  ["Paraguay", "Itapua", "Encarnacion", "Encarnacion Cultura musica", -27.3306, -55.8667],
+  ["Paraguay", "Guaira", "Villarrica", "Villarrica Paraguay Cultura musica", -25.7500, -56.4333],
+  ["Paraguay", "Concepcion", "Concepcion", "Concepcion Paraguay Cultura musica", -23.4064, -57.4344],
+  ["Bolivia", "La Paz", "La Paz", "La Paz Culturas musica convocatorias", -16.4897, -68.1193],
+  ["Bolivia", "La Paz", "La Paz", "Centro Cultural de Espana La Paz musica", -16.4897, -68.1193],
+  ["Bolivia", "La Paz", "La Paz", "Teatro Nuna La Paz bandas", -16.5247, -68.1076],
+  ["Bolivia", "La Paz", "El Alto", "El Alto Cultura musica", -16.5, -68.15],
+  ["Bolivia", "Santa Cruz", "Santa Cruz", "Santa Cruz Cultura musica", -17.7833, -63.1821],
+  ["Bolivia", "Cochabamba", "Cochabamba", "mARTadero Cochabamba musica", -17.3895, -66.1568],
+  ["Bolivia", "Chuquisaca", "Sucre", "Sucre Cultura musica", -19.0196, -65.2619],
+  ["Bolivia", "Tarija", "Tarija", "Tarija Cultura musica", -21.5355, -64.7296],
+  ["Bolivia", "Oruro", "Oruro", "Oruro Cultura musica", -17.9647, -67.106],
+  ["Bolivia", "Potosi", "Potosi", "Potosi Cultura musica", -19.5836, -65.7531],
+  ["Peru", "Lima", "Lima", "Ministerio de Cultura Peru Estimulos Economicos musica", -12.0464, -77.0428],
+  ["Peru", "Lima", "Lima", "Gran Teatro Nacional Peru musica", -12.0875, -77.003],
+  ["Peru", "Lima", "Lima", "Centro Cultural de Espana en Lima musica", -12.0464, -77.0428],
+  ["Peru", "Lima", "Barranco", "La Noche de Barranco bandas", -12.1494, -77.0219],
+  ["Peru", "Lima", "Barranco", "Sargento Pimienta Barranco bandas", -12.1494, -77.0219],
+  ["Peru", "Cusco", "Cusco", "Cusco Cultura musica", -13.532, -71.9675],
+  ["Peru", "Arequipa", "Arequipa", "Arequipa Cultura musica", -16.409, -71.5375],
+  ["Peru", "La Libertad", "Trujillo", "Trujillo Cultura musica", -8.1116, -79.0287],
+  ["Peru", "Lambayeque", "Chiclayo", "Chiclayo Cultura musica", -6.7714, -79.8409],
+  ["Peru", "Piura", "Piura", "Piura Cultura musica", -5.1945, -80.6328],
+  ["Peru", "Loreto", "Iquitos", "Iquitos Cultura musica", -3.7437, -73.2516],
+  ["Peru", "Junin", "Huancayo", "Huancayo Cultura musica", -12.0651, -75.2049],
+  ["Brasil", "Sao Paulo", "Sao Paulo", "SESC Sao Paulo chamada musica", -23.5505, -46.6333],
+  ["Brasil", "Sao Paulo", "Sao Paulo", "Casa Natura Musical chamadas artistas", -23.5505, -46.6333],
+  ["Brasil", "Sao Paulo", "Sao Paulo", "SIM Sao Paulo showcase", -23.5505, -46.6333],
+  ["Brasil", "Rio de Janeiro", "Rio de Janeiro", "Circo Voador bandas Rio de Janeiro", -22.9068, -43.1729],
+  ["Brasil", "Rio de Janeiro", "Rio de Janeiro", "Fundicao Progresso programacao musica", -22.9068, -43.1729],
+  ["Brasil", "Minas Gerais", "Belo Horizonte", "A Autentica Belo Horizonte bandas", -19.9167, -43.9345],
+  ["Brasil", "Bahia", "Salvador", "Bahia Cultura edital musica Salvador", -12.9777, -38.5016],
+  ["Brasil", "Pernambuco", "Recife", "No Ar Coquetel Molotov Recife", -8.0476, -34.877],
+  ["Brasil", "Ceara", "Fortaleza", "Fortaleza Cultura musica", -3.7319, -38.5267],
+  ["Brasil", "Rio Grande do Sul", "Porto Alegre", "Porto Alegre cultura musica", -30.0346, -51.2177],
+  ["Brasil", "Parana", "Curitiba", "Curitiba cultura musica", -25.4284, -49.2733],
+  ["Brasil", "Santa Catarina", "Florianopolis", "Florianopolis Cultura musica", -27.5949, -48.5482],
+  ["Brasil", "Distrito Federal", "Brasilia", "Brasilia cultura musica", -15.7939, -47.8828],
+  ["Brasil", "Rio Grande do Norte", "Natal", "DoSol Natal festival bandas", -5.7793, -35.2009],
+  ["Brasil", "Goias", "Goiania", "Festival Bananada Goiania", -16.6869, -49.2648]
+].map(([country, region, city, label, lat, lng]) => ({
+  country,
+  region,
+  city,
+  label,
+  lat,
+  lng,
+  type: "radar_territorial",
+  query: `${label} ${city} ${region} musica conciertos bandas convocatoria centro cultural municipio festival international artists support act opening band new sounds`
+}));
+
+TERRITORIAL_AREA_TARGETS.push(...SOUTH_AMERICA_TERRITORIAL_EXPANSION);
+
 const LATAM_RECOGNIZED_TARGETS = [
   ["Argentina", "Buenos Aires", "Buenos Aires", "INAMU"],
   ["Argentina", "Buenos Aires", "Buenos Aires", "BAFIM"],
@@ -891,6 +989,102 @@ const LATAM_RECOGNIZED_TARGETS = [
   type: "radar_latam",
   query: `${label} ${city} musica festival convocatoria showcase bandas rock indie booking centro cultural`
 }));
+
+const SOUTH_AMERICA_RECOGNIZED_EXPANSION = [
+  ["Argentina", "Buenos Aires", "Buenos Aires", "Ministerio de Cultura Argentina convocatorias musica"],
+  ["Argentina", "Buenos Aires", "Buenos Aires", "Usina del Arte programacion musica"],
+  ["Argentina", "Buenos Aires", "Buenos Aires", "Centro Cultural San Martin musica"],
+  ["Argentina", "Buenos Aires", "Buenos Aires", "Centro Cultural Borges musica"],
+  ["Argentina", "Buenos Aires", "Buenos Aires", "Teatro Vorterix convocatoria bandas"],
+  ["Argentina", "Buenos Aires", "Buenos Aires", "C Complejo Art Media bandas"],
+  ["Argentina", "Buenos Aires", "Buenos Aires", "La Tangente convocatoria bandas"],
+  ["Argentina", "Buenos Aires", "Buenos Aires", "Camping Buenos Aires musica"],
+  ["Argentina", "Cordoba", "Cordoba", "Club Paraguay Cordoba bandas"],
+  ["Argentina", "Santa Fe", "Rosario", "Festival Bandera Rosario bandas"],
+  ["Uruguay", "Montevideo", "Montevideo", "Usinas Culturales Uruguay"],
+  ["Uruguay", "Montevideo", "Montevideo", "Montevideo Music Box"],
+  ["Uruguay", "Montevideo", "Montevideo", "La Trastienda Montevideo"],
+  ["Uruguay", "Montevideo", "Montevideo", "Sala del Museo"],
+  ["Uruguay", "Montevideo", "Montevideo", "Bluzz Live Montevideo"],
+  ["Uruguay", "Montevideo", "Montevideo", "Centro Cultural Florencio Sanchez"],
+  ["Paraguay", "Asuncion", "Asuncion", "Teatro Municipal Ignacio A Pane"],
+  ["Paraguay", "Asuncion", "Asuncion", "ReciclArte Paraguay"],
+  ["Paraguay", "Asuncion", "Asuncion", "Kilkenny Asuncion musica"],
+  ["Paraguay", "Asuncion", "Asuncion", "La Chispa Asuncion"],
+  ["Paraguay", "Asuncion", "Asuncion", "FestiRock Paraguay"],
+  ["Bolivia", "La Paz", "La Paz", "Centro Cultural de Espana La Paz"],
+  ["Bolivia", "La Paz", "La Paz", "Centro Simon I Patino"],
+  ["Bolivia", "La Paz", "La Paz", "Teatro Nuna La Paz"],
+  ["Bolivia", "La Paz", "La Paz", "Alive Music Bar La Paz"],
+  ["Bolivia", "Cochabamba", "Cochabamba", "mARTadero Cochabamba"],
+  ["Bolivia", "La Paz", "La Paz", "Sonidos de la Tierra Bolivia"],
+  ["Peru", "Lima", "Lima", "Estimulos Economicos Cultura Peru musica"],
+  ["Peru", "Lima", "Lima", "ICPNA Cultural musica"],
+  ["Peru", "Lima", "Lima", "Asociacion Cultural Peruano Britanica musica"],
+  ["Peru", "Lima", "Barranco", "La Noche de Barranco"],
+  ["Peru", "Lima", "Barranco", "Sargento Pimienta Barranco"],
+  ["Peru", "Lima", "Lima", "Yield Rock Lima"],
+  ["Peru", "Lima", "Lima", "Festival Selvamomos convocatoria"],
+  ["Brasil", "Brasil", "Brasil", "FUNARTE musica edital"],
+  ["Brasil", "Brasil", "Brasil", "SESC edital musica Brasil"],
+  ["Brasil", "Sao Paulo", "Sao Paulo", "Casa Natura Musical"],
+  ["Brasil", "Sao Paulo", "Sao Paulo", "SIM Sao Paulo chamada artistas"],
+  ["Brasil", "Goias", "Goiania", "Festival Bananada"],
+  ["Brasil", "Rio Grande do Norte", "Natal", "DoSol Natal"],
+  ["Brasil", "Rio Grande do Norte", "Natal", "MADA Natal"],
+  ["Brasil", "Pernambuco", "Recife", "No Ar Coquetel Molotov"],
+  ["Brasil", "Rio de Janeiro", "Rio de Janeiro", "Audio Rebel Rio"],
+  ["Brasil", "Minas Gerais", "Belo Horizonte", "A Autentica Belo Horizonte"]
+].map(([country, region, city, label]) => ({
+  country,
+  region,
+  city,
+  label,
+  type: "radar_latam",
+  query: `${label} ${city} musica festival convocatoria showcase bandas rock indie booking centro cultural`
+}));
+
+LATAM_RECOGNIZED_TARGETS.push(...SOUTH_AMERICA_RECOGNIZED_EXPANSION);
+
+const SOUTH_AMERICA_PRODUCER_BENCHMARKS = [
+  ["Argentina", "Buenos Aires", "Buenos Aires", "PopArt Music Argentina"],
+  ["Argentina", "Buenos Aires", "Buenos Aires", "300 Producciones Argentina"],
+  ["Argentina", "Buenos Aires", "Buenos Aires", "DF Entertainment Argentina"],
+  ["Argentina", "Buenos Aires", "Buenos Aires", "Crack Producciones Argentina"],
+  ["Argentina", "Buenos Aires", "Buenos Aires", "Estamos Felices sello Argentina"],
+  ["Argentina", "Buenos Aires", "Buenos Aires", "Geiser Discos Argentina"],
+  ["Uruguay", "Montevideo", "Montevideo", "Bizarro Records Uruguay"],
+  ["Uruguay", "Montevideo", "Montevideo", "Little Butterfly Records Uruguay"],
+  ["Uruguay", "Montevideo", "Montevideo", "Magnolio Sala Montevideo"],
+  ["Uruguay", "Montevideo", "Montevideo", "Espacio Guambia Montevideo"],
+  ["Paraguay", "Asuncion", "Asuncion", "Planeador Producciones Paraguay"],
+  ["Paraguay", "Asuncion", "Asuncion", "G5Pro Paraguay musica"],
+  ["Paraguay", "Asuncion", "Asuncion", "Rock en Py"],
+  ["Paraguay", "Asuncion", "Asuncion", "4Kcho Records Paraguay"],
+  ["Bolivia", "La Paz", "La Paz", "Wayna Tambo musica Bolivia"],
+  ["Bolivia", "La Paz", "La Paz", "Equinoccio Records Bolivia"],
+  ["Bolivia", "La Paz", "La Paz", "RockandBol Bolivia"],
+  ["Bolivia", "La Paz", "La Paz", "Cultura Viva Comunitaria Bolivia musica"],
+  ["Peru", "Lima", "Lima", "Veltrac Music Peru"],
+  ["Peru", "Lima", "Lima", "A Tutiplen Records Peru"],
+  ["Peru", "Lima", "Lima", "Necio Records Peru"],
+  ["Peru", "Lima", "Lima", "Buh Records Peru"],
+  ["Brasil", "Sao Paulo", "Sao Paulo", "Natura Musical edital"],
+  ["Brasil", "Sao Paulo", "Sao Paulo", "Tratore Brasil"],
+  ["Brasil", "Sao Paulo", "Sao Paulo", "Monstro Discos Brasil"],
+  ["Brasil", "Sao Paulo", "Sao Paulo", "Sesc Brasil programacao musical"],
+  ["Brasil", "Rio de Janeiro", "Rio de Janeiro", "Centro Cultural Banco do Brasil musica"],
+  ["Brasil", "Sao Paulo", "Sao Paulo", "Itau Cultural musica"]
+].map(([country, region, city, label]) => ({
+  country,
+  region,
+  city,
+  label,
+  type: "radar_latam",
+  query: `${label} ${city} musica festival convocatoria showcase bandas rock indie booking centro cultural sello productora`
+}));
+
+LATAM_RECOGNIZED_TARGETS.push(...SOUTH_AMERICA_PRODUCER_BENCHMARKS);
 
 const GLOBAL_PRIORITY_TARGETS = [
   ["Estados Unidos", "Texas", "Austin", "SXSW Music Festival"],

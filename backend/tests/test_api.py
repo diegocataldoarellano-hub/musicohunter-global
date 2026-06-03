@@ -12,6 +12,7 @@ from app.discovery import (
     HIGH_VALUE_SEMANTIC_TERMS,
     LATAM_RECOGNIZED_TARGETS,
     SEMANTIC_INTENT_GROUPS,
+    SOUTH_AMERICA_DEEP_EXPANSION,
     TARGET_COUNTRIES,
     build_discovery_queries,
     build_global_discovery_queries,
@@ -109,7 +110,29 @@ def test_chile_discovery_queries_include_media_profiles_and_partners():
 def test_expanded_target_lists_have_required_depth():
     latam_target_count = sum(len(targets) for targets in LATAM_RECOGNIZED_TARGETS.values())
     assert len(CHILE_DEEP_SEARCH_TARGETS) >= 100
-    assert latam_target_count >= 260
+    assert latam_target_count >= 340
+
+
+def test_south_america_priority_countries_have_deep_benchmarks():
+    required = {
+        "Argentina": ["Usina del Arte convocatorias musica", "Club Paraguay Cordoba bandas", "MICA Mercado de Industrias Culturales Argentinas"],
+        "Uruguay": ["INMUS Uruguay musica convocatorias", "Usinas Culturales Uruguay", "Montevideo Music Box"],
+        "Paraguay": ["Centro Cultural Juan de Salazar musica", "ReciclArte Paraguay bandas", "Teatro Municipal Ignacio A Pane musica"],
+        "Bolivia": ["mARTadero Cochabamba musica", "Teatro Nuna La Paz bandas", "Sonidos de la Tierra Bolivia"],
+        "Peru": ["Ministerio de Cultura Peru Estimulos Economicos musica", "La Noche de Barranco bandas", "ICPNA Cultural musica"],
+        "Brasil": ["SESC Sao Paulo chamada musica", "FUNARTE musica edital", "No Ar Coquetel Molotov Recife"],
+    }
+    for country, expected_terms in required.items():
+        bank = SOUTH_AMERICA_DEEP_EXPANSION[country]
+        assert len(bank["territorial"]) >= 18
+        assert len(bank["recognized"]) >= 8
+        assert len(bank["public_spaces"]) >= 14
+        joined = "\n".join(build_discovery_queries(country))
+        territorial = "\n".join(build_territorial_discovery_queries(country))
+        for term in expected_terms:
+            assert term in joined or term in territorial
+        assert "support act" in territorial
+        assert "international bands" in territorial
 
 
 def test_latam_semantic_queries_detect_support_international_and_mobility():
