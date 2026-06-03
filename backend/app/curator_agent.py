@@ -58,6 +58,30 @@ OPPORTUNITY_TERMS = [
     "instagram",
     "tiktok",
     "bandas emergentes",
+    "buscamos bandas",
+    "se buscan bandas",
+    "llamado a bandas",
+    "llamado a artistas",
+    "presentar artistas",
+    "postula tu proyecto",
+    "programacion artistica",
+    "recepcion de propuestas",
+    "formulario de postulacion",
+    "dossier",
+    "epk",
+    "press kit",
+    "submit your music",
+    "artist submissions",
+    "band submissions",
+    "apply to play",
+    "opening act",
+    "support act",
+    "submit demo",
+    "send demos",
+    "demo submission",
+    "a&r",
+    "roster",
+    "pitch",
     "rueda de negocios",
     "mercado musical",
 ]
@@ -93,6 +117,44 @@ PROFILE_TERMS = [
     "tiktok",
 ]
 
+IGNORED_NAV_TERMS = [
+    "transparencia",
+    "politica de privacidad",
+    "politicas de privacidad",
+    "privacy policy",
+    "terminos y condiciones",
+    "accesibilidad",
+    "mapa del sitio",
+    "newsletter",
+    "suscribete",
+]
+
+APPLICATION_SIGNAL_TERMS = [
+    "postula",
+    "postulacion",
+    "formulario",
+    "bases",
+    "inscripcion",
+    "convocatoria",
+    "application",
+    "apply",
+    "submit",
+    "submission",
+    "open call",
+]
+
+CONTACT_SIGNAL_TERMS = [
+    "contacto",
+    "correo",
+    "email",
+    "mailto:",
+    "booking",
+    "manager",
+    "produccion",
+    "programacion",
+    "a&r",
+]
+
 
 def clean_text(value: str) -> str:
     return " ".join(value.split())
@@ -109,6 +171,33 @@ def score_text(text: str) -> float:
     genre_hits = sum(1 for term in GENRE_TERMS if term in lower)
     profile_hits = sum(1 for term in PROFILE_TERMS if term in lower)
     return min(0.98, 0.22 + opportunity_hits * 0.08 + genre_hits * 0.06 + profile_hits * 0.05)
+
+
+def is_navigation_noise(text: str) -> bool:
+    lower = normalize_text(text)
+    return any(term in lower for term in IGNORED_NAV_TERMS)
+
+
+def extract_application_requirements(text: str, source_type: str) -> str:
+    lower = normalize_text(text)
+    requirements = []
+    if any(term in lower for term in APPLICATION_SIGNAL_TERMS):
+        requirements.append("Entrar a la pagina oficial y buscar bases, formulario, plazo y condiciones de postulacion.")
+    if any(term in lower for term in ["epk", "press kit", "dossier", "bio", "video", "links", "material"]):
+        requirements.append("Preparar EPK/dossier: bio breve, links de audio/video, registro en vivo, fotos, redes publicas y contacto.")
+    if any(term in lower for term in ["bandas", "solistas", "artists", "musicians", "support act", "opening act"]):
+        requirements.append("Confirmar si aceptan bandas, solistas o artistas extranjeros y que generos estan buscando.")
+    if any(term in lower for term in CONTACT_SIGNAL_TERMS):
+        requirements.append("Usar solo el correo/formulario/canal de booking indicado por la fuente; no enviar mensajes genericos.")
+    if any(term in lower for term in DEADLINE_TERMS) or any(term in lower for term in ["deadline", "apply by", "applications close"]):
+        requirements.append("Verificar fecha de publicacion, cierre de convocatoria, fecha del evento y zona horaria.")
+    if any(term in lower for term in ["productora", "booking", "agency", "sello", "label", "a&r", "roster", "demo"]):
+        requirements.append("Enviar pitch corto alineado al catalogo/lineup: sonido, ciudad, logros, links y propuesta de valor.")
+    if not requirements:
+        requirements.append("Abrir la fuente y ubicar seccion de postulacion, contacto, programacion o convocatoria antes de escribir.")
+    if source_type in {"sello", "productora", "booking_agency"} and len(requirements) < 3:
+        requirements.append("Revisar roster/catalogo antes de postular para no enviar material fuera de linea editorial.")
+    return "; ".join(requirements)
 
 
 def infer_category(text: str, source_type: str) -> str:
@@ -173,11 +262,18 @@ DEADLINE_TERMS = [
     "postula hasta",
     "postulaciones hasta",
     "convocatoria hasta",
+    "cierre de postulaciones",
+    "recepcion hasta",
     "cierre",
     "fecha limite",
     "plazo",
     "bases hasta",
     "inscripciones hasta",
+    "deadline",
+    "submission deadline",
+    "apply by",
+    "applications close",
+    "applications until",
 ]
 
 
@@ -234,7 +330,7 @@ def make_candidate_url(source_url: str, href: str | None) -> str:
 
 async def fetch_source(source: Source) -> list[dict]:
     settings = get_settings()
-    headers = {"User-Agent": "MusicHunterBot/1.0 (+public curated music opportunities)"}
+    headers = {"User-Agent": "RadarComeGuagaBot/1.0 (+public curated music opportunities)"}
     async with httpx.AsyncClient(timeout=settings.request_timeout_seconds, follow_redirects=True, headers=headers) as client:
         response = await client.get(source.url)
         response.raise_for_status()
@@ -249,6 +345,8 @@ async def fetch_source(source: Source) -> list[dict]:
             continue
         context = clean_text(anchor.parent.get_text(" ", strip=True)) if anchor.parent else label
         text = f"{label} {context}"
+        if is_navigation_noise(text):
+            continue
         confidence = score_text(text)
         if confidence < 0.45:
             continue
@@ -261,6 +359,7 @@ async def fetch_source(source: Source) -> list[dict]:
                 "confidence": confidence,
                 "category": infer_category(text, source.type),
                 "genres": genre_csv(text),
+                "requirements": extract_application_requirements(text, source.type),
                 "event_date": None if deadline_date else extract_event_date(text),
                 "deadline": deadline_date,
             }
@@ -276,6 +375,7 @@ def upsert_opportunity(db, source: Source, candidate: dict, link_status: str, su
         existing.summary = summary or candidate["summary"]
         existing.confidence = max(existing.confidence, candidate["confidence"])
         existing.link_status = link_status
+        existing.requirements = candidate.get("requirements") or existing.requirements
         existing.deadline = candidate.get("deadline") or existing.deadline
         existing.event_date = candidate.get("event_date") or existing.event_date
         existing.last_checked = datetime.now(timezone.utc)
@@ -295,7 +395,7 @@ def upsert_opportunity(db, source: Source, candidate: dict, link_status: str, su
             deadline=candidate.get("deadline"),
             event_date=candidate.get("event_date"),
             genres=candidate["genres"],
-            requirements="Revisar fecha de publicacion y fecha del evento en la fuente oficial; preparar EPK; validar plazo y contacto publico antes de postular.",
+            requirements=candidate.get("requirements") or "Abrir la fuente oficial; revisar como postular, plazo, bases, formulario y contacto publico.",
             url=candidate["url"],
             source_name=source.name,
             source_type=source.type,

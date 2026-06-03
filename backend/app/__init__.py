@@ -1,1 +1,1 @@
-"""Music Hunter backend package."""
+"""Radar Come Guaga backend package."""

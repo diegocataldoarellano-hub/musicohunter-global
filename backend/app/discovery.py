@@ -8,48 +8,182 @@ from .models import Source
 from .settings import get_settings
 
 
+WORLD_EXTRA_COUNTRIES = {
+    "Africa": [
+        "Argelia", "Angola", "Benin", "Botswana", "Burkina Faso", "Burundi", "Cabo Verde",
+        "Camerun", "Chad", "Comoras", "Congo", "Costa de Marfil", "Djibouti", "Egipto",
+        "Eritrea", "Eswatini", "Etiopia", "Gabon", "Gambia", "Ghana", "Guinea",
+        "Guinea-Bisau", "Guinea Ecuatorial", "Kenia", "Lesoto", "Liberia", "Libia",
+        "Madagascar", "Malawi", "Mali", "Mauricio", "Mauritania", "Mozambique", "Namibia",
+        "Niger", "Nigeria", "Republica Centroafricana", "Republica Democratica del Congo",
+        "Ruanda", "Santo Tome y Principe", "Senegal", "Seychelles", "Sierra Leona",
+        "Somalia", "Sudan", "Sudan del Sur", "Tanzania", "Togo", "Tunez", "Uganda",
+        "Zambia", "Zimbabue",
+    ],
+    "Asia": [
+        "Afganistan", "Arabia Saudita", "Azerbaiyan", "Bangladesh", "Barein", "Brunei",
+        "Butan", "Camboya", "Emiratos Arabes Unidos", "Filipinas", "India", "Indonesia",
+        "Irak", "Iran", "Israel", "Jordania", "Kazajistan", "Kirguistan", "Kuwait", "Laos",
+        "Malasia", "Maldivas", "Mongolia", "Myanmar", "Nepal", "Oman", "Pakistan",
+        "Palestina", "Qatar", "Singapur", "Siria", "Sri Lanka", "Tailandia", "Tayikistan",
+        "Timor Oriental", "Turkmenistan", "Uzbekistan", "Yemen",
+    ],
+    "Europa": [
+        "Albania", "Alemania", "Andorra", "Armenia", "Austria", "Belgica", "Bielorrusia",
+        "Bosnia y Herzegovina", "Bulgaria", "Chipre", "Croacia", "Dinamarca", "Eslovaquia",
+        "Eslovenia", "Espana", "Estonia", "Finlandia", "Francia", "Georgia", "Grecia",
+        "Gales", "Holanda", "Hungria", "Inglaterra", "Irlanda", "Islandia", "Italia", "Kosovo",
+        "Letonia", "Liechtenstein", "Lituania", "Luxemburgo", "Macedonia del Norte", "Malta",
+        "Moldavia", "Monaco", "Montenegro", "Noruega", "Paises Bajos", "Polonia", "Portugal",
+        "Reino Unido", "Republica Checa", "Rumania", "Rusia", "San Marino", "Serbia",
+        "Suecia", "Suiza", "Turquia", "Ucrania", "Vaticano",
+    ],
+    "Norteamerica": ["Canada", "Estados Unidos"],
+    "Latinoamerica": [
+        "Antigua y Barbuda", "Argentina", "Bahamas", "Barbados", "Belice", "Bolivia",
+        "Brasil", "Chile", "Colombia", "Costa Rica", "Cuba", "Dominica", "Ecuador",
+        "El Salvador", "Granada", "Guatemala", "Guyana", "Haiti", "Honduras", "Jamaica",
+        "Mexico", "Nicaragua", "Panama", "Paraguay", "Peru", "Republica Dominicana",
+        "San Cristobal y Nieves", "San Vicente y las Granadinas", "Santa Lucia", "Surinam",
+        "Trinidad y Tobago", "Uruguay", "Venezuela",
+    ],
+    "Oceania": [
+        "Australia", "Fiji", "Islas Marshall", "Islas Salomon", "Kiribati", "Micronesia",
+        "Nauru", "Nueva Zelanda", "Palaos", "Papua Nueva Guinea", "Samoa", "Tonga", "Tuvalu",
+        "Vanuatu",
+    ],
+}
+
+WORLD_COUNTRY_ROWS = [
+    (continent, country)
+    for continent, countries in WORLD_EXTRA_COUNTRIES.items()
+    for country in countries
+]
+
+
 TARGET_COUNTRIES = [
     *[("Latinoamerica", country) for country in [
         "Argentina", "Bolivia", "Brasil", "Chile", "Colombia", "Costa Rica", "Cuba", "Ecuador",
         "El Salvador", "Guatemala", "Honduras", "Mexico", "Nicaragua", "Panama", "Paraguay",
         "Peru", "Republica Dominicana", "Uruguay", "Venezuela",
     ]],
+    *[("Norteamerica", country) for country in [
+        "Canada", "Estados Unidos",
+    ]],
     *[("Europa", country) for country in [
         "Albania", "Alemania", "Andorra", "Armenia", "Austria", "Belgica", "Bielorrusia",
         "Bosnia y Herzegovina", "Bulgaria", "Chipre", "Croacia", "Dinamarca", "Eslovaquia",
         "Eslovenia", "Espana", "Estonia", "Finlandia", "Francia", "Georgia", "Grecia",
-        "Hungria", "Irlanda", "Islandia", "Italia", "Kosovo", "Letonia", "Liechtenstein",
+        "Holanda", "Hungria", "Inglaterra", "Irlanda", "Islandia", "Italia", "Kosovo", "Letonia", "Liechtenstein",
         "Lituania", "Luxemburgo", "Macedonia del Norte", "Malta", "Moldavia", "Monaco",
         "Montenegro", "Noruega", "Paises Bajos", "Polonia", "Portugal", "Reino Unido",
-        "Republica Checa", "Rumania", "San Marino", "Serbia", "Suecia", "Suiza", "Turquia",
+        "Republica Checa", "Rumania", "Rusia", "San Marino", "Serbia", "Suecia", "Suiza", "Turquia",
         "Ucrania", "Vaticano",
     ]],
+    *[("Oceania", country) for country in [
+        "Australia",
+    ]],
+    *[("Asia", country) for country in [
+        "China", "Corea del Sur", "Japon", "Taiwan", "Vietnam", "Libano",
+    ]],
+    *[("Africa", country) for country in [
+        "Marruecos", "Sudafrica",
+    ]],
 ]
+
+for continent, country in WORLD_COUNTRY_ROWS:
+    if (continent, country) not in TARGET_COUNTRIES:
+        TARGET_COUNTRIES.append((continent, country))
 
 SEARCH_MISSION_TEMPLATES = [
     'site:instagram.com/p "{country}" festival bandas rock convocatoria',
     'site:instagram.com/reel "{country}" buscan teloneros rock concierto',
     'site:instagram.com/p "{country}" showcase bandas convocatoria musica',
     'site:instagram.com "{country}" productora booking bandas rock',
+    'site:instagram.com/p "{country}" "open call" bands music festival',
+    'site:instagram.com/reel "{country}" "support act" band concert',
     'site:tiktok.com "{country}" festival rock bandas convocatoria',
+    'site:tiktok.com "{country}" "open call" bands festival music',
     '"{country}" fondos musica bandas rock convocatoria',
     '"{country}" municipio centro cultural musica bandas pago',
     '"{country}" productora booking bandas rock fusion',
     '"{country}" revista musica rock programa radio bandas',
     '"{country}" sello independiente rock experimental booking',
     '"{country}" intercambio musical bandas latinoamerica europa',
+    '"{country}" "music festival" "band submissions"',
+    '"{country}" "artist open call" "music"',
+    '"{country}" "arts council" "music grants"',
+    '"{country}" "cultural center" "live music" "open call"',
+    '"{country}" "booking agency" "independent bands"',
+    '"{country}" "demo submission" "record label"',
+    '"{country}" "artist submissions" "booking agency"',
+    '"{country}" "submit your music" "label"',
+    '"{country}" "opening act" "bands wanted"',
+    '"{country}" "support act" "independent bands"',
+    '"{country}" "A&R" "new artists"',
+    '"{country}" "artist roster" "booking"',
+    '"{country}" "presentar artistas" "programacion"',
+    '"{country}" "recepcion de propuestas" "musica"',
+    '"{country}" "postula tu proyecto" "musica"',
+    '"{country}" "buscamos bandas" "productora"',
 ]
+
+COUNTRY_SEARCH_ALIASES = {
+    "Estados Unidos": "Estados Unidos EEUU USA United States",
+    "Inglaterra": "Inglaterra England Reino Unido UK",
+    "Holanda": "Holanda Paises Bajos Netherlands",
+    "Paises Bajos": "Paises Bajos Holanda Netherlands Nederland",
+    "Libano": "Libano Lebanon",
+    "Japon": "Japon Japan",
+    "Corea del Sur": "Corea del Sur South Korea",
+    "Sudafrica": "Sudafrica South Africa",
+    "Alemania": "Alemania Germany Deutschland",
+    "Francia": "Francia France",
+    "Espana": "Espana Spain España",
+    "Marruecos": "Marruecos Morocco Maroc المغرب",
+    "China": "China 中国",
+    "Taiwan": "Taiwan 臺灣 台灣",
+    "Vietnam": "Vietnam Việt Nam",
+    "Irlanda": "Irlanda Ireland Eire",
+    "Australia": "Australia",
+    "Canada": "Canada Canadá",
+    "Rusia": "Rusia Russia Россия",
+    "Gales": "Gales Wales Cymru",
+    "Brasil": "Brasil Brazil",
+    "Mexico": "Mexico México",
+    "Peru": "Peru Perú",
+    "Uruguay": "Uruguay",
+    "Paraguay": "Paraguay",
+    "Argentina": "Argentina",
+    "Colombia": "Colombia",
+    "Bolivia": "Bolivia",
+    "Islandia": "Islandia Iceland Ísland",
+}
 
 CHILE_REGIONAL_TARGETS = [
     "Santiago",
+    "GAM Centro Cultural Gabriela Mistral Santiago",
+    "Las Condes Teatro Municipal Corporacion Cultural musica",
+    "Providencia Teatro Oriente musica conciertos",
+    "Nunoa Corporacion Cultural musica conciertos",
+    "La Reina centro cultural musica conciertos",
+    "San Joaquin centro cultural musica bandas",
+    "Maipu teatro municipal musica conciertos",
     "Valparaiso",
+    "V Region Valparaiso Vina del Mar Quilpue Villa Alemana musica",
     "Limache",
+    "Region de O'Higgins Rancagua VI Region musica conciertos",
+    "Region del Maule Talca Curico VII Region musica conciertos",
     "Chillan",
     "Los Angeles Bio Bio",
     "Concepcion",
     "Valle de Elqui",
     "La Serena",
     "Coquimbo",
+    "Antofagasta teatro municipal cultura musica conciertos",
+    "Calama corporacion cultural musica conciertos",
+    "Valdivia teatro cervantes fluvial musica conciertos",
+    "Puerto Montt teatro diego rivera cultura musica conciertos",
     "Norte de Chile",
     "Sur de Chile",
 ]
@@ -72,13 +206,27 @@ CHILE_INSTAGRAM_TAGS = [
     "culturanuble",
     "culturacoquimbo",
     "valledelelqui",
+    "gamcl",
+    "lascondes",
+    "providencia",
+    "nunoa",
+    "antofagasta",
+    "calama",
+    "valdivia",
+    "puertomontt",
 ]
 
 CHILE_REGIONAL_MISSION_TEMPLATES = [
     'site:instagram.com/p "{region}" agenda cultural conciertos bandas rock',
     'site:instagram.com/reel "{region}" festival convocatoria teloneros musica',
+    'site:instagram.com/p "{region}" "buscamos bandas" musica',
+    'site:instagram.com/p "{region}" "se buscan bandas" concierto',
+    'site:instagram.com/p "{region}" "bandas emergentes" convocatoria',
+    'site:instagram.com/reel "{region}" "tocata" "bandas"',
     'site:instagram.com/p "{region}" "postula hasta" musica bandas',
     'site:instagram.com/p "{region}" convocatoria cierre bases cultura musica',
+    '"{region}" "convocatoria" "musica en vivo" centro cultural',
+    '"{region}" "programacion" "musica" "centro cultural"',
     '"{region}" centro cultural musica conciertos convocatoria entrada liberada',
     '"{region}" municipio cultura bandas festival musica pago honorarios',
 ]
@@ -89,14 +237,572 @@ CHILE_TAG_MISSION_TEMPLATES = [
     'site:instagram.com/reel "#{tag}" conciertos agenda cultural',
 ]
 
+CHILE_PUBLIC_SPACE_TARGETS = """
+Culturas Musica Instagram Convocatoria 2026
+Fondos Cultura Musica 2026
+Mercados FOCO 2026 musica bandas
+Linea Apoyo Circulacion Musica Chilena 2026
+Red Rockodromo 2026 bandas solistas
+GAM Convocatoria Nacional Programacion 2026 2027
+CONARTE Valdivia 2026 musica
+Concurso Luis Advis 2026 musica
+Concurso Roberto Parra Sandoval 2026 musica
+Municipalidad de Arica Cultura
+Municipalidad de Iquique Cultura
+Municipalidad de Alto Hospicio Cultura
+Teatro Municipal de Iquique
+Museo Regional de Iquique
+Municipalidad de Antofagasta Cultura
+Teatro Municipal de Antofagasta
+Municipalidad de Calama Cultura
+Corporacion de Cultura y Turismo Calama
+Municipalidad de Tocopilla Cultura
+Municipalidad de Mejillones Cultura
+Municipalidad de Copiapo Cultura
+Centro Cultural Atacama Copiapo
+Municipalidad de Vallenar Cultura
+Municipalidad de La Serena Cultura
+Teatro Centenario La Serena
+Municipalidad de Coquimbo Cultura
+Centro Cultural Palace Coquimbo
+Municipalidad de Ovalle Cultura
+Municipalidad de Vicuna Cultura
+Municipalidad de Paihuano Cultura
+Municipalidad de Valparaiso Cultura
+Parque Cultural de Valparaiso
+CENTEX Valparaiso
+Municipalidad de Vina del Mar Cultura
+Teatro Municipal de Vina del Mar
+Municipalidad de Quilpue Cultura
+Municipalidad de Villa Alemana Cultura
+Municipalidad de Limache Cultura
+Municipalidad de Quillota Cultura
+Municipalidad de San Antonio Cultura
+Municipalidad de Los Andes Cultura
+Municipalidad de San Felipe Cultura
+Municipalidad de Santiago Cultura
+GAM Centro Cultural Gabriela Mistral
+Matucana 100
+Centro Cultural La Moneda
+Museo de la Memoria y los Derechos Humanos
+Museo Violeta Parra
+Museo de Arte Contemporaneo Santiago
+Teatro Municipal de Santiago
+Municipalidad de Providencia Cultura
+Teatro Oriente Providencia
+Municipalidad de Las Condes Cultura
+Teatro Municipal Las Condes
+Centro Cultural Las Condes
+Municipalidad de Nunoa Cultura
+Corporacion Cultural Nunoa
+Sala SCD Nunoa
+Municipalidad de La Reina Cultura
+Municipalidad de San Joaquin Cultura
+Centro Cultural San Joaquin
+Municipalidad de Maipu Cultura
+Teatro Municipal de Maipu
+Municipalidad de Puente Alto Cultura
+Municipalidad de La Florida Cultura
+Municipalidad de Penalolen Cultura
+Centro Cultural Chimkowe Penalolen
+Municipalidad de Lo Barnechea Cultura
+Municipalidad de Vitacura Cultura
+Municipalidad de Recoleta Cultura
+Municipalidad de Independencia Cultura
+Municipalidad de Quilicura Cultura
+Municipalidad de Renca Cultura
+Municipalidad de San Miguel Cultura
+Municipalidad de Estacion Central Cultura
+Municipalidad de Pudahuel Cultura
+Municipalidad de La Pintana Cultura
+Municipalidad de San Bernardo Cultura
+Municipalidad de Colina Cultura
+Municipalidad de Buin Cultura
+Municipalidad de Talagante Cultura
+Municipalidad de Melipilla Cultura
+Municipalidad de Rancagua Cultura
+Teatro Regional Lucho Gatica
+Municipalidad de Machali Cultura
+Municipalidad de San Fernando Cultura
+Municipalidad de Santa Cruz Cultura
+Municipalidad de Pichilemu Cultura
+Municipalidad de Talca Cultura
+Teatro Regional del Maule
+Municipalidad de Curico Cultura
+Municipalidad de Linares Cultura
+Municipalidad de Cauquenes Cultura
+Municipalidad de Constitucion Cultura
+Municipalidad de Chillan Cultura
+Teatro Municipal de Chillan
+Centro Cultural Municipal de Chillan
+Municipalidad de San Carlos Cultura
+Municipalidad de Concepcion Cultura
+Teatro Biobio
+Festival REC Concepcion
+Municipalidad de Talcahuano Cultura
+Municipalidad de Chiguayante Cultura
+Municipalidad de Coronel Cultura
+Municipalidad de Lota Cultura
+Municipalidad de Los Angeles Cultura
+Corporacion Cultural Municipal Los Angeles
+Municipalidad de Arauco Cultura
+Municipalidad de Temuco Cultura
+Teatro Municipal de Temuco
+Municipalidad de Padre Las Casas Cultura
+Municipalidad de Villarrica Cultura
+Municipalidad de Pucon Cultura
+Municipalidad de Angol Cultura
+Municipalidad de Valdivia Cultura
+Teatro Regional Cervantes Valdivia
+Fluvial Valdivia
+Municipalidad de La Union Cultura
+Municipalidad de Osorno Cultura
+Municipalidad de Puerto Montt Cultura
+Teatro Diego Rivera Puerto Montt
+Municipalidad de Puerto Varas Cultura
+Teatro del Lago Frutillar
+Municipalidad de Castro Cultura
+Municipalidad de Ancud Cultura
+Municipalidad de Coyhaique Cultura
+Municipalidad de Puerto Aysen Cultura
+Municipalidad de Punta Arenas Cultura
+Municipalidad de Puerto Natales Cultura
+""".strip().splitlines()
+
+PUBLIC_SPACE_MISSION_TEMPLATES = [
+    'site:instagram.com/p "{target}" "convocatoria" "musica"',
+    'site:instagram.com/p "{target}" "presentar artistas"',
+    'site:instagram.com/p "{target}" "postula tu proyecto"',
+    'site:instagram.com/reel "{target}" "programacion artistica" musica',
+    'site:instagram.com/reel "{target}" "buscamos bandas"',
+    '"{target}" "programacion artistica" "musica"',
+    '"{target}" "presentar artistas" "musica"',
+    '"{target}" "postula tu proyecto" "musica"',
+    '"{target}" "recepcion de propuestas" "artistas"',
+    '"{target}" "agenda cultural" "conciertos"',
+    '"{target}" "teatro" "convocatoria" "musica"',
+    '"{target}" "museo" "musica en vivo" "convocatoria"',
+    '"{target}" "como postular" "musica"',
+    '"{target}" "formulario de postulacion" "musica"',
+    '"{target}" "convocatoria bandas emergentes"',
+    '"{target}" "llamado a bandas"',
+]
+
+CHILE_DEEP_SEARCH_TARGETS = """
+GAM Centro Cultural Gabriela Mistral
+Matucana 100
+Centro Cultural La Moneda
+Balmaceda Arte Joven Santiago
+Teatro Nescafe de las Artes
+Teatro Oriente Providencia
+Corporacion Cultural Providencia
+Centro Cultural Las Condes
+Teatro Municipal Las Condes
+Corporacion Cultural Nunoa
+Sala SCD Nunoa
+Corporacion Cultural La Reina
+Centro Cultural San Joaquin
+Teatro Municipal de Maipu
+Centro Cultural Puente Alto
+Corporacion Cultural La Florida
+Centro Cultural Chimkowe Penalolen
+Centro Cultural Lo Barnechea
+Vitacura Cultura
+Corporacion Cultural Recoleta
+Centro Cultural Casona Dubois
+Independencia Cultura
+Huechuraba Cultura
+Quilicura Cultura
+Renca Cultura
+Estacion Central Cultura
+San Miguel Cultura
+La Pintana Cultura
+Pudahuel Cultura
+Cerrillos Cultura
+Arica Cultura
+Iquique Cultura
+Alto Hospicio Cultura
+Teatro Municipal de Antofagasta
+Corporacion Cultural Calama
+Mejillones Cultura
+Tocopilla Cultura
+Copiapo Cultura
+Vallenar Cultura
+Centro Cultural Teatro Centenario La Serena
+Coquimbo Cultura
+Centro Cultural Municipal Ovalle
+Valle de Elqui cultura Vicuna
+Parque Cultural de Valparaiso
+CENTEX Valparaiso
+Vina del Mar Cultura
+Quilpue Cultura
+Villa Alemana Cultura
+Limache Cultura
+San Antonio Cultura
+Los Andes Cultura
+San Felipe Cultura
+Teatro Regional Lucho Gatica Rancagua
+Machali Cultura
+San Fernando Cultura
+Santa Cruz Cultura
+Pichilemu Cultura
+Teatro Regional del Maule
+Curico Cultura
+Linares Cultura
+Cauquenes Cultura
+Constitucion Cultura
+Teatro Municipal de Chillan
+Centro Cultural Municipal de Chillan
+San Carlos Cultura
+Teatro Biobio
+Festival REC Concepcion
+Talcahuano Cultura
+Chiguayante Cultura
+Coronel Cultura
+Lota Cultura
+Corporacion Cultural Municipal Los Angeles
+Arauco Cultura
+Teatro Municipal de Temuco
+Padre Las Casas Cultura
+Villarrica Cultura
+Pucon Cultura
+Angol Cultura
+Fluvial Valdivia
+Teatro Regional Cervantes Valdivia
+La Union Cultura
+Osorno Cultura
+Teatro Diego Rivera Puerto Montt
+Puerto Varas Cultura
+Teatro del Lago Frutillar
+Castro Cultura Chiloe
+Ancud Cultura
+Coyhaique Cultura
+Puerto Aysen Cultura
+Punta Arenas Cultura
+Puerto Natales Cultura
+Melipilla Cultura
+Talagante Cultura
+Buin Cultura
+Colina Cultura
+San Bernardo Cultura
+Penaflor Cultura
+Lampa Cultura
+Curacavi Cultura
+Paine Cultura
+Los Vilos Cultura
+Quillota Cultura
+Rengo Cultura
+""".strip().splitlines()
+
+LATAM_RECOGNIZED_TARGETS = {
+    "Argentina": ["INAMU", "BAFIM", "Centro Cultural Recoleta", "Ciudad Cultural Konex", "La Trastienda", "Niceto Club", "Cosquin Rock", "Rosario Cultura", "Mendoza Cultura", "La Plata Cultura"],
+    "Colombia": ["Rock al Parque", "Idartes", "BOmm Bogota Music Market", "Teatro Mayor Julio Mario Santo Domingo", "Circulart", "Medellin Cultura", "Cali Cultura", "Barranquilla Cultura", "Cartagena Cultura", "Bucaramanga Cultura"],
+    "Peru": ["Ministerio de Cultura Peru", "Gran Teatro Nacional Peru", "Centro Cultural de Espana en Lima", "Festival Selvamomos", "Vivo x el Rock", "Cusco Cultura", "Arequipa Cultura", "Trujillo Cultura", "Chiclayo Cultura", "Piura Cultura"],
+    "Uruguay": ["INMUS Uruguay", "Montevideo Cultura", "Sala Zitarrosa", "Teatro Solis", "Montevideo Rock", "Durazno Rock", "Canelones Cultura", "Maldonado Cultura"],
+    "Paraguay": ["Secretaria Nacional de Cultura Paraguay", "Centro Cultural Juan de Salazar", "Asuncionico", "Municipalidad de Asuncion Cultura", "San Lorenzo Cultura", "Ciudad del Este Cultura", "Encarnacion Cultura", "Villarrica Paraguay Cultura"],
+    "Bolivia": ["Ministerio de Culturas Bolivia", "Teatro Municipal Alberto Saavedra Perez", "La Paz Culturas", "Santa Cruz Cultura", "Cochabamba Cultura", "Sucre Cultura", "Tarija Cultura", "Oruro Cultura"],
+    "Brasil": ["SIM Sao Paulo", "Centro Cultural Sao Paulo", "SESC Sao Paulo", "Porto Musical", "Circo Voador", "Rock in Rio", "Salvador Cultura", "Belo Horizonte Cultura", "Curitiba Cultura", "Porto Alegre Cultura"],
+    "Mexico": ["FIMPRO", "Vive Latino", "Indie Rocks", "Centro Cultural de Espana en Mexico", "Secretaria de Cultura Mexico", "Monterrey Cultura", "Guadalajara Cultura", "Puebla Cultura", "Tijuana Cultura", "Merida Cultura"],
+    "Ecuador": ["Quito Cultura", "Teatro Nacional Sucre", "Quitofest", "Guayaquil Cultura", "Cuenca Cultura", "Manta Cultura", "Loja Cultura", "Ibarra Cultura"],
+    "Costa Rica": ["Ministerio de Cultura Costa Rica", "FIA Costa Rica", "Jazz Cafe Costa Rica", "Teatro Nacional Costa Rica", "Alajuela Cultura"],
+    "Panama": ["MiCultura Panama", "Panama Jazz Festival", "Teatro Nacional Panama", "Ciudad de Panama Cultura", "David Cultura"],
+    "Cuba": ["Instituto Cubano de la Musica", "Fabrica de Arte Cubano", "La Habana Cultura"],
+    "Republica Dominicana": ["Ministerio de Cultura Republica Dominicana", "Santo Domingo Cultura", "Centro Cultural de Espana Santo Domingo"],
+    "Guatemala": ["Ministerio de Cultura Guatemala", "Ciudad de Guatemala Cultura"],
+    "Honduras": ["Secretaria de Cultura Honduras", "Tegucigalpa Cultura"],
+    "Nicaragua": ["Instituto Nicaraguense de Cultura", "Managua Cultura"],
+    "El Salvador": ["Ministerio de Cultura El Salvador", "San Salvador Cultura"],
+    "Venezuela": ["Centro Cultural BOD", "Caracas Cultura"],
+}
+
+GLOBAL_PRIORITY_TARGETS = {
+    "Estados Unidos": ["SXSW Music Festival", "Lincoln Center Open Calls", "Brooklyn Academy of Music", "The Echo Los Angeles", "Chicago Cultural Center"],
+    "Canada": ["Canadian Music Week", "M for Montreal", "Music BC"],
+    "Irlanda": ["First Music Contact Ireland", "Whelan's Dublin"],
+    "Inglaterra": ["The Great Escape Festival", "Arts Council England Music", "Roundhouse London"],
+    "Reino Unido": ["The Great Escape Festival", "Arts Council England Music", "Roundhouse London"],
+    "Espana": ["Primavera Pro", "BIME", "INJUVE Musica"],
+    "Marruecos": ["Visa For Music", "Hiba Foundation"],
+    "Francia": ["Centre National de la Musique", "MaMA Music & Convention", "La Gaite Lyrique"],
+    "Alemania": ["Reeperbahn Festival", "Musicboard Berlin"],
+    "Paises Bajos": ["Eurosonic Noorderslag"],
+    "Holanda": ["Eurosonic Noorderslag"],
+    "Dinamarca": ["Music Export Denmark"],
+    "Suecia": ["Export Music Sweden"],
+    "Suiza": ["Pro Helvetia Music"],
+    "Australia": ["BIGSOUND"],
+    "Japon": ["Music Lane Festival Okinawa", "Tokyo music open call"],
+    "Corea del Sur": ["Zandari Festa"],
+    "Taiwan": ["LUCfest"],
+    "Vietnam": ["Hozo Music Festival"],
+    "China": ["Music China"],
+    "Sudafrica": ["Music In Africa"],
+    "Libano": ["Beirut and Beyond"],
+    "Rusia": ["Moscow Music Week"],
+}
+
+COUNTRY_PUBLIC_SPACE_TARGETS = {
+    "Argentina": [
+        "Buenos Aires Cultura", "Usina del Arte", "Centro Cultural Recoleta", "Tecnopolis",
+        "Ciudad Cultural Konex", "Centro Cultural Kirchner", "La Plata Cultura",
+        "Rosario Cultura", "Cordoba Cultura", "Mendoza Cultura", "Mar del Plata Cultura",
+        "Tucuman Cultura", "Salta Cultura", "Neuquen Cultura", "Bariloche Cultura",
+    ],
+    "Brasil": [
+        "Sao Paulo Cultura", "Centro Cultural Sao Paulo", "SESC Sao Paulo", "SESC Pompeia",
+        "Rio de Janeiro Cultura", "Circo Voador", "Fundicao Progresso", "Belo Horizonte Cultura",
+        "Curitiba Cultura", "Porto Alegre Cultura", "Recife Cultura", "Salvador Cultura",
+        "Brasilia Cultura", "Fortaleza Cultura", "Florianopolis Cultura", "Goiania Cultura",
+    ],
+    "Paraguay": [
+        "Asuncion Cultura", "Centro Cultural Juan de Salazar", "Manzana de la Rivera",
+        "Municipalidad de Asuncion Cultura", "San Lorenzo Cultura", "Ciudad del Este Cultura",
+        "Encarnacion Cultura", "Villarrica Paraguay Cultura", "Aregua Cultura",
+    ],
+    "Uruguay": [
+        "Montevideo Cultura", "Sala Zitarrosa", "Teatro Solis", "Centro Cultural de Espana Montevideo",
+        "Canelones Cultura", "Maldonado Cultura", "Punta del Este Cultura", "Colonia Cultura",
+        "Paysandu Cultura", "Salto Cultura", "Durazno Cultura",
+    ],
+    "Colombia": [
+        "Bogota Cultura", "Idartes", "Teatro Jorge Eliecer Gaitan", "Teatro Mayor Julio Mario Santo Domingo",
+        "Medellin Cultura", "Parque de los Deseos Medellin", "Cali Cultura", "Barranquilla Cultura",
+        "Cartagena Cultura", "Bucaramanga Cultura", "Manizales Cultura", "Pereira Cultura",
+        "Rock al Parque", "BOmm Bogota Music Market", "Circulart",
+    ],
+    "Peru": [
+        "Lima Cultura", "Gran Teatro Nacional Peru", "Centro Cultural de Espana en Lima",
+        "Ministerio de Cultura Peru", "Municipalidad de Lima Cultura", "Barranco Cultura",
+        "Miraflores Cultura", "Cusco Cultura", "Arequipa Cultura", "Trujillo Cultura",
+        "Chiclayo Cultura", "Piura Cultura", "Puno Cultura", "Iquitos Cultura",
+    ],
+    "Bolivia": [
+        "La Paz Culturas", "Teatro Municipal Alberto Saavedra Perez", "Centro Cultural de Espana La Paz",
+        "Santa Cruz Cultura", "Cochabamba Cultura", "Sucre Cultura", "Tarija Cultura",
+        "Oruro Cultura", "Potosi Cultura", "El Alto Cultura",
+    ],
+    "Mexico": [
+        "Ciudad de Mexico Cultura", "Secretaria de Cultura Mexico", "Centro Cultural de Espana en Mexico",
+        "Foro Indie Rocks", "Cenart Mexico", "Monterrey Cultura", "Guadalajara Cultura",
+        "Puebla Cultura", "Tijuana Cultura", "Merida Cultura", "Queretaro Cultura",
+        "Oaxaca Cultura", "Leon Guanajuato Cultura", "San Luis Potosi Cultura",
+    ],
+    "Canada": [
+        "Toronto music open call", "Toronto Arts Council music", "Harbourfront Centre music",
+        "Montreal music showcase", "M for Montreal", "Place des Arts Montreal",
+        "Vancouver music open call", "Music BC", "Calgary arts music", "Edmonton arts music",
+        "Ottawa music showcase", "Canada Council for the Arts music", "FACTOR Canada music",
+    ],
+    "Irlanda": [
+        "Dublin music open call", "First Music Contact Ireland", "Whelan's Dublin",
+        "Culture Ireland music", "Galway arts music", "Cork music open call",
+        "Limerick culture music", "Belfast music showcase",
+    ],
+    "Gales": [
+        "Wales Arts Council music", "Cardiff music open call", "Wales Millennium Centre music",
+        "Focus Wales showcase", "BBC Horizons Wales music", "Swansea music open call",
+        "Aberystwyth Arts Centre music", "Cymru music showcase",
+    ],
+    "Islandia": [
+        "Iceland Airwaves showcase", "Reykjavik music open call", "Iceland Music Export",
+        "Harpa Reykjavik music", "Reykjavik Arts Festival music",
+    ],
+    "Inglaterra": [
+        "London music open call", "Roundhouse London", "Southbank Centre music",
+        "Barbican music open call", "Arts Council England music", "Manchester music showcase",
+        "Liverpool music open call", "Bristol music open call", "The Great Escape Festival",
+    ],
+    "Reino Unido": [
+        "UK music open call", "Arts Council England music", "British Council music",
+        "PRS Foundation music", "Help Musicians UK", "Creative Scotland music",
+        "Wales Arts Council music", "The Great Escape Festival",
+    ],
+    "Francia": [
+        "Centre National de la Musique", "Institut Francais musique", "Paris music open call",
+        "La Gaite Lyrique", "MaMA Music Convention", "Rennes Trans Musicales",
+        "Lyon culture musique", "Marseille culture musique",
+    ],
+    "Alemania": [
+        "Berlin music open call", "Musicboard Berlin", "Reeperbahn Festival",
+        "Goethe Institut Musik", "Hamburg music showcase", "Cologne music open call",
+        "Munich culture music", "Leipzig music open call",
+    ],
+    "Espana": [
+        "Madrid Cultura musica", "Matadero Madrid musica", "Barcelona Cultura musica",
+        "Primavera Pro", "BIME Bilbao", "Valencia Cultura musica", "Sevilla Cultura musica",
+        "Zaragoza Cultura musica", "INJUVE Musica",
+    ],
+    "Paises Bajos": [
+        "Amsterdam music open call", "Eurosonic Noorderslag", "Dutch Music Export",
+        "Rotterdam music open call", "Utrecht music showcase", "Paradiso Amsterdam",
+    ],
+    "Japon": [
+        "Tokyo music open call", "Music Lane Okinawa", "Fuji Rock rookie a go go",
+        "Osaka music showcase", "Kyoto music open call", "Japan Foundation music",
+    ],
+    "Corea del Sur": [
+        "Seoul music showcase", "Zandari Festa", "MUCON Korea", "Korea Creative Content Agency music",
+        "Busan music open call", "Incheon music open call",
+    ],
+    "China": [
+        "Shanghai music festival open call", "Beijing music open call", "Music China Shanghai",
+        "Shenzhen music open call", "Guangzhou music festival", "China Shanghai International Arts Festival",
+    ],
+    "Taiwan": [
+        "Taipei music open call", "LUCfest Taiwan", "Taiwan Creative Content Agency music",
+        "Kaohsiung music open call", "Taiwan Beats music",
+    ],
+    "Vietnam": [
+        "Ho Chi Minh City music open call", "HOZO Music Festival", "Hanoi music open call",
+        "Monsoon Music Festival Vietnam", "Vietnam music showcase",
+    ],
+}
+
+EXPANDED_TARGET_TEMPLATES = [
+    'site:instagram.com/p "{target}" musica bandas convocatoria',
+    'site:instagram.com/reel "{target}" concierto bandas tocata',
+    '"{target}" "convocatoria" "musica"',
+    '"{target}" "programacion" "musica en vivo"',
+    '"{target}" "open call" "music"',
+]
+
+GLOBAL_INVITATION_TERMS = [
+    "open call musicians international",
+    "artist open call international music",
+    "international artists open call music",
+    "band submissions festival",
+    "showcase application artists",
+    "convocatoria artistas internacionales musica",
+    "convocatoria bandas festival",
+    "appel a candidatures musique",
+    "bewerbung bands festival",
+    "edital musica festival",
+    "ショーケース 応募 音楽",
+    "아티스트 공모 음악",
+    "音乐 节 招募 乐队",
+    "دعوة مفتوحة موسيقى",
+    "apply to play festival",
+    "support act wanted",
+    "international artist residency music",
+    "music mobility grant",
+    "touring grant musicians",
+    "arts council music grant",
+    "festival submissions bands",
+    "conference showcase artists",
+    "booking call bands",
+    "unsigned bands wanted",
+    "emerging artists call",
+    "buscamos bandas festival",
+    "postulacion musicos festival",
+    "residencia artistica musica",
+    "subvencion musica internacional",
+    "appel a candidatures musique",
+    "appel artistes internationaux musique",
+    "candidature festival musique",
+    "artistes emergents appel",
+    "aide a la mobilite musique",
+    "aide export musique",
+    "bewerbung bands festival",
+    "musiker gesucht festival",
+    "kunstler bewerbung musik",
+    "musik export forderung",
+    "band aanmelding festival",
+    "open oproep muziek",
+    "artiesten gezocht festival",
+    "bando artisti musica",
+    "call artisti festival musica",
+    "concorso band emergenti",
+    "inscricao artistas musica",
+    "edital musica festival",
+    "chamada publica artistas musica",
+    "apoio a circulacao musical",
+    "convocatoria artistas musica",
+    "inscripcion bandas festival",
+    "opencall musicians",
+    "ショーケース 応募 音楽",
+    "音楽 フェス 出演者 募集",
+    "아티스트 공모 음악",
+    "뮤직 쇼케이스 지원",
+    "徵件 音樂 節",
+    "音樂人 徵選",
+    "音乐 节 招募 乐队",
+    "音乐人 申请 演出",
+    "دعوة مفتوحة موسيقى",
+    "مهرجان موسيقي دعوة فنانين",
+]
+
+GLOBAL_SOURCE_PATTERNS = [
+    'site:instagram.com/p "{country}" "{term}"',
+    'site:instagram.com/reel "{country}" "{term}"',
+    'site:tiktok.com "{country}" "{term}"',
+    'site:facebook.com/events "{country}" "{term}"',
+    'site:musicinafrica.net "{country}" "{term}"',
+    'site:festhome.com "{country}" "{term}"',
+    'site:filmfreeway.com "{country}" "{term}" music',
+    'site:submittable.com "{country}" "{term}" music',
+    'site:opencall.org "{country}" "{term}" music',
+    'site:callforentry.org "{country}" "{term}" music',
+    'site:culture360.asef.org "{country}" "{term}" music',
+    'site:on-the-move.org "{country}" "{term}" music',
+    'site:arts.gov "{country}" "{term}" music',
+    'site:creative-capital.org "{country}" "{term}" music',
+    'site:goethe.de "{country}" "{term}" music',
+    'site:institutfrancais.com "{country}" "{term}" music',
+    'site:britishcouncil.org "{country}" "{term}" music',
+    'site:prohelvetia.ch "{country}" "{term}" music',
+    'site:musicexport* "{country}" "{term}"',
+    'site:github.com "{country}" "{term}" "music opportunities"',
+    'site:github.com "{country}" "{term}" "festival submissions"',
+    'site:github.com "{country}" "{term}" "booking"',
+    'site:bandcamp.com "{country}" "{term}" festival',
+    '"{country}" "{term}" "rock"',
+    '"{country}" "{term}" "indie"',
+    '"{country}" "{term}" "folk"',
+    '"{country}" "{term}" "experimental"',
+    '"{country}" "{term}" "progressive rock"',
+    '"{country}" "{term}" "fusion"',
+    '"{country}" "{term}" "world music"',
+    '"{country}" "{term}" "alternative"',
+    '"{country}" "{term}" "music export"',
+    '"{country}" "{term}" "cultural institute"',
+    '"{country}" "{term}" "foreign artists"',
+    '"{country}" "{term}" "international artists"',
+]
+
+
+def global_mission_capacity() -> int:
+    return len(TARGET_COUNTRIES) * len(GLOBAL_INVITATION_TERMS) * len(GLOBAL_SOURCE_PATTERNS)
+
+
+def build_global_discovery_queries(country: str, limit: int | None = None) -> list[str]:
+    search_country = COUNTRY_SEARCH_ALIASES.get(country, country)
+    queries = [
+        pattern.replace("{country}", search_country).replace("{term}", term)
+        for pattern in GLOBAL_SOURCE_PATTERNS
+        for term in GLOBAL_INVITATION_TERMS
+    ]
+    return queries[:limit] if limit else queries
+
 
 def build_discovery_queries(country: str) -> list[str]:
-    queries = [template.replace("{country}", country) for template in SEARCH_MISSION_TEMPLATES]
+    search_country = COUNTRY_SEARCH_ALIASES.get(country, country)
+    queries = [template.replace("{country}", search_country) for template in SEARCH_MISSION_TEMPLATES]
     if country == "Chile":
         for region in CHILE_REGIONAL_TARGETS:
             queries.extend(template.replace("{region}", region) for template in CHILE_REGIONAL_MISSION_TEMPLATES)
         for tag in CHILE_INSTAGRAM_TAGS:
             queries.extend(template.replace("{tag}", tag) for template in CHILE_TAG_MISSION_TEMPLATES)
+        for target in CHILE_PUBLIC_SPACE_TARGETS:
+            queries.extend(template.replace("{target}", target) for template in PUBLIC_SPACE_MISSION_TEMPLATES)
+        for target in CHILE_DEEP_SEARCH_TARGETS:
+            queries.extend(template.replace("{target}", target) for template in EXPANDED_TARGET_TEMPLATES)
+    for target in LATAM_RECOGNIZED_TARGETS.get(country, []):
+        queries.extend(template.replace("{target}", target) for template in EXPANDED_TARGET_TEMPLATES)
+    for target in GLOBAL_PRIORITY_TARGETS.get(country, []):
+        queries.extend(template.replace("{target}", target) for template in EXPANDED_TARGET_TEMPLATES)
+    for target in COUNTRY_PUBLIC_SPACE_TARGETS.get(country, []):
+        queries.extend(template.replace("{target}", target) for template in PUBLIC_SPACE_MISSION_TEMPLATES)
+    queries.extend(build_global_discovery_queries(country, limit=220))
     return queries
 
 

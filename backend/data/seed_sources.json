@@ -331,5 +331,95 @@
     "type": "centro_cultural",
     "priority": 74,
     "query_hint": "Los Angeles Bio Bio centro cultural conciertos musica festival agenda"
+  },
+  {
+    "name": "Instagram GAM",
+    "url": "https://www.instagram.com/gam.cl/",
+    "country": "Chile",
+    "region": "Metropolitana",
+    "type": "red_social",
+    "priority": 86,
+    "query_hint": "site:instagram.com/gam.cl GAM Centro Cultural Gabriela Mistral musica conciertos convocatoria"
+  },
+  {
+    "name": "Teatro Municipal Las Condes",
+    "url": "https://www.tmlascondes.cl/",
+    "country": "Chile",
+    "region": "Metropolitana",
+    "type": "centro_cultural",
+    "priority": 84,
+    "query_hint": "Teatro Municipal Las Condes musica conciertos programacion artistas"
+  },
+  {
+    "name": "Corporacion Cultural Las Condes",
+    "url": "https://www.culturallascondes.cl/",
+    "country": "Chile",
+    "region": "Metropolitana",
+    "type": "centro_cultural",
+    "priority": 82,
+    "query_hint": "Corporacion Cultural Las Condes musica conciertos agenda cultural artistas"
+  },
+  {
+    "name": "Centro Cultural La Moneda",
+    "url": "https://www.cclm.cl/",
+    "country": "Chile",
+    "region": "Metropolitana",
+    "type": "centro_cultural",
+    "priority": 80,
+    "query_hint": "Centro Cultural La Moneda musica conciertos convocatoria Santiago"
+  },
+  {
+    "name": "Teatro Oriente Providencia",
+    "url": "https://teatrooriente.cl/",
+    "country": "Chile",
+    "region": "Metropolitana",
+    "type": "centro_cultural",
+    "priority": 80,
+    "query_hint": "Teatro Oriente Providencia musica conciertos agenda bandas"
+  },
+  {
+    "name": "CENTEX Valparaiso",
+    "url": "https://centex.cultura.gob.cl/",
+    "country": "Chile",
+    "region": "Valparaiso",
+    "type": "centro_cultural",
+    "priority": 82,
+    "query_hint": "CENTEX Valparaiso centro cultural musica conciertos convocatoria"
+  },
+  {
+    "name": "Teatro Regional del Maule",
+    "url": "https://www.teatroregional.cl/",
+    "country": "Chile",
+    "region": "Maule",
+    "type": "centro_cultural",
+    "priority": 82,
+    "query_hint": "Teatro Regional del Maule Talca musica conciertos programacion"
+  },
+  {
+    "name": "Cultura Antofagasta",
+    "url": "https://www.culturaantofagasta.cl/",
+    "country": "Chile",
+    "region": "Antofagasta",
+    "type": "centro_cultural",
+    "priority": 80,
+    "query_hint": "Antofagasta cultura teatro municipal musica conciertos bandas"
+  },
+  {
+    "name": "Teatro Regional Cervantes Valdivia",
+    "url": "https://teatroregionalcervantes.cl/",
+    "country": "Chile",
+    "region": "Los Rios",
+    "type": "centro_cultural",
+    "priority": 80,
+    "query_hint": "Teatro Regional Cervantes Valdivia musica conciertos programacion"
+  },
+  {
+    "name": "Corporacion Cultural Puerto Montt",
+    "url": "https://www.culturapuertomontt.cl/",
+    "country": "Chile",
+    "region": "Los Lagos",
+    "type": "centro_cultural",
+    "priority": 78,
+    "query_hint": "Puerto Montt Teatro Diego Rivera musica conciertos cultura agenda"
   }
 ]

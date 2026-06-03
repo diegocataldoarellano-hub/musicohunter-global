@@ -1,27 +1,143 @@
-const API_BASE_URL = (window.MUSIC_HUNTER_CONFIG?.API_BASE_URL || "").replace(/\/$/, "");
+const API_BASE_URL = resolveApiBaseUrl();
 
-const TARGET_COUNTRIES = [
-  ...["Argentina", "Bolivia", "Brasil", "Chile", "Colombia", "Costa Rica", "Cuba", "Ecuador", "El Salvador", "Guatemala", "Honduras", "Mexico", "Nicaragua", "Panama", "Paraguay", "Peru", "Republica Dominicana", "Uruguay", "Venezuela"].map((country) => ({ continent: "Latinoamerica", country })),
-  ...["Albania", "Alemania", "Andorra", "Armenia", "Austria", "Belgica", "Bielorrusia", "Bosnia y Herzegovina", "Bulgaria", "Chipre", "Croacia", "Dinamarca", "Eslovaquia", "Eslovenia", "Espana", "Estonia", "Finlandia", "Francia", "Georgia", "Grecia", "Hungria", "Irlanda", "Islandia", "Italia", "Kosovo", "Letonia", "Liechtenstein", "Lituania", "Luxemburgo", "Macedonia del Norte", "Malta", "Moldavia", "Monaco", "Montenegro", "Noruega", "Paises Bajos", "Polonia", "Portugal", "Reino Unido", "Republica Checa", "Rumania", "San Marino", "Serbia", "Suecia", "Suiza", "Turquia", "Ucrania", "Vaticano"].map((country) => ({ continent: "Europa", country }))
-];
+function resolveApiBaseUrl() {
+  const fromQuery = new URLSearchParams(window.location.search).get("api");
+  if (fromQuery) {
+    window.localStorage.setItem("radarComeGuagaApiBaseUrl", fromQuery);
+    return fromQuery.replace(/\/$/, "");
+  }
+  const fromStorage = window.localStorage.getItem("radarComeGuagaApiBaseUrl")
+    || window.localStorage.getItem("musicHunterApiBaseUrl");
+  if (fromStorage) return fromStorage.replace(/\/$/, "");
+  const configured = window.MUSIC_HUNTER_CONFIG?.API_BASE_URL;
+  if (configured) return configured.replace(/\/$/, "");
+  const host = window.location.hostname;
+  if (host === "localhost" || host === "127.0.0.1" || host === "") {
+    return "http://127.0.0.1:8000";
+  }
+  return "";
+}
+
+const WORLD_EXTRA_COUNTRIES = {
+  Africa: ["Argelia", "Angola", "Benin", "Botswana", "Burkina Faso", "Burundi", "Cabo Verde", "Camerun", "Chad", "Comoras", "Congo", "Costa de Marfil", "Djibouti", "Egipto", "Eritrea", "Eswatini", "Etiopia", "Gabon", "Gambia", "Ghana", "Guinea", "Guinea-Bisau", "Guinea Ecuatorial", "Kenia", "Lesoto", "Liberia", "Libia", "Madagascar", "Malawi", "Mali", "Mauricio", "Mauritania", "Marruecos", "Mozambique", "Namibia", "Niger", "Nigeria", "Republica Centroafricana", "Republica Democratica del Congo", "Ruanda", "Santo Tome y Principe", "Senegal", "Seychelles", "Sierra Leona", "Somalia", "Sudafrica", "Sudan", "Sudan del Sur", "Tanzania", "Togo", "Tunez", "Uganda", "Zambia", "Zimbabue"],
+  Asia: ["Afganistan", "Arabia Saudita", "Azerbaiyan", "Bangladesh", "Barein", "Brunei", "Butan", "Camboya", "China", "Corea del Sur", "Emiratos Arabes Unidos", "Filipinas", "India", "Indonesia", "Irak", "Iran", "Israel", "Japon", "Jordania", "Kazajistan", "Kirguistan", "Kuwait", "Laos", "Libano", "Malasia", "Maldivas", "Mongolia", "Myanmar", "Nepal", "Oman", "Pakistan", "Palestina", "Qatar", "Singapur", "Siria", "Sri Lanka", "Tailandia", "Taiwan", "Tayikistan", "Timor Oriental", "Turkmenistan", "Uzbekistan", "Vietnam", "Yemen"],
+  Europa: ["Albania", "Alemania", "Andorra", "Armenia", "Austria", "Belgica", "Bielorrusia", "Bosnia y Herzegovina", "Bulgaria", "Chipre", "Croacia", "Dinamarca", "Eslovaquia", "Eslovenia", "Espana", "Estonia", "Finlandia", "Francia", "Gales", "Georgia", "Grecia", "Holanda", "Hungria", "Inglaterra", "Irlanda", "Islandia", "Italia", "Kosovo", "Letonia", "Liechtenstein", "Lituania", "Luxemburgo", "Macedonia del Norte", "Malta", "Moldavia", "Monaco", "Montenegro", "Noruega", "Paises Bajos", "Polonia", "Portugal", "Reino Unido", "Republica Checa", "Rumania", "Rusia", "San Marino", "Serbia", "Suecia", "Suiza", "Turquia", "Ucrania", "Vaticano"],
+  Norteamerica: ["Canada", "Estados Unidos"],
+  Latinoamerica: ["Antigua y Barbuda", "Argentina", "Bahamas", "Barbados", "Belice", "Bolivia", "Brasil", "Chile", "Colombia", "Costa Rica", "Cuba", "Dominica", "Ecuador", "El Salvador", "Granada", "Guatemala", "Guyana", "Haiti", "Honduras", "Jamaica", "Mexico", "Nicaragua", "Panama", "Paraguay", "Peru", "Republica Dominicana", "San Cristobal y Nieves", "San Vicente y las Granadinas", "Santa Lucia", "Surinam", "Trinidad y Tobago", "Uruguay", "Venezuela"],
+  Oceania: ["Australia", "Fiji", "Islas Marshall", "Islas Salomon", "Kiribati", "Micronesia", "Nauru", "Nueva Zelanda", "Palaos", "Papua Nueva Guinea", "Samoa", "Tonga", "Tuvalu", "Vanuatu"]
+};
+
+const TARGET_COUNTRIES = Object.entries(WORLD_EXTRA_COUNTRIES).flatMap(([continent, countries]) => (
+  countries.map((country) => ({ continent, country }))
+));
 
 const SEARCH_MISSION_TEMPLATES = [
   'site:instagram.com/p "{country}" festival bandas rock convocatoria',
   'site:instagram.com/reel "{country}" buscan teloneros rock concierto',
   'site:instagram.com/p "{country}" showcase bandas convocatoria musica',
   'site:instagram.com "{country}" productora booking bandas rock',
+  'site:instagram.com/p "{country}" "open call" bands music festival',
+  'site:instagram.com/reel "{country}" "support act" band concert',
   'site:tiktok.com "{country}" festival rock bandas convocatoria',
+  'site:tiktok.com "{country}" "open call" bands festival music',
   '"{country}" fondos musica bandas rock convocatoria',
   '"{country}" municipio centro cultural musica bandas pago',
   '"{country}" productora booking bandas rock fusion',
   '"{country}" revista musica rock programa radio bandas',
   '"{country}" sello independiente rock experimental booking',
-  '"{country}" intercambio musical bandas latinoamerica europa'
+  '"{country}" intercambio musical bandas latinoamerica europa',
+  '"{country}" "music festival" "band submissions"',
+  '"{country}" "artist open call" "music"',
+  '"{country}" "arts council" "music grants"',
+  '"{country}" "cultural center" "live music" "open call"',
+  '"{country}" "booking agency" "independent bands"'
 ];
+
+const GLOBAL_PUBLIC_SEARCH_TERMS = [
+  "open call musicians international",
+  "international artists open call music",
+  "band submissions festival",
+  "showcase application artists",
+  "convocatoria artistas internacionales musica",
+  "convocatoria bandas festival",
+  "appel a candidatures musique",
+  "bewerbung bands festival",
+  "edital musica festival",
+  "ショーケース 応募 音楽",
+  "아티스트 공모 음악",
+  "音乐 节 招募 乐队",
+  "دعوة مفتوحة موسيقى",
+  "apply to play festival",
+  "support act wanted",
+  "international artist residency music",
+  "music mobility grant",
+  "touring grant musicians",
+  "foreign artists live music open call",
+  "buscamos bandas festival",
+  "residencia artistica musica",
+  "appel artistes internationaux musique",
+  "musiker gesucht festival",
+  "band aanmelding festival",
+  "bando artisti musica",
+  "chamada publica artistas musica",
+  "音楽 フェス 出演者 募集",
+  "뮤직 쇼케이스 지원",
+  "徵件 音樂 節"
+];
+
+const INDUSTRY_LANGUAGE_TERMS = [
+  "demo submission",
+  "submit your music",
+  "artist submissions",
+  "band submissions",
+  "opening act",
+  "support act",
+  "A&R",
+  "artist roster",
+  "booking inquiry",
+  "press kit",
+  "EPK",
+  "presentar artistas",
+  "recepcion de propuestas",
+  "postula tu proyecto",
+  "formulario de postulacion",
+  "buscamos bandas",
+  "se buscan bandas",
+  "llamado a bandas"
+];
+
+const COUNTRY_PUBLIC_SPACE_TARGETS = {
+  Chile: ["Culturas Musica Instagram Convocatoria 2026", "Fondos Cultura Musica 2026", "Mercados FOCO 2026 musica bandas", "Linea Apoyo Circulacion Musica Chilena 2026", "Red Rockodromo 2026 bandas solistas", "GAM Convocatoria Nacional Programacion 2026 2027", "CONARTE Valdivia 2026 musica", "Concurso Luis Advis 2026 musica", "Concurso Roberto Parra Sandoval 2026 musica", "Municipalidad de Arica Cultura", "Teatro Municipal de Iquique", "Teatro Municipal de Antofagasta", "Municipalidad de Calama Cultura", "Centro Cultural Atacama Copiapo", "Teatro Centenario La Serena", "Parque Cultural de Valparaiso", "CENTEX Valparaiso", "Teatro Municipal de Santiago", "GAM Centro Cultural Gabriela Mistral", "Centro Cultural La Moneda", "Museo de la Memoria Santiago", "Museo Violeta Parra", "Teatro Municipal Las Condes", "Teatro Oriente Providencia", "Corporacion Cultural Nunoa", "Teatro Regional Lucho Gatica", "Teatro Regional del Maule", "Teatro Municipal de Chillan", "Teatro Biobio", "Corporacion Cultural Municipal Los Angeles", "Teatro Municipal de Temuco", "Teatro Regional Cervantes Valdivia", "Teatro Diego Rivera Puerto Montt", "Teatro del Lago Frutillar", "Municipalidad de Punta Arenas Cultura"],
+  Argentina: ["Buenos Aires Cultura", "Usina del Arte", "Centro Cultural Recoleta", "Tecnopolis", "Centro Cultural Kirchner", "Rosario Cultura", "Cordoba Cultura", "Mendoza Cultura"],
+  Brasil: ["Sao Paulo Cultura", "Centro Cultural Sao Paulo", "SESC Sao Paulo", "Rio de Janeiro Cultura", "Circo Voador", "Belo Horizonte Cultura", "Curitiba Cultura", "Porto Alegre Cultura"],
+  Paraguay: ["Asuncion Cultura", "Centro Cultural Juan de Salazar", "Manzana de la Rivera", "San Lorenzo Cultura", "Ciudad del Este Cultura"],
+  Uruguay: ["Montevideo Cultura", "Sala Zitarrosa", "Teatro Solis", "Centro Cultural de Espana Montevideo", "Canelones Cultura"],
+  Colombia: ["Bogota Cultura", "Idartes", "Teatro Jorge Eliecer Gaitan", "Medellin Cultura", "Cali Cultura", "Rock al Parque"],
+  Peru: ["Lima Cultura", "Gran Teatro Nacional Peru", "Centro Cultural de Espana en Lima", "Barranco Cultura", "Cusco Cultura", "Arequipa Cultura"],
+  Bolivia: ["La Paz Culturas", "Teatro Municipal Alberto Saavedra Perez", "Santa Cruz Cultura", "Cochabamba Cultura", "Sucre Cultura"],
+  Mexico: ["Ciudad de Mexico Cultura", "Secretaria de Cultura Mexico", "Centro Cultural de Espana en Mexico", "Cenart Mexico", "Monterrey Cultura", "Guadalajara Cultura"],
+  Canada: ["Toronto Arts Council music", "Harbourfront Centre music", "M for Montreal", "Music BC", "Canada Council for the Arts music"],
+  Irlanda: ["First Music Contact Ireland", "Culture Ireland music", "Dublin music open call", "Whelan's Dublin", "Galway arts music"],
+  Gales: ["Wales Arts Council music", "Cardiff music open call", "Wales Millennium Centre music", "Focus Wales showcase", "Cymru music showcase"],
+  Islandia: ["Iceland Airwaves showcase", "Reykjavik music open call", "Iceland Music Export", "Harpa Reykjavik music"],
+  Inglaterra: ["Roundhouse London", "Southbank Centre music", "Barbican music open call", "Arts Council England music", "The Great Escape Festival"],
+  Francia: ["Centre National de la Musique", "Institut Francais musique", "La Gaite Lyrique", "MaMA Music Convention"],
+  Alemania: ["Musicboard Berlin", "Reeperbahn Festival", "Goethe Institut Musik", "Hamburg music showcase"],
+  Espana: ["Matadero Madrid musica", "Barcelona Cultura musica", "Primavera Pro", "BIME Bilbao"],
+  Japon: ["Tokyo music open call", "Music Lane Okinawa", "Fuji Rock rookie a go go", "Japan Foundation music"],
+  "Corea del Sur": ["Seoul music showcase", "Zandari Festa", "MUCON Korea", "Korea Creative Content Agency music"],
+  China: ["Shanghai music festival open call", "Beijing music open call", "Music China Shanghai", "China Shanghai International Arts Festival"],
+  Taiwan: ["Taipei music open call", "LUCfest Taiwan", "Taiwan Beats music"],
+  Vietnam: ["Ho Chi Minh City music open call", "HOZO Music Festival", "Hanoi music open call"]
+};
 
 const CONTINENT_VIEWS = {
   Latinoamerica: { center: [-17.0, -64.0], zoom: 3 },
+  Norteamerica: { center: [48.0, -100.0], zoom: 3 },
   Europa: { center: [54.0, 15.0], zoom: 4 },
+  Asia: { center: [34.0, 95.0], zoom: 3 },
+  Africa: { center: [2.0, 20.0], zoom: 3 },
+  Oceania: { center: [-25.0, 134.0], zoom: 4 },
   Global: { center: [20.0, 0.0], zoom: 2 }
 };
 
@@ -44,6 +160,9 @@ const COUNTRY_VIEWS = {
   "Costa Rica": { center: [9.7489, -83.7534], zoom: 7 },
   Croacia: { center: [45.1, 15.2], zoom: 7 },
   Cuba: { center: [21.5218, -77.7812], zoom: 6 },
+  Canada: { center: [56.1304, -106.3468], zoom: 4 },
+  China: { center: [35.8617, 104.1954], zoom: 4 },
+  "Corea del Sur": { center: [35.9078, 127.7669], zoom: 6 },
   Dinamarca: { center: [56.2639, 9.5018], zoom: 7 },
   Ecuador: { center: [-1.8312, -78.1834], zoom: 6 },
   "El Salvador": { center: [13.7942, -88.8965], zoom: 8 },
@@ -53,21 +172,27 @@ const COUNTRY_VIEWS = {
   Estonia: { center: [58.5953, 25.0136], zoom: 7 },
   Finlandia: { center: [61.9241, 25.7482], zoom: 5 },
   Francia: { center: [46.2276, 2.2137], zoom: 6 },
+  Gales: { center: [52.1307, -3.7837], zoom: 7 },
   Georgia: { center: [42.3154, 43.3569], zoom: 7 },
   Grecia: { center: [39.0742, 21.8243], zoom: 6 },
+  Holanda: { center: [52.1326, 5.2913], zoom: 7 },
   Guatemala: { center: [15.7835, -90.2308], zoom: 7 },
   Honduras: { center: [15.2, -86.2419], zoom: 7 },
   Hungria: { center: [47.1625, 19.5033], zoom: 7 },
+  Inglaterra: { center: [52.3555, -1.1743], zoom: 6 },
   Irlanda: { center: [53.4129, -8.2439], zoom: 7 },
   Islandia: { center: [64.9631, -19.0208], zoom: 6 },
   Italia: { center: [41.8719, 12.5674], zoom: 6 },
+  Japon: { center: [36.2048, 138.2529], zoom: 5 },
   Kosovo: { center: [42.6026, 20.903], zoom: 8 },
   Letonia: { center: [56.8796, 24.6032], zoom: 7 },
+  Libano: { center: [33.8547, 35.8623], zoom: 8 },
   Liechtenstein: { center: [47.166, 9.5554], zoom: 10 },
   Lituania: { center: [55.1694, 23.8813], zoom: 7 },
   Luxemburgo: { center: [49.8153, 6.1296], zoom: 9 },
   "Macedonia del Norte": { center: [41.6086, 21.7453], zoom: 8 },
   Malta: { center: [35.9375, 14.3754], zoom: 10 },
+  Marruecos: { center: [31.7917, -7.0926], zoom: 5 },
   Mexico: { center: [23.6345, -102.5528], zoom: 5 },
   Moldavia: { center: [47.4116, 28.3699], zoom: 7 },
   Monaco: { center: [43.7384, 7.4246], zoom: 11 },
@@ -84,26 +209,46 @@ const COUNTRY_VIEWS = {
   "Republica Checa": { center: [49.8175, 15.473], zoom: 7 },
   "Republica Dominicana": { center: [18.7357, -70.1627], zoom: 7 },
   Rumania: { center: [45.9432, 24.9668], zoom: 6 },
+  Rusia: { center: [61.524, 105.3188], zoom: 3 },
   "San Marino": { center: [43.9424, 12.4578], zoom: 11 },
   Serbia: { center: [44.0165, 21.0059], zoom: 7 },
+  Sudafrica: { center: [-30.5595, 22.9375], zoom: 5 },
   Suecia: { center: [60.1282, 18.6435], zoom: 5 },
   Suiza: { center: [46.8182, 8.2275], zoom: 7 },
+  Taiwan: { center: [23.6978, 120.9605], zoom: 7 },
   Turquia: { center: [38.9637, 35.2433], zoom: 5 },
   Ucrania: { center: [48.3794, 31.1656], zoom: 6 },
   Uruguay: { center: [-32.5228, -55.7658], zoom: 6 },
   Vaticano: { center: [41.9029, 12.4534], zoom: 12 },
-  Venezuela: { center: [6.4238, -66.5897], zoom: 5 }
+  Venezuela: { center: [6.4238, -66.5897], zoom: 5 },
+  Vietnam: { center: [14.0583, 108.2772], zoom: 5 },
+  Australia: { center: [-25.2744, 133.7751], zoom: 4 },
+  "Estados Unidos": { center: [39.8283, -98.5795], zoom: 4 }
 };
 
 const CHILE_REGIONAL_TARGETS = [
   { region: "Metropolitana", city: "Santiago", query: "Santiago agenda cultural conciertos bandas rock centro cultural" },
+  { region: "Metropolitana", city: "GAM", query: "GAM Centro Cultural Gabriela Mistral musica conciertos convocatoria bandas" },
+  { region: "Metropolitana", city: "Las Condes", query: "Las Condes Teatro Municipal Corporacion Cultural musica conciertos artistas" },
+  { region: "Metropolitana", city: "Providencia", query: "Providencia Teatro Oriente centro cultural musica conciertos bandas" },
+  { region: "Metropolitana", city: "Nunoa", query: "Nunoa corporacion cultural musica conciertos bandas tocatas" },
+  { region: "Metropolitana", city: "La Reina", query: "La Reina centro cultural musica conciertos bandas artistas" },
+  { region: "Metropolitana", city: "San Joaquin", query: "San Joaquin centro cultural musica bandas conciertos" },
+  { region: "Metropolitana", city: "Maipu", query: "Maipu teatro municipal musica conciertos bandas artistas" },
   { region: "Valparaiso", city: "Valparaiso", query: "Valparaiso agenda cultural conciertos convocatoria bandas centro cultural" },
+  { region: "Valparaiso", city: "V Region", query: "V Region Valparaiso Vina del Mar Quilpue Villa Alemana musica conciertos bandas" },
   { region: "Valparaiso", city: "Limache", query: "Limache musica conciertos centro cultural municipio agenda" },
+  { region: "O'Higgins", city: "VI Region", query: "Region de O'Higgins Rancagua VI Region musica conciertos centro cultural bandas" },
+  { region: "Maule", city: "VII Region", query: "Region del Maule Talca Curico VII Region musica conciertos centro cultural bandas" },
   { region: "Nuble", city: "Chillan", query: "Chillan centro cultural conciertos musica entrada liberada" },
   { region: "Biobio", city: "Los Angeles", query: "Los Angeles Bio Bio centro cultural musica conciertos festival" },
   { region: "Biobio", city: "Concepcion", query: "Concepcion Festival REC Teatro Biobio bandas rock convocatoria" },
   { region: "Coquimbo", city: "Valle de Elqui", query: "Valle de Elqui Vicuña Paihuano musica conciertos cultura" },
   { region: "Coquimbo", city: "La Serena", query: "La Serena Coquimbo teatro centenario conciertos musica agenda" },
+  { region: "Antofagasta", city: "Antofagasta", query: "Antofagasta teatro municipal corporacion cultural musica conciertos bandas" },
+  { region: "Antofagasta", city: "Calama", query: "Calama corporacion cultural teatro musica conciertos bandas" },
+  { region: "Los Rios", city: "Valdivia", query: "Valdivia Teatro Cervantes Fluvial musica conciertos bandas convocatoria" },
+  { region: "Los Lagos", city: "Puerto Montt", query: "Puerto Montt Teatro Diego Rivera cultura musica conciertos bandas" },
   { region: "Norte", city: "Norte de Chile", query: "norte de Chile musica conciertos festival bandas centro cultural" },
   { region: "Sur", city: "Sur de Chile", query: "sur de Chile musica conciertos festival bandas centro cultural" }
 ];
@@ -125,8 +270,293 @@ const CHILE_INSTAGRAM_PROMOTION_TAGS = [
   { tag: "culturabiobio", label: "Cultura Biobio", region: "Biobio" },
   { tag: "culturanuble", label: "Cultura Nuble", region: "Nuble" },
   { tag: "culturacoquimbo", label: "Cultura Coquimbo", region: "Coquimbo" },
-  { tag: "valledelelqui", label: "Valle de Elqui", region: "Coquimbo" }
+  { tag: "valledelelqui", label: "Valle de Elqui", region: "Coquimbo" },
+  { tag: "gamcl", label: "GAM / Centro Gabriela Mistral", region: "Metropolitana" },
+  { tag: "lascondes", label: "Las Condes", region: "Metropolitana" },
+  { tag: "providencia", label: "Providencia", region: "Metropolitana" },
+  { tag: "nunoa", label: "Nunoa", region: "Metropolitana" },
+  { tag: "antofagasta", label: "Antofagasta", region: "Antofagasta" },
+  { tag: "calama", label: "Calama", region: "Antofagasta" },
+  { tag: "valdivia", label: "Valdivia", region: "Los Rios" },
+  { tag: "puertomontt", label: "Puerto Montt", region: "Los Lagos" }
 ];
+
+const CHILE_DEEP_SEARCH_TARGETS = [
+  ["Metropolitana", "Santiago", "GAM Centro Cultural Gabriela Mistral"],
+  ["Metropolitana", "Santiago", "Matucana 100"],
+  ["Metropolitana", "Santiago", "Centro Cultural La Moneda"],
+  ["Metropolitana", "Santiago", "Balmaceda Arte Joven Santiago"],
+  ["Metropolitana", "Santiago", "Teatro Nescafe de las Artes"],
+  ["Metropolitana", "Providencia", "Teatro Oriente Providencia"],
+  ["Metropolitana", "Providencia", "Corporacion Cultural Providencia"],
+  ["Metropolitana", "Las Condes", "Centro Cultural Las Condes"],
+  ["Metropolitana", "Las Condes", "Teatro Municipal Las Condes"],
+  ["Metropolitana", "Nunoa", "Corporacion Cultural Nunoa"],
+  ["Metropolitana", "Nunoa", "Sala SCD Nunoa"],
+  ["Metropolitana", "La Reina", "Corporacion Cultural La Reina"],
+  ["Metropolitana", "San Joaquin", "Centro Cultural San Joaquin"],
+  ["Metropolitana", "Maipu", "Teatro Municipal de Maipu"],
+  ["Metropolitana", "Puente Alto", "Centro Cultural Puente Alto"],
+  ["Metropolitana", "La Florida", "Corporacion Cultural La Florida"],
+  ["Metropolitana", "Penalolen", "Centro Cultural Chimkowe Penalolen"],
+  ["Metropolitana", "Lo Barnechea", "Centro Cultural Lo Barnechea"],
+  ["Metropolitana", "Vitacura", "Vitacura Cultura"],
+  ["Metropolitana", "Recoleta", "Corporacion Cultural Recoleta"],
+  ["Metropolitana", "Quinta Normal", "Centro Cultural Casona Dubois"],
+  ["Metropolitana", "Independencia", "Independencia Cultura"],
+  ["Metropolitana", "Huechuraba", "Huechuraba Cultura"],
+  ["Metropolitana", "Quilicura", "Quilicura Cultura"],
+  ["Metropolitana", "Renca", "Renca Cultura"],
+  ["Metropolitana", "Estacion Central", "Estacion Central Cultura"],
+  ["Metropolitana", "San Miguel", "San Miguel Cultura"],
+  ["Metropolitana", "La Pintana", "La Pintana Cultura"],
+  ["Metropolitana", "Pudahuel", "Pudahuel Cultura"],
+  ["Metropolitana", "Cerrillos", "Cerrillos Cultura"],
+  ["Arica y Parinacota", "Arica", "Arica Cultura"],
+  ["Tarapaca", "Iquique", "Iquique Cultura"],
+  ["Tarapaca", "Alto Hospicio", "Alto Hospicio Cultura"],
+  ["Antofagasta", "Antofagasta", "Teatro Municipal de Antofagasta"],
+  ["Antofagasta", "Calama", "Corporacion Cultural Calama"],
+  ["Antofagasta", "Mejillones", "Mejillones Cultura"],
+  ["Antofagasta", "Tocopilla", "Tocopilla Cultura"],
+  ["Atacama", "Copiapo", "Copiapo Cultura"],
+  ["Atacama", "Vallenar", "Vallenar Cultura"],
+  ["Coquimbo", "La Serena", "Centro Cultural Teatro Centenario"],
+  ["Coquimbo", "Coquimbo", "Coquimbo Cultura"],
+  ["Coquimbo", "Ovalle", "Centro Cultural Municipal Ovalle"],
+  ["Coquimbo", "Vicuna", "Valle de Elqui cultura Vicuna"],
+  ["Valparaiso", "Valparaiso", "Parque Cultural de Valparaiso"],
+  ["Valparaiso", "Valparaiso", "CENTEX Valparaiso"],
+  ["Valparaiso", "Vina del Mar", "Vina del Mar Cultura"],
+  ["Valparaiso", "Quilpue", "Quilpue Cultura"],
+  ["Valparaiso", "Villa Alemana", "Villa Alemana Cultura"],
+  ["Valparaiso", "Limache", "Limache Cultura"],
+  ["Valparaiso", "San Antonio", "San Antonio Cultura"],
+  ["Valparaiso", "Los Andes", "Los Andes Cultura"],
+  ["Valparaiso", "San Felipe", "San Felipe Cultura"],
+  ["O'Higgins", "Rancagua", "Teatro Regional Lucho Gatica"],
+  ["O'Higgins", "Machali", "Machali Cultura"],
+  ["O'Higgins", "San Fernando", "San Fernando Cultura"],
+  ["O'Higgins", "Santa Cruz", "Santa Cruz Cultura"],
+  ["O'Higgins", "Pichilemu", "Pichilemu Cultura"],
+  ["Maule", "Talca", "Teatro Regional del Maule"],
+  ["Maule", "Curico", "Curico Cultura"],
+  ["Maule", "Linares", "Linares Cultura"],
+  ["Maule", "Cauquenes", "Cauquenes Cultura"],
+  ["Maule", "Constitucion", "Constitucion Cultura"],
+  ["Nuble", "Chillan", "Teatro Municipal de Chillan"],
+  ["Nuble", "Chillan", "Centro Cultural Municipal de Chillan"],
+  ["Nuble", "San Carlos", "San Carlos Cultura"],
+  ["Biobio", "Concepcion", "Teatro Biobio"],
+  ["Biobio", "Concepcion", "Festival REC Concepcion"],
+  ["Biobio", "Talcahuano", "Talcahuano Cultura"],
+  ["Biobio", "Chiguayante", "Chiguayante Cultura"],
+  ["Biobio", "Coronel", "Coronel Cultura"],
+  ["Biobio", "Lota", "Lota Cultura"],
+  ["Biobio", "Los Angeles", "Corporacion Cultural Municipal Los Angeles"],
+  ["Biobio", "Arauco", "Arauco Cultura"],
+  ["La Araucania", "Temuco", "Teatro Municipal de Temuco"],
+  ["La Araucania", "Padre Las Casas", "Padre Las Casas Cultura"],
+  ["La Araucania", "Villarrica", "Villarrica Cultura"],
+  ["La Araucania", "Pucon", "Pucon Cultura"],
+  ["La Araucania", "Angol", "Angol Cultura"],
+  ["Los Rios", "Valdivia", "Fluvial Valdivia"],
+  ["Los Rios", "Valdivia", "Teatro Regional Cervantes Valdivia"],
+  ["Los Rios", "La Union", "La Union Cultura"],
+  ["Los Lagos", "Osorno", "Osorno Cultura"],
+  ["Los Lagos", "Puerto Montt", "Teatro Diego Rivera Puerto Montt"],
+  ["Los Lagos", "Puerto Varas", "Puerto Varas Cultura"],
+  ["Los Lagos", "Frutillar", "Teatro del Lago Frutillar"],
+  ["Los Lagos", "Castro", "Castro Cultura Chiloe"],
+  ["Los Lagos", "Ancud", "Ancud Cultura"],
+  ["Aysen", "Coyhaique", "Coyhaique Cultura"],
+  ["Aysen", "Puerto Aysen", "Puerto Aysen Cultura"],
+  ["Magallanes", "Punta Arenas", "Punta Arenas Cultura"],
+  ["Magallanes", "Puerto Natales", "Puerto Natales Cultura"],
+  ["Metropolitana", "Melipilla", "Melipilla Cultura"],
+  ["Metropolitana", "Talagante", "Talagante Cultura"],
+  ["Metropolitana", "Buin", "Buin Cultura"],
+  ["Metropolitana", "Colina", "Colina Cultura"],
+  ["Metropolitana", "San Bernardo", "San Bernardo Cultura"],
+  ["Metropolitana", "Penaflor", "Penaflor Cultura"],
+  ["Metropolitana", "Lampa", "Lampa Cultura"],
+  ["Metropolitana", "Curacavi", "Curacavi Cultura"],
+  ["Metropolitana", "Paine", "Paine Cultura"],
+  ["Coquimbo", "Los Vilos", "Los Vilos Cultura"],
+  ["Valparaiso", "Quillota", "Quillota Cultura"],
+  ["O'Higgins", "Rengo", "Rengo Cultura"]
+].map(([region, city, label]) => ({
+  country: "Chile",
+  region,
+  city,
+  label,
+  type: "radar_local",
+  query: `${label} ${city} musica conciertos bandas convocatoria tocata programacion centro cultural municipio`
+}));
+
+const LATAM_RECOGNIZED_TARGETS = [
+  ["Argentina", "Buenos Aires", "Buenos Aires", "INAMU"],
+  ["Argentina", "Buenos Aires", "Buenos Aires", "BAFIM"],
+  ["Argentina", "Buenos Aires", "Buenos Aires", "Centro Cultural Recoleta"],
+  ["Argentina", "Buenos Aires", "Buenos Aires", "Ciudad Cultural Konex"],
+  ["Argentina", "Buenos Aires", "Buenos Aires", "La Trastienda"],
+  ["Argentina", "Buenos Aires", "Buenos Aires", "Niceto Club"],
+  ["Argentina", "Cordoba", "Cordoba", "Cosquin Rock"],
+  ["Argentina", "Santa Fe", "Rosario", "Rosario Cultura"],
+  ["Argentina", "Mendoza", "Mendoza", "Mendoza Cultura"],
+  ["Argentina", "Buenos Aires", "La Plata", "La Plata Cultura"],
+  ["Colombia", "Bogota", "Bogota", "Rock al Parque"],
+  ["Colombia", "Bogota", "Bogota", "Idartes"],
+  ["Colombia", "Bogota", "Bogota", "BOmm Bogota Music Market"],
+  ["Colombia", "Bogota", "Bogota", "Teatro Mayor Julio Mario Santo Domingo"],
+  ["Colombia", "Antioquia", "Medellin", "Circulart"],
+  ["Colombia", "Antioquia", "Medellin", "Medellin Cultura"],
+  ["Colombia", "Valle del Cauca", "Cali", "Cali Cultura"],
+  ["Colombia", "Atlantico", "Barranquilla", "Barranquilla Cultura"],
+  ["Colombia", "Bolivar", "Cartagena", "Cartagena Cultura"],
+  ["Colombia", "Santander", "Bucaramanga", "Bucaramanga Cultura"],
+  ["Peru", "Lima", "Lima", "Ministerio de Cultura Peru"],
+  ["Peru", "Lima", "Lima", "Gran Teatro Nacional Peru"],
+  ["Peru", "Lima", "Lima", "Centro Cultural de Espana en Lima"],
+  ["Peru", "Lima", "Lima", "Festival Selvamomos"],
+  ["Peru", "Lima", "Lima", "Vivo x el Rock"],
+  ["Peru", "Cusco", "Cusco", "Cusco Cultura"],
+  ["Peru", "Arequipa", "Arequipa", "Arequipa Cultura"],
+  ["Peru", "La Libertad", "Trujillo", "Trujillo Cultura"],
+  ["Peru", "Lambayeque", "Chiclayo", "Chiclayo Cultura"],
+  ["Peru", "Piura", "Piura", "Piura Cultura"],
+  ["Uruguay", "Montevideo", "Montevideo", "INMUS Uruguay"],
+  ["Uruguay", "Montevideo", "Montevideo", "Montevideo Cultura"],
+  ["Uruguay", "Montevideo", "Montevideo", "Sala Zitarrosa"],
+  ["Uruguay", "Montevideo", "Montevideo", "Teatro Solis"],
+  ["Uruguay", "Montevideo", "Montevideo", "Montevideo Rock"],
+  ["Uruguay", "Durazno", "Durazno", "Durazno Rock"],
+  ["Uruguay", "Canelones", "Canelones", "Canelones Cultura"],
+  ["Uruguay", "Maldonado", "Maldonado", "Maldonado Cultura"],
+  ["Paraguay", "Asuncion", "Asuncion", "Secretaria Nacional de Cultura Paraguay"],
+  ["Paraguay", "Asuncion", "Asuncion", "Centro Cultural Juan de Salazar"],
+  ["Paraguay", "Asuncion", "Asuncion", "Asuncionico"],
+  ["Paraguay", "Asuncion", "Asuncion", "Municipalidad de Asuncion Cultura"],
+  ["Paraguay", "Central", "San Lorenzo", "San Lorenzo Cultura"],
+  ["Paraguay", "Alto Parana", "Ciudad del Este", "Ciudad del Este Cultura"],
+  ["Paraguay", "Itapua", "Encarnacion", "Encarnacion Cultura"],
+  ["Paraguay", "Guaira", "Villarrica", "Villarrica Paraguay Cultura"],
+  ["Bolivia", "La Paz", "La Paz", "Ministerio de Culturas Bolivia"],
+  ["Bolivia", "La Paz", "La Paz", "Teatro Municipal Alberto Saavedra Perez"],
+  ["Bolivia", "La Paz", "La Paz", "La Paz Culturas"],
+  ["Bolivia", "Santa Cruz", "Santa Cruz", "Santa Cruz Cultura"],
+  ["Bolivia", "Cochabamba", "Cochabamba", "Cochabamba Cultura"],
+  ["Bolivia", "Sucre", "Sucre", "Sucre Cultura"],
+  ["Bolivia", "Tarija", "Tarija", "Tarija Cultura"],
+  ["Bolivia", "Oruro", "Oruro", "Oruro Cultura"],
+  ["Brasil", "Sao Paulo", "Sao Paulo", "SIM Sao Paulo"],
+  ["Brasil", "Sao Paulo", "Sao Paulo", "Centro Cultural Sao Paulo"],
+  ["Brasil", "Sao Paulo", "Sao Paulo", "SESC Sao Paulo"],
+  ["Brasil", "Pernambuco", "Recife", "Porto Musical"],
+  ["Brasil", "Rio de Janeiro", "Rio de Janeiro", "Circo Voador"],
+  ["Brasil", "Rio de Janeiro", "Rio de Janeiro", "Rock in Rio"],
+  ["Brasil", "Bahia", "Salvador", "Salvador Cultura"],
+  ["Brasil", "Minas Gerais", "Belo Horizonte", "Belo Horizonte Cultura"],
+  ["Brasil", "Parana", "Curitiba", "Curitiba Cultura"],
+  ["Brasil", "Rio Grande do Sul", "Porto Alegre", "Porto Alegre Cultura"],
+  ["Mexico", "Jalisco", "Guadalajara", "FIMPRO"],
+  ["Mexico", "Ciudad de Mexico", "Ciudad de Mexico", "Vive Latino"],
+  ["Mexico", "Ciudad de Mexico", "Ciudad de Mexico", "Indie Rocks"],
+  ["Mexico", "Ciudad de Mexico", "Ciudad de Mexico", "Centro Cultural de Espana en Mexico"],
+  ["Mexico", "Ciudad de Mexico", "Ciudad de Mexico", "Secretaria de Cultura Mexico"],
+  ["Mexico", "Nuevo Leon", "Monterrey", "Monterrey Cultura"],
+  ["Mexico", "Jalisco", "Guadalajara", "Guadalajara Cultura"],
+  ["Mexico", "Puebla", "Puebla", "Puebla Cultura"],
+  ["Mexico", "Baja California", "Tijuana", "Tijuana Cultura"],
+  ["Mexico", "Yucatan", "Merida", "Merida Cultura"],
+  ["Ecuador", "Pichincha", "Quito", "Quito Cultura"],
+  ["Ecuador", "Pichincha", "Quito", "Teatro Nacional Sucre"],
+  ["Ecuador", "Pichincha", "Quito", "Quitofest"],
+  ["Ecuador", "Guayas", "Guayaquil", "Guayaquil Cultura"],
+  ["Ecuador", "Azuay", "Cuenca", "Cuenca Cultura"],
+  ["Ecuador", "Manabi", "Manta", "Manta Cultura"],
+  ["Ecuador", "Loja", "Loja", "Loja Cultura"],
+  ["Ecuador", "Imbabura", "Ibarra", "Ibarra Cultura"],
+  ["Costa Rica", "San Jose", "San Jose", "Ministerio de Cultura Costa Rica"],
+  ["Costa Rica", "San Jose", "San Jose", "FIA Costa Rica"],
+  ["Costa Rica", "San Jose", "San Jose", "Jazz Cafe Costa Rica"],
+  ["Costa Rica", "San Jose", "San Jose", "Teatro Nacional Costa Rica"],
+  ["Costa Rica", "Alajuela", "Alajuela", "Alajuela Cultura"],
+  ["Panama", "Panama", "Panama", "MiCultura Panama"],
+  ["Panama", "Panama", "Panama", "Panama Jazz Festival"],
+  ["Panama", "Panama", "Panama", "Teatro Nacional Panama"],
+  ["Panama", "Panama", "Panama", "Ciudad de Panama Cultura"],
+  ["Panama", "Chiriqui", "David", "David Cultura"],
+  ["Cuba", "La Habana", "La Habana", "Instituto Cubano de la Musica"],
+  ["Cuba", "La Habana", "La Habana", "Fabrica de Arte Cubano"],
+  ["Cuba", "La Habana", "La Habana", "La Habana Cultura"],
+  ["Republica Dominicana", "Santo Domingo", "Santo Domingo", "Ministerio de Cultura Republica Dominicana"],
+  ["Republica Dominicana", "Santo Domingo", "Santo Domingo", "Santo Domingo Cultura"],
+  ["Republica Dominicana", "Santo Domingo", "Santo Domingo", "Centro Cultural de Espana Santo Domingo"],
+  ["Guatemala", "Guatemala", "Ciudad de Guatemala", "Ministerio de Cultura Guatemala"],
+  ["Guatemala", "Guatemala", "Ciudad de Guatemala", "Ciudad de Guatemala Cultura"],
+  ["Honduras", "Francisco Morazan", "Tegucigalpa", "Secretaria de Cultura Honduras"],
+  ["Honduras", "Francisco Morazan", "Tegucigalpa", "Tegucigalpa Cultura"],
+  ["Nicaragua", "Managua", "Managua", "Instituto Nicaraguense de Cultura"],
+  ["Nicaragua", "Managua", "Managua", "Managua Cultura"],
+  ["El Salvador", "San Salvador", "San Salvador", "Ministerio de Cultura El Salvador"],
+  ["El Salvador", "San Salvador", "San Salvador", "San Salvador Cultura"],
+  ["Venezuela", "Caracas", "Caracas", "Centro Cultural BOD"],
+  ["Venezuela", "Caracas", "Caracas", "Caracas Cultura"]
+].map(([country, region, city, label]) => ({
+  country,
+  region,
+  city,
+  label,
+  type: "radar_latam",
+  query: `${label} ${city} musica festival convocatoria showcase bandas rock indie booking centro cultural`
+}));
+
+const GLOBAL_PRIORITY_TARGETS = [
+  ["Estados Unidos", "Texas", "Austin", "SXSW Music Festival"],
+  ["Estados Unidos", "New York", "New York", "Lincoln Center Open Calls"],
+  ["Estados Unidos", "New York", "New York", "Brooklyn Academy of Music"],
+  ["Estados Unidos", "California", "Los Angeles", "The Echo Los Angeles"],
+  ["Estados Unidos", "Illinois", "Chicago", "Chicago Cultural Center"],
+  ["Canada", "Ontario", "Toronto", "Canadian Music Week"],
+  ["Canada", "Quebec", "Montreal", "M for Montreal"],
+  ["Canada", "British Columbia", "Vancouver", "Music BC"],
+  ["Irlanda", "Dublin", "Dublin", "First Music Contact Ireland"],
+  ["Irlanda", "Dublin", "Dublin", "Whelan's Dublin"],
+  ["Inglaterra", "England", "Brighton", "The Great Escape Festival"],
+  ["Inglaterra", "England", "London", "Arts Council England Music"],
+  ["Inglaterra", "England", "London", "Roundhouse London"],
+  ["Espana", "Cataluna", "Barcelona", "Primavera Pro"],
+  ["Espana", "Pais Vasco", "Bilbao", "BIME"],
+  ["Espana", "Madrid", "Madrid", "INJUVE Musica"],
+  ["Marruecos", "Casablanca", "Casablanca", "Visa For Music"],
+  ["Marruecos", "Rabat", "Rabat", "Hiba Foundation"],
+  ["Francia", "Ile-de-France", "Paris", "Centre National de la Musique"],
+  ["Francia", "Ile-de-France", "Paris", "MaMA Music & Convention"],
+  ["Francia", "Ile-de-France", "Paris", "La Gaite Lyrique"],
+  ["Alemania", "Hamburg", "Hamburg", "Reeperbahn Festival"],
+  ["Alemania", "Berlin", "Berlin", "Musicboard Berlin"],
+  ["Paises Bajos", "Groningen", "Groningen", "Eurosonic Noorderslag"],
+  ["Dinamarca", "Copenhagen", "Copenhagen", "Music Export Denmark"],
+  ["Suecia", "Stockholm", "Stockholm", "Export Music Sweden"],
+  ["Suiza", "Zurich", "Zurich", "Pro Helvetia Music"],
+  ["Australia", "Queensland", "Brisbane", "BIGSOUND"],
+  ["Japon", "Tokyo", "Tokyo", "Music Lane Festival Okinawa Tokyo Japan"],
+  ["Corea del Sur", "Seoul", "Seoul", "Zandari Festa"],
+  ["Taiwan", "Taipei", "Taipei", "LUCfest"],
+  ["Vietnam", "Ho Chi Minh City", "Ho Chi Minh City", "Hozo Music Festival"],
+  ["China", "Beijing", "Beijing", "Music China"],
+  ["Sudafrica", "Western Cape", "Cape Town", "Music In Africa"],
+  ["Libano", "Beirut", "Beirut", "Beirut and Beyond"],
+  ["Rusia", "Moscow", "Moscow", "Moscow Music Week"]
+].map(([country, region, city, label]) => ({
+  country,
+  region,
+  city,
+  label,
+  type: "radar_global",
+  query: `${label} ${city} music open call band submissions showcase festival arts council booking`
+}));
 
 const fallbackPayload = {
   opportunities: [
@@ -657,6 +1087,204 @@ const chileRegionalFallbackOpportunities = [
     linkStatus: "requires_review",
     confidence: 0.62,
     summary: "Fuente publica regional para agenda cultural y conciertos en Los Angeles, Biobio."
+  },
+  {
+    id: 110,
+    title: "GAM - musica, cartelera y espacios para artistas",
+    category: "centro_cultural",
+    continent: "Latinoamerica",
+    country: "Chile",
+    region: "Metropolitana",
+    city: "Santiago",
+    lat: -33.4372,
+    lng: -70.6352,
+    deadline: null,
+    eventDate: null,
+    genres: ["rock", "folk", "fusion", "experimental", "indie"],
+    requirements: ["Revisar agenda, convocatorias y redes publicas.", "Leer fecha de publicacion, evento y contacto.", "Preparar EPK, ficha tecnica y propuesta concreta."],
+    url: "https://gam.cl/",
+    sourceName: "GAM",
+    sourceType: "centro_cultural",
+    lastChecked: null,
+    linkStatus: "requires_review",
+    confidence: 0.76,
+    summary: "Centro cultural clave en Santiago. Debe rastrearse por cartelera, ciclos, convocatorias y publicaciones recientes."
+  },
+  {
+    id: 111,
+    title: "Teatro Municipal Las Condes - conciertos y programacion",
+    category: "centro_cultural",
+    continent: "Latinoamerica",
+    country: "Chile",
+    region: "Metropolitana",
+    city: "Las Condes",
+    lat: -33.4088,
+    lng: -70.5671,
+    deadline: null,
+    eventDate: null,
+    genres: ["rock", "folk", "fusion", "experimental", "indie"],
+    requirements: ["Revisar programacion y redes.", "Buscar llamados a artistas, ciclos y formatos acusticos.", "Validar fecha, hora, contacto y condiciones."],
+    url: "https://www.tmlascondes.cl/",
+    sourceName: "Teatro Municipal Las Condes",
+    sourceType: "centro_cultural",
+    lastChecked: null,
+    linkStatus: "requires_review",
+    confidence: 0.72,
+    summary: "Espacio comunal de Las Condes para conciertos, temporadas y posibles ciclos de musica."
+  },
+  {
+    id: 112,
+    title: "Santiago comunas - busqueda de centros y municipalidades",
+    category: "busqueda_comunal",
+    continent: "Latinoamerica",
+    country: "Chile",
+    region: "Metropolitana",
+    city: "Santiago comunas",
+    lat: -33.4489,
+    lng: -70.6693,
+    deadline: null,
+    eventDate: null,
+    genres: ["rock", "folk", "fusion", "experimental", "indie"],
+    requirements: ["Abrir la busqueda.", "Revisar GAM, Las Condes, Providencia, Nunoa, La Reina, San Joaquin y Maipu.", "Leer fecha del post, evento, plazo y contacto."],
+    url: "https://www.google.com/search?q=site%3Ainstagram.com%2Fp+OR+site%3Ainstagram.com%2Freel+%22GAM%22+%22Las+Condes%22+%22Providencia%22+%22Nunoa%22+musica+conciertos+bandas+convocatoria",
+    sourceName: "Motor publico Santiago comunas",
+    sourceType: "busqueda_externa",
+    lastChecked: null,
+    linkStatus: "requires_review",
+    confidence: 0.7,
+    summary: "Busqueda dirigida a comunas y centros de Santiago donde suelen aparecer ciclos, tocatas, agenda cultural y llamados a artistas."
+  },
+  {
+    id: 113,
+    title: "V Region - Valparaiso, Vina, Quilpue y Villa Alemana",
+    category: "busqueda_regional",
+    continent: "Latinoamerica",
+    country: "Chile",
+    region: "Valparaiso",
+    city: "V Region",
+    lat: -33.0472,
+    lng: -71.6127,
+    deadline: null,
+    eventDate: null,
+    genres: ["rock", "folk", "fusion", "experimental", "indie"],
+    requirements: ["Revisar posts publicos por ciudad.", "Buscar centros culturales, municipios, salas y festivales.", "Confirmar fecha de publicacion y plazo."],
+    url: "https://www.google.com/search?q=site%3Ainstagram.com%2Fp+OR+site%3Ainstagram.com%2Freel+%22V+Region%22+Valparaiso+Vina+Quilpue+Villa+Alemana+musica+bandas+convocatoria",
+    sourceName: "Motor publico V Region",
+    sourceType: "busqueda_externa",
+    lastChecked: null,
+    linkStatus: "requires_review",
+    confidence: 0.7,
+    summary: "Radar ampliado para comunas de la V Region, no solo Valparaiso centro."
+  },
+  {
+    id: 114,
+    title: "VI Region - O'Higgins y Rancagua",
+    category: "busqueda_regional",
+    continent: "Latinoamerica",
+    country: "Chile",
+    region: "O'Higgins",
+    city: "Rancagua",
+    lat: -34.1701,
+    lng: -70.7406,
+    deadline: null,
+    eventDate: null,
+    genres: ["rock", "folk", "fusion", "experimental", "indie"],
+    requirements: ["Buscar Teatro Regional, municipios y centros culturales.", "Revisar publicaciones recientes.", "Confirmar fecha, plazo y contacto."],
+    url: "https://www.google.com/search?q=site%3Ainstagram.com%2Fp+OR+site%3Ainstagram.com%2Freel+%22Rancagua%22+%22O%27Higgins%22+musica+conciertos+bandas+convocatoria",
+    sourceName: "Motor publico VI Region",
+    sourceType: "busqueda_externa",
+    lastChecked: null,
+    linkStatus: "requires_review",
+    confidence: 0.68,
+    summary: "Busqueda para detectar espacios y llamados musicales en Rancagua y Region de O'Higgins."
+  },
+  {
+    id: 115,
+    title: "VII Region - Maule, Talca y Curico",
+    category: "busqueda_regional",
+    continent: "Latinoamerica",
+    country: "Chile",
+    region: "Maule",
+    city: "Talca",
+    lat: -35.4264,
+    lng: -71.6554,
+    deadline: null,
+    eventDate: null,
+    genres: ["rock", "folk", "fusion", "experimental", "indie"],
+    requirements: ["Revisar Teatro Regional del Maule, municipios y centros culturales.", "Leer fecha y plazo.", "Confirmar condiciones de participacion."],
+    url: "https://www.google.com/search?q=site%3Ainstagram.com%2Fp+OR+site%3Ainstagram.com%2Freel+%22Maule%22+Talca+Curico+musica+conciertos+bandas+convocatoria",
+    sourceName: "Motor publico VII Region",
+    sourceType: "busqueda_externa",
+    lastChecked: null,
+    linkStatus: "requires_review",
+    confidence: 0.68,
+    summary: "Radar para Maule/Talca/Curico y circuitos regionales fuera de Santiago."
+  },
+  {
+    id: 116,
+    title: "Antofagasta y Calama - agenda cultural norte",
+    category: "busqueda_regional",
+    continent: "Latinoamerica",
+    country: "Chile",
+    region: "Antofagasta",
+    city: "Antofagasta / Calama",
+    lat: -23.6509,
+    lng: -70.3975,
+    deadline: null,
+    eventDate: null,
+    genres: ["rock", "folk", "fusion", "experimental", "indie"],
+    requirements: ["Buscar teatro municipal, corporaciones culturales y municipios.", "Abrir posts/reels recientes.", "Confirmar fecha, plazo, pago y contacto."],
+    url: "https://www.google.com/search?q=site%3Ainstagram.com%2Fp+OR+site%3Ainstagram.com%2Freel+Antofagasta+Calama+musica+conciertos+bandas+convocatoria",
+    sourceName: "Motor publico Antofagasta/Calama",
+    sourceType: "busqueda_externa",
+    lastChecked: null,
+    linkStatus: "requires_review",
+    confidence: 0.68,
+    summary: "Busqueda dedicada al norte grande para no depender de resultados generales de Chile."
+  },
+  {
+    id: 117,
+    title: "Valdivia - Fluvial, Teatro Cervantes y agenda local",
+    category: "busqueda_regional",
+    continent: "Latinoamerica",
+    country: "Chile",
+    region: "Los Rios",
+    city: "Valdivia",
+    lat: -39.8142,
+    lng: -73.2459,
+    deadline: null,
+    eventDate: null,
+    genres: ["rock", "folk", "fusion", "experimental", "indie"],
+    requirements: ["Revisar Fluvial, Teatro Cervantes, municipalidad y perfiles de agenda.", "Leer fechas y plazos.", "Confirmar contacto de programacion."],
+    url: "https://www.google.com/search?q=site%3Ainstagram.com%2Fp+OR+site%3Ainstagram.com%2Freel+Valdivia+Fluvial+Teatro+Cervantes+musica+conciertos+bandas",
+    sourceName: "Motor publico Valdivia",
+    sourceType: "busqueda_externa",
+    lastChecked: null,
+    linkStatus: "requires_review",
+    confidence: 0.7,
+    summary: "Valdivia debe rastrearse por mercado musical, teatro regional y agenda cultural local."
+  },
+  {
+    id: 118,
+    title: "Puerto Montt - Teatro Diego Rivera y cultura local",
+    category: "busqueda_regional",
+    continent: "Latinoamerica",
+    country: "Chile",
+    region: "Los Lagos",
+    city: "Puerto Montt",
+    lat: -41.4689,
+    lng: -72.9411,
+    deadline: null,
+    eventDate: null,
+    genres: ["rock", "folk", "fusion", "experimental", "indie"],
+    requirements: ["Revisar Teatro Diego Rivera, corporacion cultural y agenda municipal.", "Confirmar fecha del evento y plazo.", "Validar pago, entrada y contacto."],
+    url: "https://www.google.com/search?q=site%3Ainstagram.com%2Fp+OR+site%3Ainstagram.com%2Freel+%22Puerto+Montt%22+%22Teatro+Diego+Rivera%22+musica+conciertos+bandas",
+    sourceName: "Motor publico Puerto Montt",
+    sourceType: "busqueda_externa",
+    lastChecked: null,
+    linkStatus: "requires_review",
+    confidence: 0.68,
+    summary: "Radar sur para Puerto Montt y espacios culturales locales con programacion musical."
   }
 ];
 
@@ -672,7 +1300,17 @@ const chileRegionalFallbackSources = [
   { name: "Centro Cultural de Espana Santiago", region: "Metropolitana", type: "centro_cultural", url: "https://www.aecid.es/documents/d/cc-santiago/bases-de-convocatoria-suchai-2027" },
   { name: "Instagram Festival REC", region: "Biobio", type: "red_social", url: "https://www.instagram.com/reel/DV_gtwKDjrJ/" },
   { name: "Instagram Fondo Cultural Valparaiso", region: "Valparaiso", type: "red_social", url: "https://www.instagram.com/p/DRdYS0aDzOm/" },
-  { name: "Corporacion Cultural Municipal de Los Angeles", region: "Biobio", type: "centro_cultural", url: "https://www.facebook.com/ccmlalosangeles/" }
+  { name: "Corporacion Cultural Municipal de Los Angeles", region: "Biobio", type: "centro_cultural", url: "https://www.facebook.com/ccmlalosangeles/" },
+  { name: "Instagram GAM", region: "Metropolitana", type: "red_social", url: "https://www.instagram.com/gam.cl/" },
+  { name: "Teatro Municipal Las Condes", region: "Metropolitana", type: "centro_cultural", url: "https://www.tmlascondes.cl/" },
+  { name: "Corporacion Cultural Las Condes", region: "Metropolitana", type: "centro_cultural", url: "https://www.culturallascondes.cl/" },
+  { name: "Centro Cultural La Moneda", region: "Metropolitana", type: "centro_cultural", url: "https://www.cclm.cl/" },
+  { name: "Teatro Oriente Providencia", region: "Metropolitana", type: "centro_cultural", url: "https://teatrooriente.cl/" },
+  { name: "CENTEX Valparaiso", region: "Valparaiso", type: "centro_cultural", url: "https://centex.cultura.gob.cl/" },
+  { name: "Teatro Regional del Maule", region: "Maule", type: "centro_cultural", url: "https://www.teatroregional.cl/" },
+  { name: "Cultura Antofagasta", region: "Antofagasta", type: "centro_cultural", url: "https://www.culturaantofagasta.cl/" },
+  { name: "Teatro Regional Cervantes Valdivia", region: "Los Rios", type: "centro_cultural", url: "https://teatroregionalcervantes.cl/" },
+  { name: "Corporacion Cultural Puerto Montt", region: "Los Lagos", type: "centro_cultural", url: "https://www.culturapuertomontt.cl/" }
 ].map((source, index) => ({
   id: 100 + index,
   continent: "Latinoamerica",
@@ -683,6 +1321,52 @@ const chileRegionalFallbackSources = [
 
 fallbackPayload.opportunities.push(...chileRegionalFallbackOpportunities);
 fallbackPayload.sources.push(...chileRegionalFallbackSources);
+
+const expandedPublicTargets = [
+  ...CHILE_DEEP_SEARCH_TARGETS,
+  ...LATAM_RECOGNIZED_TARGETS,
+  ...GLOBAL_PRIORITY_TARGETS
+];
+
+const expandedTargetOpportunities = expandedPublicTargets.map((target, index) => {
+  const view = COUNTRY_VIEWS[target.country] || CONTINENT_VIEWS[continentForCountry(target.country)] || CONTINENT_VIEWS.Global;
+  return {
+    id: 1000 + index,
+    title: `${target.label} - radar publico`,
+    category: target.type,
+    continent: continentForCountry(target.country),
+    country: target.country,
+    region: target.region,
+    city: target.city,
+    lat: target.lat ?? view.center[0],
+    lng: target.lng ?? view.center[1],
+    deadline: null,
+    eventDate: null,
+    genres: ["rock", "folk", "fusion", "experimental", "indie", "progresivo"],
+    requirements: ["Abrir busqueda publica.", "Priorizar web oficial, Instagram publico y agenda cultural reciente.", "Leer fecha de publicacion, fecha del evento, plazo/cierre, pago y contacto."],
+    url: googleSearchUrl(`"${target.query}" site:instagram.com/p OR site:instagram.com/reel OR convocatoria OR "open call"`),
+    sourceName: target.label,
+    sourceType: target.type,
+    lastChecked: null,
+    linkStatus: "requires_review",
+    confidence: target.country === "Chile" ? 0.64 : 0.58,
+    summary: `Objetivo de busqueda para detectar oportunidades publicas en ${target.city}, ${target.region}.`
+  };
+});
+
+const expandedTargetSources = expandedPublicTargets.map((target, index) => ({
+  id: 1000 + index,
+  name: target.label,
+  continent: continentForCountry(target.country),
+  country: target.country,
+  region: target.region,
+  type: target.type,
+  url: googleSearchUrl(`"${target.query}" convocatoria musica bandas agenda cultural`),
+  linkStatus: "requires_review"
+}));
+
+fallbackPayload.opportunities.push(...expandedTargetOpportunities);
+fallbackPayload.sources.push(...expandedTargetSources);
 
 let opportunities = [];
 let sources = [];
@@ -745,11 +1429,9 @@ function targetCountries() {
 }
 
 function continentForCountry(country) {
-  const latinAmerica = new Set(["Argentina", "Bolivia", "Brasil", "Chile", "Colombia", "Ecuador", "Mexico", "Paraguay", "Peru", "Uruguay", "Venezuela"]);
-  const europe = new Set(TARGET_COUNTRIES.filter((item) => item.continent === "Europa").map((item) => item.country));
   if (!country || country === "Global") return "Global";
-  if (latinAmerica.has(country)) return "Latinoamerica";
-  if (europe.has(country)) return "Europa";
+  const target = TARGET_COUNTRIES.find((item) => item.country === country);
+  if (target) return target.continent;
   return "Internacional";
 }
 
@@ -796,7 +1478,7 @@ function displayLabel(value) {
 }
 
 function buildSearchMissions(country) {
-  return SEARCH_MISSION_TEMPLATES.map((template) => template.replaceAll("{country}", country));
+  return SEARCH_MISSION_TEMPLATES.map((template) => template.replaceAll("{country}", countrySearchName(country)));
 }
 
 function normalizeToken(value) {
@@ -817,6 +1499,35 @@ function searchPhrase() {
   return parts.length ? parts.join(" ") : "festival bandas rock convocatoria";
 }
 
+function countrySearchName(country) {
+  const aliases = {
+    "Estados Unidos": "Estados Unidos EEUU USA United States",
+    Inglaterra: "Inglaterra England Reino Unido UK",
+    Holanda: "Holanda Paises Bajos Netherlands",
+    "Paises Bajos": "Paises Bajos Holanda Netherlands Nederland",
+    Libano: "Libano Lebanon",
+    Japon: "Japon Japan",
+    "Corea del Sur": "Corea del Sur South Korea",
+    Sudafrica: "Sudafrica South Africa",
+    Alemania: "Alemania Germany Deutschland",
+    Francia: "Francia France",
+    Espana: "Espana Spain España",
+    Marruecos: "Marruecos Morocco Maroc المغرب",
+    China: "China 中国",
+    Taiwan: "Taiwan 臺灣 台灣",
+    Vietnam: "Vietnam Việt Nam",
+    Irlanda: "Irlanda Ireland Eire",
+    Canada: "Canada Canadá",
+    Rusia: "Rusia Russia Россия",
+    Gales: "Gales Wales Cymru",
+    Brasil: "Brasil Brazil",
+    Mexico: "Mexico México",
+    Peru: "Peru Perú",
+    Islandia: "Islandia Iceland Ísland"
+  };
+  return aliases[country] || country;
+}
+
 function googleSearchUrl(query) {
   return `https://www.google.com/search?q=${encodeURIComponent(query)}`;
 }
@@ -831,6 +1542,7 @@ function tiktokSearchUrl(query) {
 
 function buildExternalSearchCards() {
   const country = selectedSearchCountry();
+  const queryCountry = countrySearchName(country);
   const scope = selectedScopeLabel();
   const phrase = searchPhrase();
   const compactCountry = normalizeToken(country);
@@ -838,13 +1550,13 @@ function buildExternalSearchCards() {
     {
       title: `Instagram posts publicos - ${country}`,
       category: "instagram_posts",
-      url: googleSearchUrl(`site:instagram.com/p "${country}" ${phrase} teloneros showcase convocatoria`),
+      url: googleSearchUrl(`site:instagram.com/p "${queryCountry}" ${phrase} teloneros showcase convocatoria`),
       summary: "Busqueda directa en Google sobre posts publicos de Instagram. Prioriza convocatorias, teloneros, showcases, festivales y concursos."
     },
     {
       title: `Instagram reels publicos - ${country}`,
       category: "instagram_reels",
-      url: googleSearchUrl(`site:instagram.com/reel "${country}" bandas rock festival convocatoria productora`),
+      url: googleSearchUrl(`site:instagram.com/reel "${queryCountry}" bandas rock festival convocatoria productora`),
       summary: "Revisa reels publicos donde productoras, festivales y salas publican llamados rapidos o busquedas de bandas."
     },
     {
@@ -862,26 +1574,69 @@ function buildExternalSearchCards() {
     {
       title: `TikTok busqueda publica - ${country}`,
       category: "tiktok",
-      url: tiktokSearchUrl(`${country} bandas rock festival convocatoria teloneros`),
+      url: tiktokSearchUrl(`${queryCountry} bandas rock festival convocatoria teloneros`),
       summary: "Busqueda publica en TikTok para detectar publicaciones rapidas de conciertos, festivales, salas y escenas emergentes."
     },
     {
       title: `Productoras, booking y sellos - ${scope}`,
       category: "booking_productoras",
-      url: googleSearchUrl(`"${country}" productora booking sello independiente bandas rock fusion experimental instagram`),
-      summary: "Busqueda ampliada de perfiles publicos de productoras, sellos, agencias de booking y medios musicales."
+      url: googleSearchUrl(`"${queryCountry}" productora booking sello independiente "demo submission" OR "submit your music" OR "artist submissions" OR "presentar artistas" OR "buscamos bandas"`),
+      summary: "Busqueda ampliada con lenguaje real de productoras, sellos y booking: demo submission, artist submissions, presentar artistas, roster, A&R y busquedas de bandas."
     },
     {
       title: `Fondos, municipios y centros culturales - ${country}`,
       category: "fondos_espacios",
-      url: googleSearchUrl(`"${country}" municipio centro cultural fondos musica bandas convocatoria pago honorarios`),
+      url: googleSearchUrl(`"${queryCountry}" municipio centro cultural fondos musica bandas convocatoria pago honorarios`),
       summary: "Busqueda de espacios publicos con pago, fondos, municipios, centros culturales y convocatorias institucionales."
     }
   ];
+  const globalTerms = GLOBAL_PUBLIC_SEARCH_TERMS.slice(0, filters.continent === "Global" ? 14 : 8);
+  globalTerms.forEach((term) => {
+    searches.push({
+      title: `Global multiidioma - ${term}`,
+      category: "global_open_call",
+      url: googleSearchUrl(`"${queryCountry}" "${term}" rock OR folk OR experimental OR fusion`),
+      summary: "Busqueda global en ingles o idioma local para detectar convocatorias, festivales, residencias y showcases que acepten artistas de otros paises."
+    });
+  });
+  [
+    ["Instagram internacional", `site:instagram.com/p "${queryCountry}" "international artists" "open call" music`],
+    ["Instagram bandas extranjeras", `site:instagram.com/reel "${queryCountry}" "foreign artists" "festival" music`],
+    ["On the Move movilidad", `site:on-the-move.org "${queryCountry}" music mobility artists`],
+    ["Culture360 Asia Europa", `site:culture360.asef.org "${queryCountry}" music open call artists`],
+    ["Submittable music", `site:submittable.com "${queryCountry}" music artist open call`],
+    ["FilmFreeway music showcase", `site:filmfreeway.com "${queryCountry}" music festival submissions`],
+    ["GitHub listas abiertas", `site:github.com "${queryCountry}" music opportunities open calls festivals artists`],
+    ["GitHub booking/festivales", `site:github.com "${queryCountry}" booking agency festival submissions independent bands`]
+  ].forEach(([title, query]) => {
+    searches.push({
+      title: `${title} - ${country}`,
+      category: "global_source",
+      url: googleSearchUrl(query),
+      summary: "Fuente global revisable para oportunidades abiertas, movilidad, showcases, festivales o postulaciones internacionales."
+    });
+  });
+  const publicTargets = (COUNTRY_PUBLIC_SPACE_TARGETS[country] || []).slice(0, country === "Chile" ? 18 : 10);
+  publicTargets.forEach((target) => {
+    searches.push(
+      {
+        title: `Instagram publico en Google - ${target}`,
+        category: "instagram_espacio_publico",
+        url: googleSearchUrl(`site:instagram.com/p OR site:instagram.com/reel "${target}" "convocatoria" OR "presentar artistas" OR "postula tu proyecto" OR "programacion artistica" music musica`),
+        summary: "Rastrea posts/reels publicos encontrados por Google para detectar llamados a bandas, artistas invitados, programacion y fechas reales."
+      },
+      {
+        title: `Espacio publico / teatro / museo - ${target}`,
+        category: "espacio_publico",
+        url: googleSearchUrl(`"${target}" "musica" "convocatoria" OR "open call" OR "presentar artistas" OR "artist submissions"`),
+        summary: "Busqueda oficial y publica de municipios, teatros, museos, centros culturales y salas que puedan programar o pagar artistas."
+      }
+    );
+  });
   if (country === "Chile") {
     const promotionTags = CHILE_INSTAGRAM_PROMOTION_TAGS
       .filter((item) => filters.region === "all" || item.region === "Nacional" || item.region === filters.region)
-      .slice(0, filters.region === "all" ? 12 : 8);
+      .slice(0, filters.region === "all" ? 20 : 10);
     promotionTags.forEach((item) => {
       searches.push(
         {
@@ -893,20 +1648,20 @@ function buildExternalSearchCards() {
         {
           title: `Posts recientes con #${item.tag}`,
           category: "instagram_posts_recientes",
-          url: googleSearchUrl(`site:instagram.com/p "#${item.tag}" "concierto" OR "convocatoria" OR "postula hasta" after:2025-01-01`),
+          url: googleSearchUrl(`site:instagram.com/p "#${item.tag}" "concierto" OR "convocatoria" OR "buscamos bandas" OR "postula hasta" after:2025-01-01`),
           summary: `Busqueda reciente por publicaciones con #${item.tag}. Prioriza avisos culturales, tocatas, convocatorias, bases y cierres.`
         }
       );
     });
     const regionalTargets = CHILE_REGIONAL_TARGETS
       .filter((target) => filters.region === "all" || target.region === filters.region || target.city === filters.region)
-      .slice(0, filters.region === "all" ? 10 : 4);
+      .slice(0, filters.region === "all" ? 24 : 8);
     regionalTargets.forEach((target) => {
       searches.push(
         {
           title: `Instagram reciente - ${target.city}`,
           category: "instagram_regional",
-          url: googleSearchUrl(`site:instagram.com/p OR site:instagram.com/reel "${target.city}" ${target.query} after:2025-01-01`),
+          url: googleSearchUrl(`site:instagram.com/p OR site:instagram.com/reel "${target.city}" ${target.query} "tocata" OR "buscamos bandas" OR "se buscan bandas" after:2025-01-01`),
           summary: `Busqueda regional para ${target.city}. Abrir publicaciones publicas y revisar fecha del post, fecha del evento, hora, entrada y contacto.`
         },
         {
@@ -955,6 +1710,16 @@ function selectedMapView() {
   return CONTINENT_VIEWS.Latinoamerica;
 }
 
+function mapPointForExternalCard(index) {
+  const view = selectedMapView();
+  const angle = (index % 12) * (Math.PI / 6);
+  const ring = 0.45 + Math.floor(index / 12) * 0.18;
+  return [
+    view.center[0] + Math.sin(angle) * ring,
+    view.center[1] + Math.cos(angle) * ring
+  ];
+}
+
 function fillSelect(select, values, label) {
   select.innerHTML = `<option value="all">${label}</option>` + values.map((value) => (
     `<option value="${escapeHtml(value)}">${escapeHtml(displayLabel(value))}</option>`
@@ -980,7 +1745,7 @@ async function loadData() {
   if (!API_BASE_URL) {
     opportunities = fallbackPayload.opportunities;
     sources = fallbackPayload.sources;
-    els.backendStatus.textContent = "Demo publico";
+    els.backendStatus.textContent = "Respaldo local";
     els.backendStatus.className = "status-pill offline";
     renderAll();
     return;
@@ -1002,7 +1767,7 @@ async function loadData() {
   } catch (error) {
     opportunities = fallbackPayload.opportunities;
     sources = fallbackPayload.sources;
-    els.backendStatus.textContent = "Modo demo";
+    els.backendStatus.textContent = "API sin respuesta - respaldo local";
     els.backendStatus.className = "status-pill offline";
   }
   renderAll();
@@ -1138,6 +1903,42 @@ function renderExternalCard(item) {
   `;
 }
 
+function detectedIndustrySignals(opp) {
+  const text = [
+    opp.title,
+    opp.summary,
+    opp.sourceName,
+    opp.sourceType,
+    ...(opp.requirements || [])
+  ].join(" ").toLowerCase();
+  return INDUSTRY_LANGUAGE_TERMS.filter((term) => text.includes(term.toLowerCase())).slice(0, 6);
+}
+
+function applicationGuide(opp) {
+  const steps = [];
+  const category = String(opp.category || "").toLowerCase();
+  const sourceType = String(opp.sourceType || "").toLowerCase();
+  steps.push("Abre el link oficial y busca secciones como bases, formulario, postulacion, contacto, booking o programacion.");
+  if (opp.deadline) {
+    steps.push(`Confirma que el plazo siga vigente: ${new Date(opp.deadline + "T00:00:00").toLocaleDateString("es-CL")}.`);
+  } else {
+    steps.push("Si no hay plazo visible, revisa la fecha de publicacion del post/pagina y busca bases actualizadas.");
+  }
+  if (category.includes("showcase") || category.includes("festival") || category.includes("booking")) {
+    steps.push("Prepara EPK: bio corta, links de musica/video, registro en vivo, ciudad/base, redes publicas y contacto de booking.");
+  }
+  if (category.includes("sello") || sourceType.includes("sello") || sourceType.includes("label")) {
+    steps.push("Revisa catalogo/roster antes de enviar material; explica por que tu sonido calza con la linea del sello.");
+  }
+  if (category.includes("productora") || sourceType.includes("productora") || sourceType.includes("booking")) {
+    steps.push("Envia un pitch breve: sonido, formato en vivo, disponibilidad, historial, publico objetivo y propuesta de valor.");
+  }
+  if (category.includes("municip") || category.includes("centro") || sourceType.includes("teatro")) {
+    steps.push("Busca formulario municipal/teatro o correo de programacion; pregunta por honorarios, ficha tecnica, fechas y condiciones de sala.");
+  }
+  return [...new Set(steps)];
+}
+
 function renderList() {
   const externalCards = buildExternalSearchCards();
   els.resultCount.textContent = filtered.length + externalCards.length;
@@ -1177,7 +1978,7 @@ function renderMap() {
   const scope = selectedScopeLabel();
   els.mapTitle.textContent = filters.country !== "all"
     ? filters.country
-    : (filters.continent !== "all" ? filters.continent : "Chile, Latinoamerica y Europa");
+    : (filters.continent !== "all" ? filters.continent : "Radar global");
   const bounds = [];
   filtered.forEach((opp) => {
     if (typeof opp.lat !== "number" || typeof opp.lng !== "number") return;
@@ -1196,6 +1997,25 @@ function renderMap() {
     `);
     markers.push(marker);
     bounds.push([opp.lat, opp.lng]);
+  });
+  buildExternalSearchCards().slice(0, 36).forEach((item, index) => {
+    const point = mapPointForExternalCard(index);
+    const marker = L.circleMarker(point, {
+      radius: 6,
+      color: "#a78bfa",
+      fillColor: "#a78bfa",
+      fillOpacity: 0.54,
+      weight: 1.5,
+      dashArray: "3 3"
+    }).addTo(map);
+    marker.bindPopup(`
+      <strong>${escapeHtml(item.title)}</strong><br>
+      ${escapeHtml(item.city || scope)}<br>
+      <span>Busqueda externa revisable</span><br>
+      <a href="${escapeHtml(item.url)}" target="_blank" rel="noopener">Abrir motor externo</a>
+    `);
+    markers.push(marker);
+    bounds.push(point);
   });
   if (bounds.length > 1) {
     map.fitBounds(bounds, { padding: [28, 28], maxZoom: 7 });
@@ -1247,7 +2067,7 @@ function renderCalendar() {
 }
 
 function renderSources() {
-  const visibleSources = sources.slice(0, 30);
+  const visibleSources = sources.slice(0, 320);
   els.sourcesList.innerHTML = visibleSources.map((source) => `
     <article class="source-card">
       <div class="card-top">
@@ -1256,8 +2076,9 @@ function renderSources() {
       </div>
       <h3>${escapeHtml(source.name)}</h3>
       <p>${escapeHtml(itemContinent(source))} - ${escapeHtml(source.country || "")}${source.region ? ` - ${escapeHtml(source.region)}` : ""}</p>
+      <p><strong>Como postular:</strong> revisar bases, formulario/contacto, plazo, requisitos tecnicos y si aceptan bandas o artistas externos.</p>
       <a class="official-link" href="${escapeHtml(source.url)}" target="_blank" rel="noopener">
-        Abrir fuente <i class="fa-solid fa-up-right-from-square"></i>
+        Abrir fuente y buscar postulacion <i class="fa-solid fa-up-right-from-square"></i>
       </a>
     </article>
   `).join("");
@@ -1280,8 +2101,13 @@ function openDetail(id) {
         <p>${escapeHtml(opp.summary || "Sin resumen disponible.")}</p>
       </div>
       <div class="detail-section">
-        <h3>Requisitos detectados</h3>
+        <h3>Como postular en esta pagina</h3>
+        <ul>${applicationGuide(opp).map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>
+      </div>
+      <div class="detail-section">
+        <h3>Requisitos y senales detectadas</h3>
         <ul>${(opp.requirements || ["Revisar bases oficiales en la fuente."]).map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>
+        ${detectedIndustrySignals(opp).length ? `<p><strong>Lenguaje detectado:</strong> ${detectedIndustrySignals(opp).map(escapeHtml).join(", ")}</p>` : ""}
       </div>
       <div class="detail-section">
         <h3>Fuente</h3>

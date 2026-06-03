@@ -1,0 +1,1082 @@
+[
+  {
+    "name": "Ministerio de las Culturas - Convocatorias",
+    "url": "https://www.cultura.gob.cl/convocatorias/",
+    "country": "Chile",
+    "region": "Nacional",
+    "type": "official_calls",
+    "priority": 99,
+    "query_hint": "convocatorias musica artes escenicas cultura Chile"
+  },
+  {
+    "name": "Red Rockodromo",
+    "url": "https://redrockodromo.cultura.gob.cl/",
+    "country": "Chile",
+    "region": "Nacional",
+    "type": "festival_red",
+    "priority": 94,
+    "query_hint": "Red Rockodromo inscripcion bandas solistas festivales Chile"
+  },
+  {
+    "name": "Escuelas de Rock y Musica Popular",
+    "url": "https://escuelasderock.cultura.gob.cl/",
+    "country": "Chile",
+    "region": "Nacional",
+    "type": "programa_publico",
+    "priority": 94,
+    "query_hint": "Escuelas de Rock convocatorias bandas festivales regiones"
+  },
+  {
+    "name": "Teatro Municipal de Santiago",
+    "url": "https://www.municipal.cl/",
+    "country": "Chile",
+    "region": "Metropolitana",
+    "type": "teatro",
+    "priority": 84,
+    "query_hint": "Teatro Municipal Santiago convocatoria compositores programacion musica"
+  },
+  {
+    "name": "Centro Cultural Estacion Mapocho",
+    "url": "https://www.estacionmapocho.cl/",
+    "country": "Chile",
+    "region": "Metropolitana",
+    "type": "centro_cultural",
+    "priority": 82,
+    "query_hint": "Estacion Mapocho agenda conciertos musica"
+  },
+  {
+    "name": "Salas SCD",
+    "url": "https://salasscd.cl/",
+    "country": "Chile",
+    "region": "Metropolitana",
+    "type": "sala_musica",
+    "priority": 88,
+    "query_hint": "Salas SCD postulaciones conciertos bandas"
+  },
+  {
+    "name": "Teatro Municipal de Las Condes - Presenta tu proyecto",
+    "url": "https://www.tmlascondes.cl/presenta-tu-proyecto/",
+    "country": "Chile",
+    "region": "Metropolitana",
+    "type": "teatro_convocatoria",
+    "priority": 92,
+    "query_hint": "presenta tu proyecto musica popular Teatro Municipal Las Condes"
+  },
+  {
+    "name": "Fundacion Cultural de Providencia",
+    "url": "https://culturaprovidencia.cl/",
+    "country": "Chile",
+    "region": "Metropolitana",
+    "type": "cultura_municipal",
+    "priority": 84,
+    "query_hint": "Cultura Providencia festival jazz bandas conciertos"
+  },
+  {
+    "name": "Corporacion Cultural de Nunoa",
+    "url": "https://www.ccn.cl/",
+    "country": "Chile",
+    "region": "Metropolitana",
+    "type": "cultura_municipal",
+    "priority": 82,
+    "query_hint": "Corporacion Cultural Nunoa actividades musica conciertos"
+  },
+  {
+    "name": "Corporacion Cultural de La Reina",
+    "url": "https://culturalareina.cl/",
+    "country": "Chile",
+    "region": "Metropolitana",
+    "type": "cultura_municipal",
+    "priority": 82,
+    "query_hint": "La Reina laboratorio musical convocatoria conciertos"
+  },
+  {
+    "name": "Cultura San Joaquin",
+    "url": "https://culturasanjoaquin.cl/",
+    "country": "Chile",
+    "region": "Metropolitana",
+    "type": "cultura_municipal",
+    "priority": 80,
+    "query_hint": "Cultura San Joaquin festival artes musica"
+  },
+  {
+    "name": "Centro Cultural Espacio Matta",
+    "url": "https://www.espaciomatta.cl/",
+    "country": "Chile",
+    "region": "Metropolitana",
+    "type": "centro_cultural",
+    "priority": 78,
+    "query_hint": "Espacio Matta programacion musica conciertos"
+  },
+  {
+    "name": "Centro Cultural Chimkowe",
+    "url": "https://www.chimkowe.cl/",
+    "country": "Chile",
+    "region": "Metropolitana",
+    "type": "centro_cultural",
+    "priority": 78,
+    "query_hint": "Chimkowe agenda cultural conciertos"
+  },
+  {
+    "name": "Corporacion Cultural de Puente Alto",
+    "url": "https://www.culturapuentealto.cl/",
+    "country": "Chile",
+    "region": "Metropolitana",
+    "type": "cultura_municipal",
+    "priority": 78,
+    "query_hint": "Puente Alto cultura convocatorias artistas musica"
+  },
+  {
+    "name": "Casa Municipal de la Cultura Iquique",
+    "url": "https://cormudesi.cl/casa-de-la-cultura/",
+    "country": "Chile",
+    "region": "Tarapaca",
+    "type": "cultura_municipal",
+    "priority": 76,
+    "query_hint": "Casa Cultura Iquique musica teatro"
+  },
+  {
+    "name": "Teatro Municipal de Iquique",
+    "url": "https://teatromunicipaliquique.cl/",
+    "country": "Chile",
+    "region": "Tarapaca",
+    "type": "teatro",
+    "priority": 78,
+    "query_hint": "Teatro Municipal Iquique programacion conciertos"
+  },
+  {
+    "name": "Festival Alicanto",
+    "url": "https://www.cultura.gob.cl/convocatorias/ministerio-de-las-culturas-invita-a-ser-parte-de-festival-alicanto-de-la-red-rockodromo-2026/",
+    "country": "Chile",
+    "region": "Antofagasta",
+    "type": "festival_convocatoria",
+    "priority": 88,
+    "query_hint": "Festival Alicanto convocatoria bandas Antofagasta"
+  },
+  {
+    "name": "Corporacion de Cultura y Turismo de Calama",
+    "url": "http://www.calamacultural.cl/",
+    "country": "Chile",
+    "region": "Antofagasta",
+    "type": "cultura_municipal",
+    "priority": 84,
+    "query_hint": "Calama Cultural Rock al Parque FENTIC musica"
+  },
+  {
+    "name": "Cultura Copiapo",
+    "url": "https://www.culturacopiapo.cl/",
+    "country": "Chile",
+    "region": "Atacama",
+    "type": "cultura_municipal",
+    "priority": 76,
+    "query_hint": "Copiapo en escena cartelera musical"
+  },
+  {
+    "name": "Valpocultura",
+    "url": "https://valpocultura.cl/",
+    "country": "Chile",
+    "region": "Valparaiso",
+    "type": "cultura_municipal",
+    "priority": 86,
+    "query_hint": "Valpocultura convocatorias FICVAL agenda musica"
+  },
+  {
+    "name": "CENTEX Valparaiso",
+    "url": "https://centex.cultura.gob.cl/",
+    "country": "Chile",
+    "region": "Valparaiso",
+    "type": "centro_cultural",
+    "priority": 84,
+    "query_hint": "CENTEX Valparaiso centro cultural musica conciertos convocatoria"
+  },
+  {
+    "name": "Centro Cultural San Antonio",
+    "url": "https://centrocultural.sanantonio.cl/",
+    "country": "Chile",
+    "region": "Valparaiso",
+    "type": "centro_cultural",
+    "priority": 80,
+    "query_hint": "Centro Cultural San Antonio convocatoria talleres musica"
+  },
+  {
+    "name": "Rancagua Cultura",
+    "url": "https://rancaguacultura.cl/",
+    "country": "Chile",
+    "region": "O'Higgins",
+    "type": "cultura_municipal",
+    "priority": 84,
+    "query_hint": "Rancagua Suena convocatoria musica Teatro Regional Lucho Gatica"
+  },
+  {
+    "name": "Teatro Regional del Maule",
+    "url": "https://www.teatroregional.cl/",
+    "country": "Chile",
+    "region": "Maule",
+    "type": "teatro_regional",
+    "priority": 86,
+    "query_hint": "TRM soporte a la creacion convocatoria musica Talca"
+  },
+  {
+    "name": "Corporacion Cultural de Curico",
+    "url": "https://www.culturalcurico.cl/",
+    "country": "Chile",
+    "region": "Maule",
+    "type": "cultura_municipal",
+    "priority": 78,
+    "query_hint": "Curico fondo municipal iniciativas artisticas musica"
+  },
+  {
+    "name": "Corporacion Cultural Municipal de Chillan",
+    "url": "https://corporacionculturalchillan.cl/",
+    "country": "Chile",
+    "region": "Nuble",
+    "type": "cultura_municipal",
+    "priority": 84,
+    "query_hint": "Chillan convocatorias conciertos Sonidos del Centro"
+  },
+  {
+    "name": "Teatro Municipal de Chillan",
+    "url": "https://www.teatromunicipalchillan.cl/",
+    "country": "Chile",
+    "region": "Nuble",
+    "type": "teatro",
+    "priority": 84,
+    "query_hint": "Teatro Municipal Chillan festival folclore musica"
+  },
+  {
+    "name": "Teatro Biobio Blog",
+    "url": "https://blog.teatrobiobio.cl/",
+    "country": "Chile",
+    "region": "Biobio",
+    "type": "calls_news",
+    "priority": 88,
+    "query_hint": "Hecho en Biobio convocatoria musica Teatro Biobio"
+  },
+  {
+    "name": "Corredorbiobio",
+    "url": "https://corredorbiobio.cl/",
+    "country": "Chile",
+    "region": "Biobio",
+    "type": "red_municipal",
+    "priority": 84,
+    "query_hint": "Corredorbiobio feria programacion bandas"
+  },
+  {
+    "name": "Festival REC",
+    "url": "https://www.festivalrec.cl/",
+    "country": "Chile",
+    "region": "Biobio",
+    "type": "festival",
+    "priority": 88,
+    "query_hint": "Festival REC artistas regionales convocatoria bandas"
+  },
+  {
+    "name": "Corporacion Cultural de Temuco",
+    "url": "https://corporaciontemuco.cl/",
+    "country": "Chile",
+    "region": "La Araucania",
+    "type": "cultura_municipal",
+    "priority": 82,
+    "query_hint": "Temuco teatro municipal musica"
+  },
+  {
+    "name": "Teatro Municipal de Temuco",
+    "url": "https://teatromunicipaltemuco.cl/",
+    "country": "Chile",
+    "region": "La Araucania",
+    "type": "teatro",
+    "priority": 82,
+    "query_hint": "Teatro Municipal Temuco cartelera musica"
+  },
+  {
+    "name": "Corporacion Cultural Municipal Valdivia",
+    "url": "https://www.ccm-valdivia.cl/",
+    "country": "Chile",
+    "region": "Los Rios",
+    "type": "cultura_municipal",
+    "priority": 86,
+    "query_hint": "CCM Valdivia CONARTE musica"
+  },
+  {
+    "name": "CONARTE Valdivia",
+    "url": "https://www.ccm-valdivia.cl/webccm/index.php/noticias-ccm/39-conarte",
+    "country": "Chile",
+    "region": "Los Rios",
+    "type": "fondo_municipal",
+    "priority": 86,
+    "query_hint": "Conarte Valdivia convocatoria musica"
+  },
+  {
+    "name": "Teatro Regional Cervantes",
+    "url": "https://www.teatroregionalcervantes.cl/",
+    "country": "Chile",
+    "region": "Los Rios",
+    "type": "teatro_regional",
+    "priority": 84,
+    "query_hint": "Teatro Cervantes Valdivia programacion musica"
+  },
+  {
+    "name": "Corporacion Cultural Puerto Montt - Teatro Diego Rivera",
+    "url": "https://teatrodiegorivera.cl/",
+    "country": "Chile",
+    "region": "Los Lagos",
+    "type": "teatro_municipal",
+    "priority": 88,
+    "query_hint": "Teatro Diego Rivera Puerto Montt convocatorias musica"
+  },
+  {
+    "name": "Convocatorias Cultura Puerto Montt",
+    "url": "https://convocatorias.culturapuertomontt.cl/",
+    "country": "Chile",
+    "region": "Los Lagos",
+    "type": "calls_platform",
+    "priority": 90,
+    "query_hint": "Puerto Montt temporales teatro artistas convocatorias"
+  },
+  {
+    "name": "Centro Cultural Municipal de Castro",
+    "url": "https://www.centroculturalcastro.cl/inicio/",
+    "country": "Chile",
+    "region": "Los Lagos",
+    "type": "centro_cultural",
+    "priority": 78,
+    "query_hint": "Centro Cultural Castro cartelera solicitud espacios musica"
+  },
+  {
+    "name": "Teatro del Lago",
+    "url": "https://www.teatrodellago.cl/",
+    "country": "Chile",
+    "region": "Los Lagos",
+    "type": "teatro",
+    "priority": 80,
+    "query_hint": "Teatro del Lago Frutillar programacion artistas"
+  },
+  {
+    "name": "Secretaria de Cultura Argentina - Convocatorias",
+    "url": "https://www.argentina.gob.ar/cultura/convocatorias",
+    "country": "Argentina",
+    "region": "Nacional",
+    "type": "official_calls",
+    "priority": 92,
+    "query_hint": "convocatorias cultura Argentina musica festival"
+  },
+  {
+    "name": "MICA",
+    "url": "https://www.cultura.gob.ar/mica/",
+    "country": "Argentina",
+    "region": "Buenos Aires",
+    "type": "mercado",
+    "priority": 90,
+    "query_hint": "MICA musica showcases rondas negocios convocatoria"
+  },
+  {
+    "name": "Buenos Aires Cultura Convocatorias",
+    "url": "https://buenosaires.gob.ar/cultura/convocatorias",
+    "country": "Argentina",
+    "region": "Buenos Aires",
+    "type": "official_calls",
+    "priority": 88,
+    "query_hint": "Buenos Aires cultura convocatoria musica"
+  },
+  {
+    "name": "Usina del Arte",
+    "url": "https://buenosaires.gob.ar/cultura/usina-del-arte",
+    "country": "Argentina",
+    "region": "Buenos Aires",
+    "type": "centro_cultural",
+    "priority": 82,
+    "query_hint": "Usina del Arte convocatoria musica emergente"
+  },
+  {
+    "name": "Idartes Portafolio de Estimulos",
+    "url": "https://www.idartes.gov.co/es/convocatorias/estimulos/portafolio-2026",
+    "country": "Colombia",
+    "region": "Bogota",
+    "type": "official_calls",
+    "priority": 94,
+    "query_hint": "Idartes portafolio musica Rock al Parque Jazz al Parque"
+  },
+  {
+    "name": "Festivales al Parque - Propuestas internacionales",
+    "url": "https://www.idartes.gov.co/es/formulario/quiero-participar-en-los-festivales-al-parque",
+    "country": "Colombia",
+    "region": "Bogota",
+    "type": "festival_convocatoria",
+    "priority": 94,
+    "query_hint": "Quiero participar Festivales al Parque Colombia"
+  },
+  {
+    "name": "BOmm Bogota Music Market",
+    "url": "https://www.bogotamusicmarket.com/",
+    "country": "Colombia",
+    "region": "Bogota",
+    "type": "mercado",
+    "priority": 90,
+    "query_hint": "BOmm convocatoria artistas management booking"
+  },
+  {
+    "name": "Estimulos Economicos para la Cultura Peru",
+    "url": "https://estimuloseconomicos.cultura.gob.pe/",
+    "country": "Peru",
+    "region": "Nacional",
+    "type": "official_calls",
+    "priority": 94,
+    "query_hint": "estimulos economicos musica vivo festivales ferias"
+  },
+  {
+    "name": "ICPNA Cultural",
+    "url": "https://cultural.icpna.edu.pe/",
+    "country": "Peru",
+    "region": "Lima",
+    "type": "centro_cultural",
+    "priority": 80,
+    "query_hint": "ICPNA cultural convocatoria musica conciertos"
+  },
+  {
+    "name": "Cultura en Linea Uruguay",
+    "url": "https://culturaenlinea.uy/",
+    "country": "Uruguay",
+    "region": "Nacional",
+    "type": "official_calls",
+    "priority": 90,
+    "query_hint": "cultura en linea fondos musica Uruguay"
+  },
+  {
+    "name": "Sala Zitarrosa",
+    "url": "https://salazitarrosa.montevideo.gub.uy/",
+    "country": "Uruguay",
+    "region": "Montevideo",
+    "type": "sala_musica",
+    "priority": 84,
+    "query_hint": "Sala Zitarrosa convocatoria musica CAUCE Guitarra Negra"
+  },
+  {
+    "name": "Fortalecimiento de las Artes Musica Montevideo",
+    "url": "https://montevideo.gub.uy/noticias/cultura/convocatoria-abierta-del-programa-fortalecimiento-de-las-artes-musica",
+    "country": "Uruguay",
+    "region": "Montevideo",
+    "type": "official_calls",
+    "priority": 90,
+    "query_hint": "Fortalecimiento de las Artes Musica Montevideo convocatoria"
+  },
+  {
+    "name": "Secretaria Nacional de Cultura Paraguay - Convocatorias",
+    "url": "https://cultura.gov.py/?post_type=convocatorias",
+    "country": "Paraguay",
+    "region": "Nacional",
+    "type": "official_calls",
+    "priority": 90,
+    "query_hint": "SNC Paraguay convocatoria musica fondos cultura"
+  },
+  {
+    "name": "Fondos de Cultura Paraguay",
+    "url": "https://cultura.gov.py/convocatorias/fondos-de-cultura-2026-convocatoria-abierta/",
+    "country": "Paraguay",
+    "region": "Nacional",
+    "type": "official_calls",
+    "priority": 90,
+    "query_hint": "Fondos de Cultura Paraguay musica movilidad giras"
+  },
+  {
+    "name": "Centro Cultural de Espana Juan de Salazar",
+    "url": "https://www.juandesalazar.org.py/",
+    "country": "Paraguay",
+    "region": "Asuncion",
+    "type": "centro_cultural",
+    "priority": 84,
+    "query_hint": "Juan de Salazar musica convocatoria Paraguay"
+  },
+  {
+    "name": "Fundacion Cultural BCB",
+    "url": "https://www.fundacionculturalbcb.gob.bo/",
+    "country": "Bolivia",
+    "region": "Nacional",
+    "type": "fundacion_publica",
+    "priority": 86,
+    "query_hint": "Fundacion Cultural BCB convocatoria artes musicales"
+  },
+  {
+    "name": "Centro Cultural de Espana La Paz",
+    "url": "https://www.ccelapaz.org/",
+    "country": "Bolivia",
+    "region": "La Paz",
+    "type": "centro_cultural",
+    "priority": 82,
+    "query_hint": "CCE La Paz convocatoria musica"
+  },
+  {
+    "name": "Funarte Editais",
+    "url": "https://www.gov.br/funarte/pt-br/editais-1",
+    "country": "Brasil",
+    "region": "Nacional",
+    "type": "official_calls",
+    "priority": 94,
+    "query_hint": "Funarte editais musica circulacao festivais"
+  },
+  {
+    "name": "Ministerio da Cultura Brasil - Editais",
+    "url": "https://www.gov.br/cultura/pt-br/assuntos/editais",
+    "country": "Brasil",
+    "region": "Nacional",
+    "type": "official_calls",
+    "priority": 94,
+    "query_hint": "MinC editais musica PNAB festivais"
+  },
+  {
+    "name": "MICBR",
+    "url": "https://micbr.cultura.gov.br/",
+    "country": "Brasil",
+    "region": "Nacional",
+    "type": "mercado",
+    "priority": 90,
+    "query_hint": "MICBR musica mercado industrias creativas"
+  },
+  {
+    "name": "SMC Editais Sao Paulo",
+    "url": "https://smceditais.prefeitura.sp.gov.br/",
+    "country": "Brasil",
+    "region": "Sao Paulo",
+    "type": "official_calls",
+    "priority": 88,
+    "query_hint": "SMC Editais musica Sao Paulo"
+  },
+  {
+    "name": "Natura Musical",
+    "url": "https://www.naturamusical.com.br/",
+    "country": "Brasil",
+    "region": "Nacional",
+    "type": "fondo",
+    "priority": 86,
+    "query_hint": "Natura Musical edital artistas"
+  },
+  {
+    "name": "Secretaria de Cultura Mexico - Convocatorias",
+    "url": "https://convocatorias.cultura.gob.mx/",
+    "country": "Mexico",
+    "region": "Nacional",
+    "type": "official_calls",
+    "priority": 94,
+    "query_hint": "convocatorias cultura musica PROFEST SACPC"
+  },
+  {
+    "name": "INBAL Convocatorias",
+    "url": "https://inba.gob.mx/convocatorias",
+    "country": "Mexico",
+    "region": "Nacional",
+    "type": "official_calls",
+    "priority": 90,
+    "query_hint": "INBAL convocatoria musica nueva"
+  },
+  {
+    "name": "FIM GDL",
+    "url": "https://fimgdl.udg.mx/",
+    "country": "Mexico",
+    "region": "Jalisco",
+    "type": "mercado",
+    "priority": 90,
+    "query_hint": "FIM GDL convocatoria showcases Eleva"
+  },
+  {
+    "name": "Secretaria de Cultura CDMX Convocatorias",
+    "url": "https://www.cultura.cdmx.gob.mx/convocatorias",
+    "country": "Mexico",
+    "region": "CDMX",
+    "type": "official_calls",
+    "priority": 88,
+    "query_hint": "Cultura CDMX convocatoria musica"
+  },
+  {
+    "name": "Fondo de Fomento Artes Cultura Ecuador",
+    "url": "https://www.gob.ec/ifaic/tramites/acceso-recursos-fondo-fomento-artes-cultura-innovacion-proyectos-artisticos-culturales",
+    "country": "Ecuador",
+    "region": "Nacional",
+    "type": "official_calls",
+    "priority": 92,
+    "query_hint": "IFAIC fondo fomento musica Ecuador"
+  },
+  {
+    "name": "Teatro Nacional Sucre - Convocatorias",
+    "url": "https://teatrosucre.com/convocatorias/",
+    "country": "Ecuador",
+    "region": "Pichincha",
+    "type": "teatro_convocatoria",
+    "priority": 88,
+    "query_hint": "Teatro Sucre convocatorias Ecuador Jazz musica sacra"
+  },
+  {
+    "name": "Ministerio de Cultura y Juventud Costa Rica",
+    "url": "https://www.mcj.go.cr/",
+    "country": "Costa Rica",
+    "region": "Nacional",
+    "type": "ministerio",
+    "priority": 88,
+    "query_hint": "MCJ Costa Rica fondos musica convocatoria"
+  },
+  {
+    "name": "Centro Nacional de la Musica Costa Rica",
+    "url": "https://cnm.go.cr/",
+    "country": "Costa Rica",
+    "region": "San Jose",
+    "type": "instituto_musica",
+    "priority": 86,
+    "query_hint": "Centro Nacional Musica Costa Rica convocatoria"
+  },
+  {
+    "name": "MiCultura Panama - Concursos y Convocatorias",
+    "url": "https://micultura.gob.pa/concursos-y-convocatorias",
+    "country": "Panama",
+    "region": "Nacional",
+    "type": "official_calls",
+    "priority": 90,
+    "query_hint": "MiCultura concursos musica Roque Cordero"
+  },
+  {
+    "name": "Ibermusicas",
+    "url": "https://www.ibermusicas.org/",
+    "country": "Global",
+    "region": "Iberoamerica",
+    "type": "fondo_regional",
+    "priority": 96,
+    "query_hint": "Ibermusicas convocatoria circulacion programacion musical"
+  },
+  {
+    "name": "NEA Grants for Arts Projects - Music",
+    "url": "https://www.arts.gov/grants/grants-for-arts-projects/music",
+    "country": "Estados Unidos",
+    "region": "North America",
+    "type": "arts_council",
+    "priority": 88,
+    "query_hint": "NEA music grants official"
+  },
+  {
+    "name": "USArtists International",
+    "url": "https://www.midatlanticarts.org/grants-programs/grants-for-artists/usartists-international/",
+    "country": "Estados Unidos",
+    "region": "North America",
+    "type": "export_grant",
+    "priority": 90,
+    "query_hint": "USArtists International music festival grants"
+  },
+  {
+    "name": "SXSW Music Showcase Applications",
+    "url": "https://sxsw.com/apply/showcase-applications/",
+    "country": "Estados Unidos",
+    "region": "Texas",
+    "type": "showcase_festival",
+    "priority": 90,
+    "query_hint": "SXSW showcasing artist applications"
+  },
+  {
+    "name": "Canada Council Arts Abroad",
+    "url": "https://www.canadacouncil.ca/funding/grants/arts-abroad",
+    "country": "Canada",
+    "region": "Nacional",
+    "type": "arts_council",
+    "priority": 88,
+    "query_hint": "Canada Council music touring abroad"
+  },
+  {
+    "name": "FACTOR Collective Initiatives",
+    "url": "https://www.factor.ca/our-programs/collective-initiatives/",
+    "country": "Canada",
+    "region": "Ontario",
+    "type": "music_export_funding",
+    "priority": 88,
+    "query_hint": "FACTOR showcase export collective initiatives"
+  },
+  {
+    "name": "M for Montreal Call for Artists",
+    "url": "https://mpourmontreal.com/en/call-for-artists-m-for-montreal-2026/",
+    "country": "Canada",
+    "region": "Quebec",
+    "type": "showcase_festival",
+    "priority": 88,
+    "query_hint": "M for Montreal artist applications"
+  },
+  {
+    "name": "Culture Ireland Showcase Scheme",
+    "url": "https://www.cultureireland.ie/funding/showcase/",
+    "country": "Irlanda",
+    "region": "Dublin",
+    "type": "arts_council_export",
+    "priority": 88,
+    "query_hint": "Culture Ireland showcase scheme music"
+  },
+  {
+    "name": "Ireland Music Week",
+    "url": "https://www.irelandmusicweek.com/",
+    "country": "Irlanda",
+    "region": "Dublin",
+    "type": "showcase_festival",
+    "priority": 88,
+    "query_hint": "Ireland Music Week applications"
+  },
+  {
+    "name": "PRS Foundation International Showcase Fund",
+    "url": "https://prsfoundation.com/funding-support/funding-music-creators/international/international-showcase-fund/",
+    "country": "Inglaterra",
+    "region": "London",
+    "type": "export_grant",
+    "priority": 90,
+    "query_hint": "UK International Showcase Fund apply"
+  },
+  {
+    "name": "The Great Escape Apply to Play",
+    "url": "https://greatescapefestival.com/apply-to-play/",
+    "country": "Inglaterra",
+    "region": "Brighton",
+    "type": "showcase_festival",
+    "priority": 90,
+    "query_hint": "The Great Escape artist applications"
+  },
+  {
+    "name": "Sounds from Spain",
+    "url": "https://soundsfromspain.com/?lang=en",
+    "country": "Espana",
+    "region": "Madrid",
+    "type": "music_export_office",
+    "priority": 88,
+    "query_hint": "Sounds from Spain open calls"
+  },
+  {
+    "name": "AC/E PICE Mobility Grants",
+    "url": "https://www.accioncultural.es/en/mobility_grants",
+    "country": "Espana",
+    "region": "Madrid",
+    "type": "cultural_export_grant",
+    "priority": 88,
+    "query_hint": "AC/E PICE mobility music"
+  },
+  {
+    "name": "Primavera Pro",
+    "url": "https://www.primaverapro.com/",
+    "country": "Espana",
+    "region": "Barcelona",
+    "type": "industry_conference",
+    "priority": 88,
+    "query_hint": "Primavera Pro showcase applications"
+  },
+  {
+    "name": "Visa For Music",
+    "url": "https://visaformusic.com/en/home/",
+    "country": "Marruecos",
+    "region": "Rabat",
+    "type": "showcase_festival",
+    "priority": 90,
+    "query_hint": "Visa For Music artist call"
+  },
+  {
+    "name": "Institut Francais du Maroc",
+    "url": "https://if-maroc.org/",
+    "country": "Marruecos",
+    "region": "Rabat",
+    "type": "cultural_center",
+    "priority": 84,
+    "query_hint": "Institut Francais Maroc music open call"
+  },
+  {
+    "name": "CNM International Development",
+    "url": "https://cnm.fr/international/developpement-international-music/",
+    "country": "Francia",
+    "region": "Paris",
+    "type": "music_export_office",
+    "priority": 90,
+    "query_hint": "CNM appels projets international musique"
+  },
+  {
+    "name": "MaMA Music and Convention",
+    "url": "https://mama-musicandconvention.com/",
+    "country": "Francia",
+    "region": "Paris",
+    "type": "industry_conference",
+    "priority": 88,
+    "query_hint": "MaMA Paris showcase applications"
+  },
+  {
+    "name": "Reeperbahn Festival Apply",
+    "url": "https://www.reeperbahnfestival.com/en/apply",
+    "country": "Alemania",
+    "region": "Hamburg",
+    "type": "showcase_festival",
+    "priority": 90,
+    "query_hint": "Reeperbahn Festival artist application"
+  },
+  {
+    "name": "ESNS Play at ESNS",
+    "url": "https://www.esns.nl/play-at-esns/",
+    "country": "Paises Bajos",
+    "region": "Groningen",
+    "type": "showcase_festival",
+    "priority": 90,
+    "query_hint": "ESNS artist applications"
+  },
+  {
+    "name": "Music Export Denmark Artist Portal",
+    "url": "https://ansoegning.mxd.dk/applications/artists/default.aspx",
+    "country": "Dinamarca",
+    "region": "Copenhagen",
+    "type": "export_grant",
+    "priority": 88,
+    "query_hint": "Music Export Denmark artist application"
+  },
+  {
+    "name": "Export Music Sweden",
+    "url": "https://exms.org/",
+    "country": "Suecia",
+    "region": "Stockholm",
+    "type": "music_export_office",
+    "priority": 86,
+    "query_hint": "Export Music Sweden opportunities"
+  },
+  {
+    "name": "Swiss Music Export Info Desk",
+    "url": "https://swiss-music-export.com/infos/info-desk-sme/",
+    "country": "Suiza",
+    "region": "Zurich",
+    "type": "music_export_office",
+    "priority": 86,
+    "query_hint": "Swiss Music Export support"
+  },
+  {
+    "name": "Music Australia Export Development Fund",
+    "url": "https://creative.gov.au/investments-opportunities/music-australia-export-development-fund-international-performance-and-touring",
+    "country": "Australia",
+    "region": "Nacional",
+    "type": "export_grant",
+    "priority": 88,
+    "query_hint": "Music Australia export development fund"
+  },
+  {
+    "name": "BIGSOUND",
+    "url": "https://www.bigsound.org.au/",
+    "country": "Australia",
+    "region": "Brisbane",
+    "type": "showcase_festival",
+    "priority": 88,
+    "query_hint": "BIGSOUND showcase applications"
+  },
+  {
+    "name": "Tokyo International Music Market",
+    "url": "https://www.timmjp.com/",
+    "country": "Japon",
+    "region": "Tokyo",
+    "type": "industry_conference",
+    "priority": 84,
+    "query_hint": "TIMM showcase live entry"
+  },
+  {
+    "name": "Music Lane Okinawa",
+    "url": "https://musiclaneokinawa.com/en/",
+    "country": "Japon",
+    "region": "Okinawa",
+    "type": "showcase_festival",
+    "priority": 84,
+    "query_hint": "Music Lane Okinawa open call"
+  },
+  {
+    "name": "MUCON",
+    "url": "https://www.mucon.kr/",
+    "country": "Corea del Sur",
+    "region": "Seoul",
+    "type": "industry_conference",
+    "priority": 84,
+    "query_hint": "MUCON showcase application KOCCA"
+  },
+  {
+    "name": "Zandari Festa",
+    "url": "https://zandarifesta.com/",
+    "country": "Corea del Sur",
+    "region": "Seoul",
+    "type": "showcase_festival",
+    "priority": 84,
+    "query_hint": "Zandari Festa artist application"
+  },
+  {
+    "name": "Taiwan Beats",
+    "url": "https://taiwanbeats.taicca.tw/en",
+    "country": "Taiwan",
+    "region": "Taipei",
+    "type": "music_export_office",
+    "priority": 84,
+    "query_hint": "Taiwan Beats showcase delegation open call"
+  },
+  {
+    "name": "LUCfest",
+    "url": "https://www.lucfest.com/",
+    "country": "Taiwan",
+    "region": "Tainan",
+    "type": "showcase_festival",
+    "priority": 84,
+    "query_hint": "LUCfest artist application"
+  },
+  {
+    "name": "HOZO International Music Festival",
+    "url": "https://hozomusicfestival.com/",
+    "country": "Vietnam",
+    "region": "Ho Chi Minh City",
+    "type": "festival_open_call",
+    "priority": 82,
+    "query_hint": "HOZO artist submission"
+  },
+  {
+    "name": "Shanghai International Arts Festival Submissions",
+    "url": "https://www.artsbird.com/submissions/2026/01",
+    "country": "China",
+    "region": "Shanghai",
+    "type": "festival_open_call",
+    "priority": 82,
+    "query_hint": "China Shanghai International Arts Festival submissions"
+  },
+  {
+    "name": "National Arts Council South Africa",
+    "url": "http://www.nac.org.za/",
+    "country": "Sudafrica",
+    "region": "Johannesburg",
+    "type": "arts_council",
+    "priority": 84,
+    "query_hint": "NAC annual call music funding South Africa"
+  },
+  {
+    "name": "The Music Imbizo",
+    "url": "https://musicimbizo.co.za/",
+    "country": "Sudafrica",
+    "region": "Durban",
+    "type": "showcase_festival",
+    "priority": 84,
+    "query_hint": "The Music Imbizo showcase open call"
+  },
+  {
+    "name": "Beirut and Beyond International Music Festival",
+    "url": "https://beirutandbeyond.net/",
+    "country": "Libano",
+    "region": "Beirut",
+    "type": "festival_open_call",
+    "priority": 82,
+    "query_hint": "Beirut and Beyond open call music"
+  },
+  {
+    "name": "ROSCONCERT",
+    "url": "https://rosconcert.ru/en/about/",
+    "country": "Rusia",
+    "region": "Moscow",
+    "type": "state_cultural_institution",
+    "priority": 78,
+    "query_hint": "ROSCONCERT international touring music"
+  },
+  {
+    "name": "GAM - Convocatoria Nacional Programacion 2026-2027",
+    "url": "https://gam.cl/es/que-hacer-en-gam/teatro/convocatoria-nacional-programacion-2026-2027/",
+    "country": "Chile",
+    "region": "Metropolitana",
+    "type": "centro_cultural_convocatoria",
+    "priority": 96,
+    "query_hint": "GAM Convocatoria Nacional Programacion 2026 2027 musica popular bandas conciertos"
+  },
+  {
+    "name": "Culturas Musica Instagram",
+    "url": "https://www.instagram.com/culturasmusica/",
+    "country": "Chile",
+    "region": "Nacional",
+    "type": "instagram_publico",
+    "priority": 96,
+    "query_hint": "site:instagram.com/p culturasmusica convocatoria musica 2026 bandas asistencia mercados foco circulacion"
+  },
+  {
+    "name": "Fondos del Estado - Circulacion Musica Chilena 2025-2026",
+    "url": "https://fondos.gob.cl/ficha/mincap/acmch2026/",
+    "country": "Chile",
+    "region": "Nacional",
+    "type": "fondo_circulacion",
+    "priority": 94,
+    "query_hint": "Fondo de la Musica Linea Apoyo Circulacion Musica Chilena 2026 llamados"
+  },
+  {
+    "name": "Ministerio Culturas - Convocatorias Musica",
+    "url": "https://www.cultura.gob.cl/convocatorias/?arte=musica",
+    "country": "Chile",
+    "region": "Nacional",
+    "type": "official_calls_music",
+    "priority": 98,
+    "query_hint": "convocatorias musica Chile 2026 Luis Advis Roberto Parra Rockodromo Mercados FOCO"
+  },
+  {
+    "name": "Mondo.NYC Artist Application",
+    "url": "https://www.mondo.nyc/artist-application",
+    "country": "Estados Unidos",
+    "region": "New York",
+    "type": "showcase_application",
+    "priority": 92,
+    "query_hint": "Mondo NYC artist application international artists 2026 showcase"
+  },
+  {
+    "name": "Tallinn Music Week Artist Applications",
+    "url": "https://tmw.ee/artist-applications",
+    "country": "Estonia",
+    "region": "Tallinn",
+    "type": "showcase_application",
+    "priority": 90,
+    "query_hint": "Tallinn Music Week artist applications all genres across the globe"
+  },
+  {
+    "name": "Panache Booking",
+    "url": "https://www.panacherock.com/",
+    "country": "Estados Unidos",
+    "region": "New York",
+    "type": "booking_agency",
+    "priority": 84,
+    "query_hint": "Panache boutique booking agency independent new sounds"
+  },
+  {
+    "name": "Music Gorilla Opportunities",
+    "url": "https://www.musicgorilla.com/mg/opportunities",
+    "country": "Estados Unidos",
+    "region": "Digital",
+    "type": "music_opportunities_platform",
+    "priority": 86,
+    "query_hint": "Music Gorilla opportunities submit artists music placements showcases"
+  },
+  {
+    "name": "LAUNCH Music Conference Submit",
+    "url": "https://www.launchmusicconference.com/lancaster-submit/",
+    "country": "Estados Unidos",
+    "region": "Pennsylvania",
+    "type": "conference_showcase",
+    "priority": 86,
+    "query_hint": "LAUNCH Music Conference submit bands showcase 2026"
+  },
+  {
+    "name": "Hidden Door Festival Music Open Call",
+    "url": "https://hiddendoorarts.org/music-open-call-deadline-25th-march/",
+    "country": "Reino Unido",
+    "region": "Scotland",
+    "type": "festival_open_call",
+    "priority": 82,
+    "query_hint": "Hidden Door Festival music open call artists bands"
+  },
+  {
+    "name": "Initiative Musik Showcase Festivals",
+    "url": "https://www.initiative-musik.de/en/showcase-festivals/",
+    "country": "Alemania",
+    "region": "Berlin",
+    "type": "music_export_showcases",
+    "priority": 88,
+    "query_hint": "Initiative Musik showcase festivals WOMEX artists applications"
+  },
+  {
+    "name": "Austrian Music Export Showcasing",
+    "url": "https://www.musicexport.at/service-information/showcasing/",
+    "country": "Austria",
+    "region": "Vienna",
+    "type": "music_export_showcases",
+    "priority": 86,
+    "query_hint": "Austrian Music Export showcase festival applications 2027"
+  },
+  {
+    "name": "ThisisKosova Open Calls",
+    "url": "https://thisiskosova.art/open-calls",
+    "country": "Kosovo",
+    "region": "Pristina",
+    "type": "showcase_open_call",
+    "priority": 84,
+    "query_hint": "ThisisKosova SAMC open call live performing artists bands"
+  }
+]

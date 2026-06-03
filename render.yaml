@@ -27,6 +27,16 @@ services:
         sync: false
       - key: OPEN_MODEL_NAME
         value: mistralai/Mistral-7B-Instruct-v0.3
+      - key: GOOGLE_SEARCH_API_KEY
+        sync: false
+      - key: GOOGLE_SEARCH_ENGINE_ID
+        sync: false
+      - key: DISCOVERY_COUNTRY_LIMIT
+        value: "260"
+      - key: DISCOVERY_QUERIES_PER_COUNTRY
+        value: "48"
+      - key: DISCOVERY_RESULTS_PER_QUERY
+        value: "5"
 
   - type: cron
     name: music-hunter-daily-curator
@@ -47,3 +57,13 @@ services:
         sync: false
       - key: OPEN_MODEL_NAME
         value: mistralai/Mistral-7B-Instruct-v0.3
+      - key: GOOGLE_SEARCH_API_KEY
+        sync: false
+      - key: GOOGLE_SEARCH_ENGINE_ID
+        sync: false
+      - key: DISCOVERY_COUNTRY_LIMIT
+        value: "260"
+      - key: DISCOVERY_QUERIES_PER_COUNTRY
+        value: "48"
+      - key: DISCOVERY_RESULTS_PER_QUERY
+        value: "5"

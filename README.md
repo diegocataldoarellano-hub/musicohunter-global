@@ -1,6 +1,6 @@
-# Music Hunter Global
+# Radar Come Guaga
 
-Buscador publico y curado de oportunidades musicales para rock, rock fusion, progresivo, folk, experimental e indie afin. Prioriza Chile por regiones y luego expande a Latinoamerica y Europa.
+Radar publico y curado de oportunidades musicales para rock, rock fusion, progresivo, folk, experimental e indie afin. Prioriza Chile por regiones y luego expande a Latinoamerica y el mundo.
 
 ## Arquitectura
 
@@ -27,13 +27,15 @@ Abre `frontend/index.html` con Live Server o cualquier servidor estatico. Si el 
 1. Sube este proyecto a GitHub.
 2. Activa GitHub Pages con GitHub Actions.
 3. Crea el Blueprint en Render usando `render.yaml`.
-4. Cuando Render entregue la URL publica de `music-hunter-api`, actualiza `frontend/assets/config.js`:
+4. Cuando Render entregue la URL publica de la API, conecta el frontend de una de estas formas:
 
 ```js
 window.MUSIC_HUNTER_CONFIG = {
   API_BASE_URL: "https://tu-api.onrender.com"
 };
 ```
+
+Tambien puedes abrir GitHub Pages una vez con `?api=https://tu-api.onrender.com`; el sitio guarda esa URL en `localStorage` como `radarComeGuagaApiBaseUrl`.
 
 ## Agente curador
 
@@ -60,12 +62,12 @@ Para que el agente encuentre publicaciones publicas tipo Google, configura:
 ```env
 GOOGLE_SEARCH_API_KEY=...
 GOOGLE_SEARCH_ENGINE_ID=...
-DISCOVERY_COUNTRY_LIMIT=67
-DISCOVERY_QUERIES_PER_COUNTRY=4
+DISCOVERY_COUNTRY_LIMIT=260
+DISCOVERY_QUERIES_PER_COUNTRY=48
 DISCOVERY_RESULTS_PER_QUERY=5
 ```
 
-No se raspa Google directamente. Se usa una API de busqueda configurable para encontrar fuentes publicas y luego el checker valida cada link antes de publicarlo.
+No se raspa Google directamente. Se usa una API de busqueda configurable para encontrar fuentes publicas indexadas (Instagram, TikTok, GitHub, medios, productoras, municipios, teatros y museos) y luego el checker valida cada link antes de publicarlo.
 
 ## Endpoints
 

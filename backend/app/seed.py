@@ -21,11 +21,21 @@ def load_json(name: str) -> list[dict]:
         return json.load(handle)
 
 
+def load_seed_sources() -> list[dict]:
+    sources = load_json("seed_sources.json")
+    curated_path = DATA_DIR / "seed_curated_sources.json"
+    if curated_path.exists():
+        with curated_path.open("r", encoding="utf-8") as handle:
+            sources.extend(json.load(handle))
+    return sources
+
+
 def seed_database(db: Session) -> None:
-    for item in load_json("seed_sources.json"):
-        existing = db.scalar(select(Source).where(Source.url == item["url"]))
+    for item in load_seed_sources():
+        existing = db.scalar(select(Source).where((Source.url == item["url"]) | (Source.name == item["name"])))
         if existing:
             existing.name = item["name"]
+            existing.url = item["url"]
             existing.country = item["country"]
             existing.region = item.get("region")
             existing.type = item["type"]

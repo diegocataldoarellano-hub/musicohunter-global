@@ -31,7 +31,7 @@ def classify_response(response: httpx.Response) -> str:
 async def check_url(url: str) -> LinkCheckResult:
     settings = get_settings()
     headers = {
-        "User-Agent": "MusicHunterBot/1.0 (+public curated music opportunities checker)"
+        "User-Agent": "RadarComeGuagaBot/1.0 (+public curated music opportunities checker)"
     }
     timeout = httpx.Timeout(settings.request_timeout_seconds)
     try:

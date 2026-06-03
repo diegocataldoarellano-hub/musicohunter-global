@@ -5,7 +5,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 
-    app_name: str = "Music Hunter API"
+    app_name: str = "Radar Come Guaga API"
     database_url: str = "sqlite:///./music_hunter.db"
     cors_origins: str = "*"
     admin_token: str | None = None
@@ -14,8 +14,8 @@ class Settings(BaseSettings):
     open_model_name: str = "mistralai/Mistral-7B-Instruct-v0.3"
     google_search_api_key: str | None = None
     google_search_engine_id: str | None = None
-    discovery_country_limit: int = 67
-    discovery_queries_per_country: int = 4
+    discovery_country_limit: int = 260
+    discovery_queries_per_country: int = 48
     discovery_results_per_query: int = 5
     curator_max_pages: int = 40
     request_timeout_seconds: float = 12.0
