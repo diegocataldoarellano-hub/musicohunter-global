@@ -1,6 +1,7 @@
 import asyncio
-from datetime import datetime, timezone
+from datetime import date, datetime, timezone
 from hashlib import sha256
+import re
 import unicodedata
 from urllib.parse import urljoin
 
@@ -152,6 +153,61 @@ def genre_csv(text: str) -> str:
     return ",".join(genres or ["rock", "folk", "fusion", "experimental"])
 
 
+SPANISH_MONTHS = {
+    "enero": 1,
+    "febrero": 2,
+    "marzo": 3,
+    "abril": 4,
+    "mayo": 5,
+    "junio": 6,
+    "julio": 7,
+    "agosto": 8,
+    "septiembre": 9,
+    "setiembre": 9,
+    "octubre": 10,
+    "noviembre": 11,
+    "diciembre": 12,
+}
+
+
+def infer_year(month: int, day: int) -> int:
+    today = datetime.now(timezone.utc).date()
+    inferred = date(today.year, month, day)
+    # If a public post says "30 de mayo" and that already passed, treat it as
+    # next cycle unless the text explicitly includes a year.
+    if inferred < today:
+        return today.year + 1
+    return today.year
+
+
+def extract_event_date(text: str) -> date | None:
+    normalized = normalize_text(text)
+    month_names = "|".join(SPANISH_MONTHS)
+    match = re.search(rf"\b(\d{{1,2}})\s+de\s+({month_names})(?:\s+de\s+(\d{{4}}))?\b", normalized)
+    if match:
+        day = int(match.group(1))
+        month = SPANISH_MONTHS[match.group(2)]
+        year = int(match.group(3)) if match.group(3) else infer_year(month, day)
+        try:
+            return date(year, month, day)
+        except ValueError:
+            return None
+
+    numeric = re.search(r"\b(\d{1,2})[/-](\d{1,2})(?:[/-](\d{2,4}))?\b", normalized)
+    if numeric:
+        day = int(numeric.group(1))
+        month = int(numeric.group(2))
+        year_raw = numeric.group(3)
+        year = int(year_raw) if year_raw else infer_year(month, day)
+        if year < 100:
+            year += 2000
+        try:
+            return date(year, month, day)
+        except ValueError:
+            return None
+    return None
+
+
 def make_candidate_url(source_url: str, href: str | None) -> str:
     if not href:
         return source_url
@@ -186,6 +242,7 @@ async def fetch_source(source: Source) -> list[dict]:
                 "confidence": confidence,
                 "category": infer_category(text, source.type),
                 "genres": genre_csv(text),
+                "event_date": extract_event_date(text),
             }
         )
         if len(candidates) >= 12:
@@ -199,6 +256,7 @@ def upsert_opportunity(db, source: Source, candidate: dict, link_status: str, su
         existing.summary = summary or candidate["summary"]
         existing.confidence = max(existing.confidence, candidate["confidence"])
         existing.link_status = link_status
+        existing.event_date = candidate.get("event_date") or existing.event_date
         existing.last_checked = datetime.now(timezone.utc)
         existing.published = link_status in {"ok", "redirected"} and existing.confidence >= 0.5
         return False
@@ -214,9 +272,9 @@ def upsert_opportunity(db, source: Source, candidate: dict, link_status: str, su
             lat=None,
             lng=None,
             deadline=None,
-            event_date=None,
+            event_date=candidate.get("event_date"),
             genres=candidate["genres"],
-            requirements="Revisar requisitos en la fuente oficial; preparar EPK; validar fecha limite antes de postular.",
+            requirements="Revisar fecha de publicacion y fecha del evento en la fuente oficial; preparar EPK; validar plazo y contacto publico antes de postular.",
             url=candidate["url"],
             source_name=source.name,
             source_type=source.type,

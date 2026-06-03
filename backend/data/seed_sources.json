@@ -223,5 +223,113 @@
     "type": "conferencia",
     "priority": 78,
     "query_hint": "BIME convocatoria showcase musica iberoamerica"
+  },
+  {
+    "name": "Teatro Biobio",
+    "url": "https://teatrobiobio.cl/teatro/",
+    "country": "Chile",
+    "region": "Biobio",
+    "type": "centro_cultural",
+    "priority": 86,
+    "query_hint": "Teatro Biobio Concepcion musica conciertos agenda programacion Instagram"
+  },
+  {
+    "name": "Instagram Teatro Biobio",
+    "url": "https://www.instagram.com/teatrobiobio/",
+    "country": "Chile",
+    "region": "Biobio",
+    "type": "red_social",
+    "priority": 82,
+    "query_hint": "site:instagram.com/teatrobiobio Concepcion conciertos fechas cartelera musica"
+  },
+  {
+    "name": "Teatro Municipal de Chillan",
+    "url": "https://teatrochillan.cl/",
+    "country": "Chile",
+    "region": "Nuble",
+    "type": "centro_cultural",
+    "priority": 84,
+    "query_hint": "Teatro Municipal de Chillan musica conciertos programacion convocatoria"
+  },
+  {
+    "name": "Centro Cultural Municipal de Chillan",
+    "url": "https://ccmch.cl/",
+    "country": "Chile",
+    "region": "Nuble",
+    "type": "centro_cultural",
+    "priority": 82,
+    "query_hint": "Centro Cultural Municipal Chillan musica conciertos noticias agenda"
+  },
+  {
+    "name": "Instagram Centro Cultural Municipal de Chillan",
+    "url": "https://www.instagram.com/ccmch_/",
+    "country": "Chile",
+    "region": "Nuble",
+    "type": "red_social",
+    "priority": 80,
+    "query_hint": "site:instagram.com/ccmch_ Chillan conciertos entrada liberada programacion"
+  },
+  {
+    "name": "Centro Cultural Teatro Centenario",
+    "url": "https://teatrocentenario.cl/",
+    "country": "Chile",
+    "region": "Coquimbo",
+    "type": "centro_cultural",
+    "priority": 82,
+    "query_hint": "Teatro Centenario La Serena Coquimbo conciertos festivales musica agenda"
+  },
+  {
+    "name": "PortalTickets PortalDisc",
+    "url": "https://portaldisc.com/tickets/",
+    "country": "Chile",
+    "region": "Nacional",
+    "type": "ticketera_agenda",
+    "priority": 78,
+    "query_hint": "PortalDisc PortalTickets eventos musica chilena regiones conciertos"
+  },
+  {
+    "name": "Banco Ley de Donaciones Culturales",
+    "url": "https://donaciones.cultura.gob.cl/proyectos/",
+    "country": "Chile",
+    "region": "Nacional",
+    "type": "institucion",
+    "priority": 76,
+    "query_hint": "Ley de Donaciones Culturales proyectos musica festivales regiones Chile"
+  },
+  {
+    "name": "Centro Cultural de Espana Santiago",
+    "url": "https://www.aecid.es/documents/d/cc-santiago/bases-de-convocatoria-suchai-2027",
+    "country": "Chile",
+    "region": "Metropolitana",
+    "type": "centro_cultural",
+    "priority": 76,
+    "query_hint": "Centro Cultural Espana Santiago ciclo SUCHAI bandas emergentes convocatoria"
+  },
+  {
+    "name": "Instagram Festival REC",
+    "url": "https://www.instagram.com/reel/DV_gtwKDjrJ/",
+    "country": "Chile",
+    "region": "Biobio",
+    "type": "red_social",
+    "priority": 82,
+    "query_hint": "Festival REC Concepcion concurso bandas emergentes rock convocatoria instagram"
+  },
+  {
+    "name": "Instagram Fondo Cultural Valparaiso",
+    "url": "https://www.instagram.com/p/DRdYS0aDzOm/",
+    "country": "Chile",
+    "region": "Valparaiso",
+    "type": "red_social",
+    "priority": 80,
+    "query_hint": "Valparaiso fondo iniciativas culturales musica convocatoria instagram"
+  },
+  {
+    "name": "Corporacion Cultural Municipal de Los Angeles",
+    "url": "https://www.facebook.com/ccmlalosangeles/",
+    "country": "Chile",
+    "region": "Biobio",
+    "type": "centro_cultural",
+    "priority": 74,
+    "query_hint": "Los Angeles Bio Bio centro cultural conciertos musica festival agenda"
   }
 ]

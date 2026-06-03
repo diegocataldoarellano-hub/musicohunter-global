@@ -40,9 +40,34 @@ SEARCH_MISSION_TEMPLATES = [
     '"{country}" intercambio musical bandas latinoamerica europa',
 ]
 
+CHILE_REGIONAL_TARGETS = [
+    "Santiago",
+    "Valparaiso",
+    "Limache",
+    "Chillan",
+    "Los Angeles Bio Bio",
+    "Concepcion",
+    "Valle de Elqui",
+    "La Serena",
+    "Coquimbo",
+    "Norte de Chile",
+    "Sur de Chile",
+]
+
+CHILE_REGIONAL_MISSION_TEMPLATES = [
+    'site:instagram.com/p "{region}" agenda cultural conciertos bandas rock',
+    'site:instagram.com/reel "{region}" festival convocatoria teloneros musica',
+    '"{region}" centro cultural musica conciertos convocatoria entrada liberada',
+    '"{region}" municipio cultura bandas festival musica pago honorarios',
+]
+
 
 def build_discovery_queries(country: str) -> list[str]:
-    return [template.replace("{country}", country) for template in SEARCH_MISSION_TEMPLATES]
+    queries = [template.replace("{country}", country) for template in SEARCH_MISSION_TEMPLATES]
+    if country == "Chile":
+        for region in CHILE_REGIONAL_TARGETS:
+            queries.extend(template.replace("{region}", region) for template in CHILE_REGIONAL_MISSION_TEMPLATES)
+    return queries
 
 
 def infer_source_type(url: str, title: str, snippet: str) -> str:

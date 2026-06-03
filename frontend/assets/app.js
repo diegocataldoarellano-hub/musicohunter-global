@@ -95,6 +95,19 @@ const COUNTRY_VIEWS = {
   Venezuela: { center: [6.4238, -66.5897], zoom: 5 }
 };
 
+const CHILE_REGIONAL_TARGETS = [
+  { region: "Metropolitana", city: "Santiago", query: "Santiago agenda cultural conciertos bandas rock centro cultural" },
+  { region: "Valparaiso", city: "Valparaiso", query: "Valparaiso agenda cultural conciertos convocatoria bandas centro cultural" },
+  { region: "Valparaiso", city: "Limache", query: "Limache musica conciertos centro cultural municipio agenda" },
+  { region: "Nuble", city: "Chillan", query: "Chillan centro cultural conciertos musica entrada liberada" },
+  { region: "Biobio", city: "Los Angeles", query: "Los Angeles Bio Bio centro cultural musica conciertos festival" },
+  { region: "Biobio", city: "Concepcion", query: "Concepcion Festival REC Teatro Biobio bandas rock convocatoria" },
+  { region: "Coquimbo", city: "Valle de Elqui", query: "Valle de Elqui Vicuña Paihuano musica conciertos cultura" },
+  { region: "Coquimbo", city: "La Serena", query: "La Serena Coquimbo teatro centenario conciertos musica agenda" },
+  { region: "Norte", city: "Norte de Chile", query: "norte de Chile musica conciertos festival bandas centro cultural" },
+  { region: "Sur", city: "Sur de Chile", query: "sur de Chile musica conciertos festival bandas centro cultural" }
+];
+
 const fallbackPayload = {
   opportunities: [
     {
@@ -426,6 +439,231 @@ const fallbackPayload = {
   ]
 };
 
+const chileRegionalFallbackOpportunities = [
+  {
+    id: 101,
+    title: "Teatro Biobio - programacion y musica en Concepcion",
+    category: "centro_cultural",
+    continent: "Latinoamerica",
+    country: "Chile",
+    region: "Biobio",
+    city: "Concepcion",
+    lat: -36.82699,
+    lng: -73.04977,
+    deadline: null,
+    eventDate: null,
+    genres: ["rock", "fusion", "folk", "experimental", "indie"],
+    requirements: ["Revisar cartelera oficial e Instagram.", "Validar fecha de publicacion, fecha del evento y ticketera.", "Preparar ficha tecnica, EPK y propuesta."],
+    url: "https://teatrobiobio.cl/teatro/",
+    sourceName: "Teatro Biobio",
+    sourceType: "centro_cultural",
+    lastChecked: null,
+    linkStatus: "requires_review",
+    confidence: 0.74,
+    summary: "Centro de artes escenicas y musica en Concepcion, prioritario para conciertos y agenda cultural regional."
+  },
+  {
+    id: 102,
+    title: "Instagram Teatro Biobio - posts con fechas y cartelera",
+    category: "instagram_agenda",
+    continent: "Latinoamerica",
+    country: "Chile",
+    region: "Biobio",
+    city: "Concepcion",
+    lat: -36.82699,
+    lng: -73.04977,
+    deadline: null,
+    eventDate: null,
+    genres: ["rock", "fusion", "folk", "experimental", "indie"],
+    requirements: ["Abrir post/reel.", "Leer fecha de publicacion, fecha del evento, hora y entrada.", "Confirmar vigencia antes de contactar."],
+    url: "https://www.instagram.com/teatrobiobio/",
+    sourceName: "Instagram Teatro Biobio",
+    sourceType: "red_social",
+    lastChecked: null,
+    linkStatus: "requires_review",
+    confidence: 0.7,
+    summary: "Perfil publico regional con cartelera, conciertos y eventos culturales en Concepcion."
+  },
+  {
+    id: 103,
+    title: "Teatro Municipal de Chillan - musica y programacion regional",
+    category: "centro_cultural",
+    continent: "Latinoamerica",
+    country: "Chile",
+    region: "Nuble",
+    city: "Chillan",
+    lat: -36.60664,
+    lng: -72.10344,
+    deadline: null,
+    eventDate: null,
+    genres: ["rock", "folk", "fusion", "experimental", "indie"],
+    requirements: ["Revisar programacion artistica.", "Confirmar fechas y condiciones.", "Preparar dossier, links publicos y ficha tecnica."],
+    url: "https://teatrochillan.cl/",
+    sourceName: "Teatro Municipal de Chillan",
+    sourceType: "centro_cultural",
+    lastChecked: null,
+    linkStatus: "requires_review",
+    confidence: 0.72,
+    summary: "Espacio regional con programacion artistica permanente para musica y actividades culturales."
+  },
+  {
+    id: 104,
+    title: "Centro Cultural Municipal de Chillan - agenda e Instagram",
+    category: "centro_cultural",
+    continent: "Latinoamerica",
+    country: "Chile",
+    region: "Nuble",
+    city: "Chillan",
+    lat: -36.60664,
+    lng: -72.10344,
+    deadline: null,
+    eventDate: null,
+    genres: ["rock", "folk", "fusion", "experimental", "indie"],
+    requirements: ["Revisar noticias e Instagram @ccmch_.", "Leer fecha de publicacion.", "Validar entrada, hora y contacto."],
+    url: "https://ccmch.cl/",
+    sourceName: "Centro Cultural Municipal de Chillan",
+    sourceType: "centro_cultural",
+    lastChecked: null,
+    linkStatus: "requires_review",
+    confidence: 0.7,
+    summary: "Fuente municipal para conciertos, entrada liberada y programacion cultural en Chillan."
+  },
+  {
+    id: 105,
+    title: "Centro Cultural Teatro Centenario - La Serena y Coquimbo",
+    category: "centro_cultural",
+    continent: "Latinoamerica",
+    country: "Chile",
+    region: "Coquimbo",
+    city: "La Serena",
+    lat: -29.90267,
+    lng: -71.25194,
+    deadline: null,
+    eventDate: null,
+    genres: ["rock", "folk", "fusion", "experimental", "indie"],
+    requirements: ["Revisar eventos activos.", "Confirmar fecha y ticketera.", "Preparar propuesta y press kit regional."],
+    url: "https://teatrocentenario.cl/",
+    sourceName: "Centro Cultural Teatro Centenario",
+    sourceType: "centro_cultural",
+    lastChecked: null,
+    linkStatus: "requires_review",
+    confidence: 0.7,
+    summary: "Espacio cultural de La Serena/Coquimbo para conciertos, festivales y actividades musicales."
+  },
+  {
+    id: 106,
+    title: "Festival REC - Concepcion y concurso de bandas emergentes",
+    category: "festival",
+    continent: "Latinoamerica",
+    country: "Chile",
+    region: "Biobio",
+    city: "Concepcion",
+    lat: -36.82699,
+    lng: -73.04977,
+    deadline: null,
+    eventDate: null,
+    genres: ["rock", "folk", "fusion", "experimental", "progresivo", "indie"],
+    requirements: ["Revisar reels/posts oficiales y bases.", "Leer fecha de publicacion.", "Preparar postulacion, material en vivo y EPK."],
+    url: "https://www.instagram.com/reel/DV_gtwKDjrJ/",
+    sourceName: "Instagram Festival REC",
+    sourceType: "red_social",
+    lastChecked: null,
+    linkStatus: "requires_review",
+    confidence: 0.7,
+    summary: "Señal publica de Instagram sobre REC, programacion y concurso de bandas emergentes en Biobio."
+  },
+  {
+    id: 107,
+    title: "Fondo de Iniciativas Culturales Valparaiso - convocatoria municipal",
+    category: "fondo",
+    continent: "Latinoamerica",
+    country: "Chile",
+    region: "Valparaiso",
+    city: "Valparaiso",
+    lat: -33.04724,
+    lng: -71.61269,
+    deadline: null,
+    eventDate: null,
+    genres: ["rock", "folk", "fusion", "experimental", "indie"],
+    requirements: ["Abrir publicacion.", "Revisar bases, fecha de publicacion, plazo y presupuesto.", "Preparar proyecto y antecedentes."],
+    url: "https://www.instagram.com/p/DRdYS0aDzOm/",
+    sourceName: "Instagram Fondo Cultural Valparaiso",
+    sourceType: "red_social",
+    lastChecked: null,
+    linkStatus: "requires_review",
+    confidence: 0.68,
+    summary: "Post publico detectado sobre convocatoria cultural municipal en Valparaiso."
+  },
+  {
+    id: 108,
+    title: "PortalTickets PortalDisc - eventos musicales en regiones",
+    category: "agenda",
+    continent: "Latinoamerica",
+    country: "Chile",
+    region: "Nacional",
+    city: "Chile",
+    lat: -35.67515,
+    lng: -71.54297,
+    deadline: null,
+    eventDate: null,
+    genres: ["rock", "folk", "fusion", "experimental", "indie"],
+    requirements: ["Buscar por ciudad.", "Confirmar fecha de publicacion del evento, venta de entradas y contacto.", "Rastrear salas y productoras."],
+    url: "https://portaldisc.com/tickets/",
+    sourceName: "PortalTickets PortalDisc",
+    sourceType: "ticketera_agenda",
+    lastChecked: null,
+    linkStatus: "requires_review",
+    confidence: 0.66,
+    summary: "Ticketera y agenda de musica chilena con eventos en distintas regiones."
+  },
+  {
+    id: 109,
+    title: "Corporacion Cultural Municipal de Los Angeles - agenda cultural",
+    category: "centro_cultural",
+    continent: "Latinoamerica",
+    country: "Chile",
+    region: "Biobio",
+    city: "Los Angeles",
+    lat: -37.46973,
+    lng: -72.35366,
+    deadline: null,
+    eventDate: null,
+    genres: ["rock", "folk", "fusion", "experimental", "indie"],
+    requirements: ["Revisar publicaciones publicas.", "Leer fecha, hora, entrada y contacto.", "Validar si hay convocatoria o espacio de programacion."],
+    url: "https://www.facebook.com/ccmlalosangeles/",
+    sourceName: "Corporacion Cultural Municipal de Los Angeles",
+    sourceType: "centro_cultural",
+    lastChecked: null,
+    linkStatus: "requires_review",
+    confidence: 0.62,
+    summary: "Fuente publica regional para agenda cultural y conciertos en Los Angeles, Biobio."
+  }
+];
+
+const chileRegionalFallbackSources = [
+  { name: "Teatro Biobio", region: "Biobio", type: "centro_cultural", url: "https://teatrobiobio.cl/teatro/" },
+  { name: "Instagram Teatro Biobio", region: "Biobio", type: "red_social", url: "https://www.instagram.com/teatrobiobio/" },
+  { name: "Teatro Municipal de Chillan", region: "Nuble", type: "centro_cultural", url: "https://teatrochillan.cl/" },
+  { name: "Centro Cultural Municipal de Chillan", region: "Nuble", type: "centro_cultural", url: "https://ccmch.cl/" },
+  { name: "Instagram Centro Cultural Municipal de Chillan", region: "Nuble", type: "red_social", url: "https://www.instagram.com/ccmch_/" },
+  { name: "Centro Cultural Teatro Centenario", region: "Coquimbo", type: "centro_cultural", url: "https://teatrocentenario.cl/" },
+  { name: "PortalTickets PortalDisc", region: "Nacional", type: "ticketera_agenda", url: "https://portaldisc.com/tickets/" },
+  { name: "Banco Ley de Donaciones Culturales", region: "Nacional", type: "institucion", url: "https://donaciones.cultura.gob.cl/proyectos/" },
+  { name: "Centro Cultural de Espana Santiago", region: "Metropolitana", type: "centro_cultural", url: "https://www.aecid.es/documents/d/cc-santiago/bases-de-convocatoria-suchai-2027" },
+  { name: "Instagram Festival REC", region: "Biobio", type: "red_social", url: "https://www.instagram.com/reel/DV_gtwKDjrJ/" },
+  { name: "Instagram Fondo Cultural Valparaiso", region: "Valparaiso", type: "red_social", url: "https://www.instagram.com/p/DRdYS0aDzOm/" },
+  { name: "Corporacion Cultural Municipal de Los Angeles", region: "Biobio", type: "centro_cultural", url: "https://www.facebook.com/ccmlalosangeles/" }
+].map((source, index) => ({
+  id: 100 + index,
+  continent: "Latinoamerica",
+  country: "Chile",
+  linkStatus: "requires_review",
+  ...source
+}));
+
+fallbackPayload.opportunities.push(...chileRegionalFallbackOpportunities);
+fallbackPayload.sources.push(...chileRegionalFallbackSources);
+
 let opportunities = [];
 let sources = [];
 let filtered = [];
@@ -620,6 +858,27 @@ function buildExternalSearchCards() {
       summary: "Busqueda de espacios publicos con pago, fondos, municipios, centros culturales y convocatorias institucionales."
     }
   ];
+  if (country === "Chile") {
+    const regionalTargets = CHILE_REGIONAL_TARGETS
+      .filter((target) => filters.region === "all" || target.region === filters.region || target.city === filters.region)
+      .slice(0, filters.region === "all" ? 10 : 4);
+    regionalTargets.forEach((target) => {
+      searches.push(
+        {
+          title: `Instagram reciente - ${target.city}`,
+          category: "instagram_regional",
+          url: googleSearchUrl(`site:instagram.com/p OR site:instagram.com/reel "${target.city}" ${target.query} after:2025-01-01`),
+          summary: `Busqueda regional para ${target.city}. Abrir publicaciones publicas y revisar fecha del post, fecha del evento, hora, entrada y contacto.`
+        },
+        {
+          title: `Centros culturales y municipios - ${target.city}`,
+          category: "centro_cultural",
+          url: googleSearchUrl(`"${target.city}" "${target.region}" centro cultural municipio musica conciertos convocatoria agenda`),
+          summary: `Rastreo de centros culturales, municipios, salas y convocatorias en ${target.city}/${target.region}.`
+        }
+      );
+    });
+  }
   return searches.map((item, index) => ({
     id: `external-${index}`,
     ...item,
@@ -631,7 +890,7 @@ function buildExternalSearchCards() {
     linkStatus: "requires_review",
     confidence: 0.58,
     genres: ["rock", "fusion", "folk", "experimental", "progresivo"],
-    requirements: ["Abrir el enlace.", "Revisar que la publicacion sea vigente y publica.", "Validar fecha, contacto y requisitos antes de contactar."]
+    requirements: ["Abrir el enlace.", "Leer fecha de publicacion y fecha del evento.", "Validar hora, contacto, requisitos y vigencia antes de contactar."]
   }));
 }
 
@@ -792,7 +1051,8 @@ function renderStats() {
 
 function renderOpportunityCard(opp) {
   const status = deadlineStatus(opp.deadline);
-  const dateText = opp.deadline ? new Date(opp.deadline + "T00:00:00").toLocaleDateString("es-CL") : "sin fecha";
+  const dateValue = opp.deadline || opp.eventDate;
+  const dateText = dateValue ? new Date(dateValue + "T00:00:00").toLocaleDateString("es-CL") : "fecha por revisar";
   return `
     <article class="opportunity-card" data-id="${opp.id}" tabindex="0">
       <div class="card-top">
@@ -948,7 +1208,7 @@ function renderCalendar() {
 }
 
 function renderSources() {
-  const visibleSources = sources.slice(0, 12);
+  const visibleSources = sources.slice(0, 30);
   els.sourcesList.innerHTML = visibleSources.map((source) => `
     <article class="source-card">
       <div class="card-top">

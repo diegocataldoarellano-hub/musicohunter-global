@@ -1,6 +1,7 @@
 from fastapi.testclient import TestClient
 
 from app.main import app
+from app.curator_agent import extract_event_date
 from app.discovery import build_discovery_queries
 from app.schemas import split_csv
 
@@ -17,6 +18,25 @@ def test_discovery_queries_include_social_and_public_sources():
     assert "site:tiktok.com" in joined
     assert "municipio" in joined
     assert "booking" in joined
+
+
+def test_chile_discovery_queries_include_regional_targets():
+    joined = "\n".join(build_discovery_queries("Chile"))
+    assert "Santiago" in joined
+    assert "Valparaiso" in joined
+    assert "Concepcion" in joined
+    assert "Valle de Elqui" in joined
+
+
+def test_extract_event_date_from_public_post_text():
+    written = extract_event_date("Sabado 13 de junio, 19:00 horas en Teatro Biobio")
+    numeric = extract_event_date("Concierto gratuito 29/05 a las 19:00 hrs")
+    assert written is not None
+    assert written.month == 6
+    assert written.day == 13
+    assert numeric is not None
+    assert numeric.month == 5
+    assert numeric.day == 29
 
 
 def test_health_and_public_opportunities_load():
