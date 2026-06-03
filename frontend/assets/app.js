@@ -106,6 +106,27 @@ const INDUSTRY_LANGUAGE_TERMS = [
   "llamado a bandas"
 ];
 
+const CHILE_MEDIA_PROFILE_TARGETS = [
+  "GAM media partners La Tercera Radio 13C",
+  "GAM prensa musica popular media partner",
+  "Rockaxis revista rock Chile",
+  "Rockaxis Instagram oficial",
+  "Radio Futuro rock Chile programas",
+  "Radio Futuro Instagram Futuro FM",
+  "Radio 13C musica cultura GAM",
+  "La Tercera Culto musica chilena",
+  "SCD Chile prensa musica salas",
+  "Sonar FM rock Chile",
+  "Radio Rock and Pop Chile musica",
+  "Radio Concierto Chile rock",
+  "Subela Radio musica independiente",
+  "Portal Disc musica chilena",
+  "Pousta musica entrevistas bandas",
+  "medios musicales Chile bandas emergentes",
+  "programas de radio rock chileno bandas",
+  "prensa musical Chile enviar single EPK"
+];
+
 const COUNTRY_PUBLIC_SPACE_TARGETS = {
   Chile: ["Culturas Musica Instagram Convocatoria 2026", "Fondos Cultura Musica 2026", "Mercados FOCO 2026 musica bandas", "Linea Apoyo Circulacion Musica Chilena 2026", "Red Rockodromo 2026 bandas solistas", "GAM Convocatoria Nacional Programacion 2026 2027", "CONARTE Valdivia 2026 musica", "Concurso Luis Advis 2026 musica", "Concurso Roberto Parra Sandoval 2026 musica", "Municipalidad de Arica Cultura", "Teatro Municipal de Iquique", "Teatro Municipal de Antofagasta", "Municipalidad de Calama Cultura", "Centro Cultural Atacama Copiapo", "Teatro Centenario La Serena", "Parque Cultural de Valparaiso", "CENTEX Valparaiso", "Teatro Municipal de Santiago", "GAM Centro Cultural Gabriela Mistral", "Centro Cultural La Moneda", "Museo de la Memoria Santiago", "Museo Violeta Parra", "Teatro Municipal Las Condes", "Teatro Oriente Providencia", "Corporacion Cultural Nunoa", "Teatro Regional Lucho Gatica", "Teatro Regional del Maule", "Teatro Municipal de Chillan", "Teatro Biobio", "Corporacion Cultural Municipal Los Angeles", "Teatro Municipal de Temuco", "Teatro Regional Cervantes Valdivia", "Teatro Diego Rivera Puerto Montt", "Teatro del Lago Frutillar", "Municipalidad de Punta Arenas Cultura"],
   Argentina: ["Buenos Aires Cultura", "Usina del Arte", "Centro Cultural Recoleta", "Tecnopolis", "Centro Cultural Kirchner", "Rosario Cultura", "Cordoba Cultura", "Mendoza Cultura"],
@@ -779,6 +800,94 @@ const fallbackPayload = {
       linkStatus: "requires_review",
       confidence: 0.66,
       summary: "Radio chilena especializada en rock, util para agenda, prensa y seguimiento de escena."
+  },
+  {
+    id: 17,
+    title: "GAM media partners - La Tercera, Radio 13C y prensa cultural",
+    category: "prensa",
+    continent: "Latinoamerica",
+    country: "Chile",
+    region: "Metropolitana",
+    city: "Santiago",
+    lat: -33.4489,
+    lng: -70.6693,
+    deadline: null,
+    eventDate: null,
+    genres: ["rock", "folk", "fusion", "experimental", "indie"],
+    requirements: ["Rastrear media partners de GAM, notas de musica y entrevistas.", "Preparar press kit, single/video, bajada de prensa y contacto publico.", "Buscar secciones Culto, Radio 13C, agenda cultural e Instagram."],
+    url: "https://www.google.com/search?q=GAM+media+partner+La+Tercera+Radio+13C+musica+bandas+entrevista+site%3Ainstagram.com+OR+site%3Alatercera.com+OR+site%3A13c.cl",
+    sourceName: "Motor perfiles GAM media partners",
+    sourceType: "prensa",
+    lastChecked: null,
+    linkStatus: "requires_review",
+    confidence: 0.72,
+    summary: "Radar para encontrar perfiles y canales de difusion conectados a GAM: media partners, prensa cultural, radios y publicaciones de musica."
+  },
+  {
+    id: 18,
+    title: "Rockaxis perfiles - web, Instagram y entrevistas de bandas",
+    category: "prensa",
+    continent: "Latinoamerica",
+    country: "Chile",
+    region: "Metropolitana",
+    city: "Santiago",
+    lat: -33.4489,
+    lng: -70.6693,
+    deadline: null,
+    eventDate: null,
+    genres: ["rock", "metal", "progresivo", "experimental", "alternativo"],
+    requirements: ["Buscar perfil oficial, Instagram, noticias, entrevistas y agenda.", "Enviar solo material verificable con press kit, single/video, fecha de lanzamiento y contacto de prensa."],
+    url: "https://www.google.com/search?q=Rockaxis+Instagram+oficial+entrevista+bandas+rock+Chile+agenda+single+EPK",
+    sourceName: "Rockaxis",
+    sourceType: "prensa",
+    lastChecked: null,
+    linkStatus: "requires_review",
+    confidence: 0.72,
+    summary: "Busqueda dedicada para ubicar perfiles publicos de Rockaxis y rutas de difusion para bandas de rock, metal, progresivo y experimental."
+  },
+  {
+    id: 19,
+    title: "Radio Futuro perfiles - programas, agenda e Instagram",
+    category: "radio",
+    continent: "Latinoamerica",
+    country: "Chile",
+    region: "Metropolitana",
+    city: "Santiago",
+    lat: -33.4489,
+    lng: -70.6693,
+    deadline: null,
+    eventDate: null,
+    genres: ["rock", "progresivo", "clasico", "alternativo"],
+    requirements: ["Rastrear programas, agenda, Instagram y notas de Radio Futuro.", "Preparar comunicado breve, links, foto, fecha de lanzamiento/concierto y contacto de prensa."],
+    url: "https://www.google.com/search?q=Radio+Futuro+Instagram+programas+rock+Chile+bandas+agenda+entrevista+conciertos",
+    sourceName: "Radio Futuro",
+    sourceType: "radio",
+    lastChecked: null,
+    linkStatus: "requires_review",
+    confidence: 0.7,
+    summary: "Motor para encontrar perfiles publicos y programas de Radio Futuro relacionados con rock chileno, conciertos y difusion."
+  },
+  {
+    id: 20,
+    title: "Radios y medios rock Chile - Sonar, Rock & Pop, Concierto, Subela",
+    category: "prensa",
+    continent: "Latinoamerica",
+    country: "Chile",
+    region: "Metropolitana",
+    city: "Santiago",
+    lat: -33.4489,
+    lng: -70.6693,
+    deadline: null,
+    eventDate: null,
+    genres: ["rock", "folk", "fusion", "experimental", "indie", "alternativo"],
+    requirements: ["Buscar perfiles y programas activos.", "Revisar si publican entrevistas, estrenos, agenda o sesiones.", "Preparar press kit, propuesta de nota y links publicos."],
+    url: "https://www.google.com/search?q=Sonar+FM+Rock+and+Pop+Radio+Concierto+Subela+Radio+bandas+chilenas+entrevistas+Instagram",
+    sourceName: "Motor radios y medios Chile",
+    sourceType: "radio",
+    lastChecked: null,
+    linkStatus: "requires_review",
+    confidence: 0.68,
+    summary: "Radar de radios y medios que pueden servir para difusion, entrevistas, agenda y deteccion de escenas nuevas."
     },
     {
       id: 11,
@@ -880,12 +989,17 @@ const fallbackPayload = {
     { id: 8, name: "Matucana 100", continent: "Latinoamerica", country: "Chile", region: "Metropolitana", type: "centro_cultural", url: "https://www.m100.cl/", linkStatus: "requires_review" },
     { id: 9, name: "Rockaxis", continent: "Latinoamerica", country: "Chile", region: "Metropolitana", type: "prensa", url: "https://www.rockaxis.com/", linkStatus: "requires_review" },
     { id: 10, name: "Radio Futuro", continent: "Latinoamerica", country: "Chile", region: "Metropolitana", type: "radio", url: "https://www.futuro.cl/", linkStatus: "requires_review" },
-    { id: 11, name: "Quemasucabeza", continent: "Latinoamerica", country: "Chile", region: "Metropolitana", type: "sello", url: "https://www.quemasucabeza.com/", linkStatus: "requires_review" },
-    { id: 12, name: "Lotus Producciones", continent: "Latinoamerica", country: "Chile", region: "Metropolitana", type: "productora", url: "https://www.lotuspro.cl/", linkStatus: "requires_review" },
-    { id: 13, name: "Instagram - hashtag rockchileno", continent: "Latinoamerica", country: "Chile", region: "Digital", type: "red_social", url: "https://www.instagram.com/explore/tags/rockchileno/", linkStatus: "requires_review" },
-    { id: 14, name: "TikTok - hashtag rockchileno", continent: "Latinoamerica", country: "Chile", region: "Digital", type: "red_social", url: "https://www.tiktok.com/tag/rockchileno", linkStatus: "requires_review" },
-    { id: 15, name: "BAFIM", continent: "Latinoamerica", country: "Argentina", region: "Buenos Aires", type: "mercado", url: "https://bafim.buenosaires.gob.ar/", linkStatus: "requires_review" },
-    { id: 16, name: "Rock al Parque", continent: "Latinoamerica", country: "Colombia", region: "Bogota", type: "festival", url: "https://www.rockalparque.gov.co/", linkStatus: "requires_review" }
+    { id: 11, name: "La Tercera Culto", continent: "Latinoamerica", country: "Chile", region: "Metropolitana", type: "prensa", url: "https://www.latercera.com/culto/", linkStatus: "requires_review" },
+    { id: 12, name: "Radio 13C", continent: "Latinoamerica", country: "Chile", region: "Metropolitana", type: "radio", url: "https://www.13c.cl/", linkStatus: "requires_review" },
+    { id: 13, name: "Sonar FM", continent: "Latinoamerica", country: "Chile", region: "Metropolitana", type: "radio", url: "https://www.sonarfm.cl/", linkStatus: "requires_review" },
+    { id: 14, name: "Rock and Pop Chile", continent: "Latinoamerica", country: "Chile", region: "Metropolitana", type: "radio", url: "https://www.rockandpop.cl/", linkStatus: "requires_review" },
+    { id: 15, name: "Radio Concierto", continent: "Latinoamerica", country: "Chile", region: "Metropolitana", type: "radio", url: "https://www.concierto.cl/", linkStatus: "requires_review" },
+    { id: 16, name: "Quemasucabeza", continent: "Latinoamerica", country: "Chile", region: "Metropolitana", type: "sello", url: "https://www.quemasucabeza.com/", linkStatus: "requires_review" },
+    { id: 17, name: "Lotus Producciones", continent: "Latinoamerica", country: "Chile", region: "Metropolitana", type: "productora", url: "https://www.lotuspro.cl/", linkStatus: "requires_review" },
+    { id: 18, name: "Instagram - hashtag rockchileno", continent: "Latinoamerica", country: "Chile", region: "Digital", type: "red_social", url: "https://www.instagram.com/explore/tags/rockchileno/", linkStatus: "requires_review" },
+    { id: 19, name: "TikTok - hashtag rockchileno", continent: "Latinoamerica", country: "Chile", region: "Digital", type: "red_social", url: "https://www.tiktok.com/tag/rockchileno", linkStatus: "requires_review" },
+    { id: 20, name: "BAFIM", continent: "Latinoamerica", country: "Argentina", region: "Buenos Aires", type: "mercado", url: "https://bafim.buenosaires.gob.ar/", linkStatus: "requires_review" },
+    { id: 21, name: "Rock al Parque", continent: "Latinoamerica", country: "Colombia", region: "Bogota", type: "festival", url: "https://www.rockalparque.gov.co/", linkStatus: "requires_review" }
   ]
 };
 
@@ -1634,6 +1748,22 @@ function buildExternalSearchCards() {
     );
   });
   if (country === "Chile") {
+    CHILE_MEDIA_PROFILE_TARGETS.forEach((target) => {
+      searches.push(
+        {
+          title: `Perfil prensa/radio - ${target}`,
+          category: "perfil_medio",
+          url: googleSearchUrl(`"${target}" contacto prensa musica bandas "EPK" OR "enviar single" OR "entrevista" OR "agenda"`),
+          summary: "Busqueda dirigida a perfiles publicos de medios, radios, programas y media partners. Revisar contacto, fecha de publicacion, notas recientes e Instagram."
+        },
+        {
+          title: `Instagram perfil publico - ${target}`,
+          category: "instagram_perfil_medio",
+          url: googleSearchUrl(`site:instagram.com "${target}" musica bandas rock entrevista agenda`),
+          summary: "Encuentra perfiles y publicaciones publicas de Instagram vinculadas a prensa/radio/media partners para difusion y contacto responsable."
+        }
+      );
+    });
     const promotionTags = CHILE_INSTAGRAM_PROMOTION_TAGS
       .filter((item) => filters.region === "all" || item.region === "Nacional" || item.region === filters.region)
       .slice(0, filters.region === "all" ? 20 : 10);

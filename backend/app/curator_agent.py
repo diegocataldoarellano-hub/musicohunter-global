@@ -55,6 +55,14 @@ OPPORTUNITY_TERMS = [
     "productora",
     "sello",
     "revista",
+    "radio",
+    "programa de radio",
+    "prensa musical",
+    "medio musical",
+    "media partner",
+    "entrevista",
+    "estreno",
+    "agenda musical",
     "instagram",
     "tiktok",
     "bandas emergentes",
@@ -82,6 +90,9 @@ OPPORTUNITY_TERMS = [
     "a&r",
     "roster",
     "pitch",
+    "enviar single",
+    "nota de prensa",
+    "comunicado de prensa",
     "rueda de negocios",
     "mercado musical",
 ]
@@ -105,6 +116,10 @@ PROFILE_TERMS = [
     "prensa",
     "medio",
     "revista",
+    "media partner",
+    "prensa musical",
+    "programa de radio",
+    "entrevista",
     "festival",
     "sala",
     "centro cultural",
@@ -141,6 +156,10 @@ APPLICATION_SIGNAL_TERMS = [
     "submit",
     "submission",
     "open call",
+    "enviar single",
+    "enviar material",
+    "nota de prensa",
+    "comunicado de prensa",
 ]
 
 CONTACT_SIGNAL_TERMS = [
@@ -153,6 +172,10 @@ CONTACT_SIGNAL_TERMS = [
     "produccion",
     "programacion",
     "a&r",
+    "prensa",
+    "medio",
+    "radio",
+    "media partner",
 ]
 
 
@@ -189,6 +212,8 @@ def extract_application_requirements(text: str, source_type: str) -> str:
         requirements.append("Confirmar si aceptan bandas, solistas o artistas extranjeros y que generos estan buscando.")
     if any(term in lower for term in CONTACT_SIGNAL_TERMS):
         requirements.append("Usar solo el correo/formulario/canal de booking indicado por la fuente; no enviar mensajes genericos.")
+    if any(term in lower for term in ["prensa", "radio", "media partner", "entrevista", "enviar single", "nota de prensa", "comunicado de prensa"]):
+        requirements.append("Para prensa/radio: preparar comunicado breve, fecha de lanzamiento o concierto, EPK, links publicos y una propuesta de nota/entrevista concreta.")
     if any(term in lower for term in DEADLINE_TERMS) or any(term in lower for term in ["deadline", "apply by", "applications close"]):
         requirements.append("Verificar fecha de publicacion, cierre de convocatoria, fecha del evento y zona horaria.")
     if any(term in lower for term in ["productora", "booking", "agency", "sello", "label", "a&r", "roster", "demo"]):

@@ -237,6 +237,41 @@ CHILE_TAG_MISSION_TEMPLATES = [
     'site:instagram.com/reel "#{tag}" conciertos agenda cultural',
 ]
 
+CHILE_MEDIA_PROFILE_TARGETS = """
+GAM media partners La Tercera Radio 13C
+GAM prensa musica popular media partner
+Rockaxis revista rock Chile
+Rockaxis Instagram oficial
+Radio Futuro rock Chile programas
+Radio Futuro Instagram Futuro FM
+Radio 13C musica cultura GAM
+La Tercera Culto musica chilena
+SCD Chile prensa musica salas
+Sonar FM rock Chile
+Radio Rock and Pop Chile musica
+Radio Concierto Chile rock
+Subela Radio musica independiente
+Portal Disc musica chilena
+Pousta musica entrevistas bandas
+Ibero 90.9 Chile musica independiente
+Agenda Musica Chile medios
+Medios musicales Chile bandas emergentes
+Programas de radio rock chileno bandas
+Prensa musical Chile enviar single EPK
+""".strip().splitlines()
+
+MEDIA_PROFILE_MISSION_TEMPLATES = [
+    '"{target}" contacto prensa musica bandas',
+    '"{target}" enviar single banda EPK',
+    '"{target}" entrevista banda rock chileno',
+    '"{target}" programa radio musica chilena bandas',
+    'site:instagram.com "{target}" musica bandas rock',
+    'site:instagram.com/p "{target}" banda rock entrevista',
+    'site:instagram.com/reel "{target}" musica chilena bandas',
+    '"{target}" media partner musica GAM',
+    '"{target}" cartelera conciertos bandas',
+]
+
 CHILE_PUBLIC_SPACE_TARGETS = """
 Culturas Musica Instagram Convocatoria 2026
 Fondos Cultura Musica 2026
@@ -792,6 +827,8 @@ def build_discovery_queries(country: str) -> list[str]:
             queries.extend(template.replace("{region}", region) for template in CHILE_REGIONAL_MISSION_TEMPLATES)
         for tag in CHILE_INSTAGRAM_TAGS:
             queries.extend(template.replace("{tag}", tag) for template in CHILE_TAG_MISSION_TEMPLATES)
+        for target in CHILE_MEDIA_PROFILE_TARGETS:
+            queries.extend(template.replace("{target}", target) for template in MEDIA_PROFILE_MISSION_TEMPLATES)
         for target in CHILE_PUBLIC_SPACE_TARGETS:
             queries.extend(template.replace("{target}", target) for template in PUBLIC_SPACE_MISSION_TEMPLATES)
         for target in CHILE_DEEP_SEARCH_TARGETS:

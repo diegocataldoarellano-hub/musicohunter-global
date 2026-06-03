@@ -4,6 +4,7 @@ from app.main import app
 from app.curator_agent import extract_application_requirements, extract_deadline_date, extract_event_date, is_navigation_noise
 from app.discovery import (
     CHILE_DEEP_SEARCH_TARGETS,
+    CHILE_MEDIA_PROFILE_TARGETS,
     CHILE_PUBLIC_SPACE_TARGETS,
     COUNTRY_PUBLIC_SPACE_TARGETS,
     LATAM_RECOGNIZED_TARGETS,
@@ -67,6 +68,17 @@ def test_chile_discovery_queries_include_public_spaces_from_north_to_south():
     assert "postula tu proyecto" in joined
 
 
+def test_chile_discovery_queries_include_media_profiles_and_partners():
+    joined = "\n".join(build_discovery_queries("Chile"))
+    assert len(CHILE_MEDIA_PROFILE_TARGETS) >= 18
+    assert "GAM media partners La Tercera Radio 13C" in joined
+    assert "Rockaxis Instagram oficial" in joined
+    assert "Radio Futuro Instagram Futuro FM" in joined
+    assert "Sonar FM rock Chile" in joined
+    assert "enviar single" in joined
+    assert "site:instagram.com" in joined
+
+
 def test_expanded_target_lists_have_required_depth():
     latam_target_count = sum(len(targets) for targets in LATAM_RECOGNIZED_TARGETS.values())
     assert len(CHILE_DEEP_SEARCH_TARGETS) >= 100
@@ -108,6 +120,9 @@ def test_curated_official_sources_are_loaded():
     assert "Culturas Musica Instagram" in names
     assert "Mondo.NYC Artist Application" in names
     assert "Tallinn Music Week Artist Applications" in names
+    assert "La Tercera Culto" in names
+    assert "Radio 13C" in names
+    assert "Sonar FM" in names
 
 
 def test_target_countries_include_requested_global_regions():

@@ -117,6 +117,51 @@
     "query_hint": "Radio Futuro rock Chile programa musica agenda conciertos"
   },
   {
+    "name": "La Tercera Culto",
+    "url": "https://www.latercera.com/culto/",
+    "country": "Chile",
+    "region": "Metropolitana",
+    "type": "prensa",
+    "priority": 80,
+    "query_hint": "La Tercera Culto musica chilena bandas entrevistas prensa media partner GAM"
+  },
+  {
+    "name": "Radio 13C",
+    "url": "https://www.13c.cl/",
+    "country": "Chile",
+    "region": "Metropolitana",
+    "type": "radio",
+    "priority": 78,
+    "query_hint": "Radio 13C cultura musica GAM media partner entrevistas artistas"
+  },
+  {
+    "name": "Sonar FM",
+    "url": "https://www.sonarfm.cl/",
+    "country": "Chile",
+    "region": "Metropolitana",
+    "type": "radio",
+    "priority": 78,
+    "query_hint": "Sonar FM rock Chile programas bandas entrevistas agenda conciertos"
+  },
+  {
+    "name": "Radio Rock and Pop Chile",
+    "url": "https://www.rockandpop.cl/",
+    "country": "Chile",
+    "region": "Metropolitana",
+    "type": "radio",
+    "priority": 76,
+    "query_hint": "Rock and Pop Chile musica bandas entrevistas programas"
+  },
+  {
+    "name": "Radio Concierto",
+    "url": "https://www.concierto.cl/",
+    "country": "Chile",
+    "region": "Metropolitana",
+    "type": "radio",
+    "priority": 76,
+    "query_hint": "Radio Concierto Chile rock musica agenda entrevistas bandas"
+  },
+  {
     "name": "Subela Radio",
     "url": "https://www.subela.cl/",
     "country": "Chile",
