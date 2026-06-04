@@ -55,6 +55,8 @@ RADAR_ADMIN_TOKEN=el-mismo-ADMIN_TOKEN-del-backend
 
 Ese workflow llama `POST /api/admin/refresh-fast`, revisa todos los paises objetivo con pocas consultas por pais para sumar fuentes nuevas rapido, luego ejecuta `POST /api/admin/check-links` y deja en el resumen de GitHub cuantos links/fuentes/oportunidades se agregaron.
 
+Si los secretos todavia no existen, el workflow no falla: queda como ejecucion exitosa con un resumen "Skipped" para evitar correos de fallo innecesarios.
+
 El agente:
 
 - Recorre fuentes publicas curadas.

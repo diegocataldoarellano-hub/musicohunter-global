@@ -30,8 +30,23 @@ def load_seed_sources() -> list[dict]:
     return sources
 
 
+def unique_seed_sources() -> list[dict]:
+    unique = []
+    seen_names = set()
+    seen_urls = set()
+    for item in reversed(load_seed_sources()):
+        name_key = item["name"].strip().lower()
+        url_key = item["url"].strip().lower()
+        if name_key in seen_names or url_key in seen_urls:
+            continue
+        seen_names.add(name_key)
+        seen_urls.add(url_key)
+        unique.append(item)
+    return list(reversed(unique))
+
+
 def seed_database(db: Session) -> None:
-    for item in load_seed_sources():
+    for item in unique_seed_sources():
         existing = db.scalar(select(Source).where((Source.url == item["url"]) | (Source.name == item["name"])))
         if existing:
             existing.name = item["name"]

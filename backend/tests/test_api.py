@@ -34,7 +34,7 @@ from app.discovery import (
     global_mission_capacity,
 )
 from app.schemas import split_csv
-from app.seed import load_seed_sources
+from app.seed import load_seed_sources, unique_seed_sources
 
 
 def test_split_csv_filters_empty_values():
@@ -557,6 +557,14 @@ def test_curated_official_sources_are_loaded():
     assert "La Tercera Culto" in names
     assert "Radio 13C" in names
     assert "Sonar FM" in names
+
+
+def test_seed_sources_are_unique_before_insert():
+    sources = unique_seed_sources()
+    names = [source["name"].strip().lower() for source in sources]
+    urls = [source["url"].strip().lower() for source in sources]
+    assert len(names) == len(set(names))
+    assert len(urls) == len(set(urls))
 
 
 def test_target_countries_include_requested_global_regions():
