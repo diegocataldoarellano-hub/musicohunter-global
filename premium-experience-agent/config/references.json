@@ -1,0 +1,79 @@
+{
+  "references": [
+    {
+      "name": "Linear",
+      "url": "https://linear.app",
+      "bestFor": ["dashboard", "workspace", "admin", "kanban", "issue-tracker"],
+      "patterns": ["layered glass panels", "command palette", "collapsible sidebar", "keyboard-first navigation", "dense information hierarchy"],
+      "visualPrinciples": ["depth through subtle borders and shadows", "clear active states", "compact spacing with strong rhythm", "responsive panels instead of fixed columns"],
+      "tokens": {
+        "primary": "#5E6AD2",
+        "background": "#0F1115",
+        "surface": "rgba(255,255,255,0.06)"
+      }
+    },
+    {
+      "name": "Vercel",
+      "url": "https://vercel.com",
+      "bestFor": ["landing", "developer-tool", "docs", "marketing", "saas"],
+      "patterns": ["bento grid", "high-contrast typography", "progressive disclosure", "code-forward cards", "responsive product storytelling"],
+      "visualPrinciples": ["large typographic entry point", "strong empty space", "cards that collapse by content priority", "motion that clarifies rather than decorates"],
+      "tokens": {
+        "primary": "#FFFFFF",
+        "background": "#000000",
+        "surface": "rgba(255,255,255,0.08)"
+      }
+    },
+    {
+      "name": "Apple Vision Pro",
+      "url": "https://www.apple.com/apple-vision-pro/",
+      "bestFor": ["immersive", "3d", "gallery", "portfolio", "hero"],
+      "patterns": ["spatial layers", "orb glow", "parallax media", "depth-aware overlays", "soft cinematic transitions"],
+      "visualPrinciples": ["content floats above atmospheric media", "large scroll-driven reveals", "progressive image loading", "reduced-motion fallback for accessibility"],
+      "tokens": {
+        "primary": "#E8F2FF",
+        "background": "#05070A",
+        "surface": "rgba(255,255,255,0.10)"
+      }
+    },
+    {
+      "name": "Notion",
+      "url": "https://www.notion.so",
+      "bestFor": ["editor", "wiki", "notes", "docs", "knowledge-base"],
+      "patterns": ["nested navigation", "inline editing", "slash command affordance", "calm typography", "contextual tools"],
+      "visualPrinciples": ["low-friction interactions", "quiet chrome", "content-first layout", "tools appear only when useful"],
+      "tokens": {
+        "primary": "#2F3437",
+        "background": "#FFFFFF",
+        "surface": "#F7F6F3"
+      }
+    }
+  ],
+  "techniques": [
+    {
+      "name": "breathable-layout",
+      "detects": ["fixed width", "fixed column", "hard breakpoint"],
+      "target": "Replace fixed px layout with clamp(), minmax(), auto-fit, and container queries."
+    },
+    {
+      "name": "spatial-navigation",
+      "detects": ["flat navigation", "single layer", "modal-only tools"],
+      "target": "Introduce base, floating UI, contextual tools, and modal layers with predictable z-index tokens."
+    },
+    {
+      "name": "progressive-media",
+      "detects": ["static images", "eager media", "missing skeleton"],
+      "target": "Add lazy loading, aspect-ratio containers, blur-up or skeleton states, and reduced-motion-safe reveal."
+    },
+    {
+      "name": "micro-interactions",
+      "detects": ["binary hover", "no focus state", "instant state changes"],
+      "target": "Use transform/opacity transitions, spring-like cubic-bezier easing, accessible focus states, and visible feedback."
+    },
+    {
+      "name": "logical-ux",
+      "detects": ["unclear flow", "missing empty state", "no error state"],
+      "target": "Add clear empty/loading/error/success states, shorten decision paths, and make the primary action obvious."
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "name": "premium-experience-agent",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Autonomous 24/7 agent that audits and improves premium visual, functional, and logical architecture.",
+  "scripts": {
+    "start": "node src/index.js --mode dry-run",
+    "run:dry": "node src/index.js --mode dry-run",
+    "run:pr": "node src/index.js --mode pr",
+    "check": "node --check src/index.js && node --check src/config.js && node --check src/scanner.js && node --check src/prompts.js && node --check src/notifications.js"
+  },
+  "dependencies": {
+    "@cursor/sdk": "latest"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

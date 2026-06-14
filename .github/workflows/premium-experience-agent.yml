@@ -1,0 +1,69 @@
+name: Premium Experience Agent
+
+on:
+  workflow_dispatch:
+    inputs:
+      reference:
+        description: "Referencia visual: auto, Linear, Vercel, Apple Vision Pro, Notion"
+        required: false
+        default: "auto"
+      max_files:
+        description: "Maximo de archivos a escanear"
+        required: false
+        default: "120"
+  schedule:
+    - cron: "*/30 * * * *"
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: premium-experience-agent-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  improve-experience:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install agent dependencies
+        working-directory: premium-experience-agent
+        run: npm install
+
+      - name: Check agent syntax
+        working-directory: premium-experience-agent
+        run: npm run check
+
+      - name: Run premium experience agent
+        working-directory: premium-experience-agent
+        env:
+          CURSOR_API_KEY: ${{ secrets.CURSOR_API_KEY }}
+          CURSOR_REPO_URL: https://github.com/${{ github.repository }}.git
+          CURSOR_REPO_REF: ${{ github.ref_name }}
+          CURSOR_MODEL: ${{ vars.CURSOR_MODEL || 'auto' }}
+          PREMIUM_AGENT_REFERENCE: ${{ github.event.inputs.reference || vars.PREMIUM_AGENT_REFERENCE || 'auto' }}
+          PREMIUM_AGENT_MAX_FILES: ${{ github.event.inputs.max_files || vars.PREMIUM_AGENT_MAX_FILES || '120' }}
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: node src/index.js --mode pr --target ..
+
+      - name: Upload scan report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: premium-experience-report
+          path: premium-experience-agent/reports/*.json
+          if-no-files-found: ignore
