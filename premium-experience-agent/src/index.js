@@ -87,7 +87,6 @@ async function runCursorAgent(prompt, args) {
 function buildCursorOptions(args) {
   const modelId = process.env.CURSOR_MODEL || "auto";
   const repoUrl = process.env.CURSOR_REPO_URL || githubRepoUrl();
-  const repoRef = process.env.CURSOR_REPO_REF || process.env.GITHUB_REF_NAME || process.env.GITHUB_HEAD_REF;
 
   const base = {
     apiKey: process.env.CURSOR_API_KEY,
@@ -107,11 +106,10 @@ function buildCursorOptions(args) {
   }
 
   if (repoUrl) {
-    const repo = repoRef ? { url: repoUrl, ref: repoRef } : { url: repoUrl };
     return {
       ...base,
       cloud: {
-        repos: [repo],
+        repos: [{ url: repoUrl }],
         autoCreatePR: args.applyMode === "pr",
         autoCreatePr: args.applyMode === "pr",
         skipReviewerRequest: true
