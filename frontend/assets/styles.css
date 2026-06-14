@@ -318,7 +318,7 @@ h2 {
 
 .signal-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(clamp(5.5rem, 28%, 1fr), 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(max(5.5rem, 28%), 1fr));
   gap: var(--space-sm);
   margin: var(--space-xs) 0 0;
 }
