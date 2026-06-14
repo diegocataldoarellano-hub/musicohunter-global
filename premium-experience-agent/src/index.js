@@ -44,6 +44,7 @@ async function main() {
 
   const prompt = buildPremiumImprovementPrompt({ scan, reference, knowledge });
   const cursorSummary = await runCursorAgent(prompt, args);
+  console.log(`Cursor run:\n${cursorSummary}`);
   await notify(`${summary}\n\nCursor run:\n${cursorSummary}`);
 }
 
