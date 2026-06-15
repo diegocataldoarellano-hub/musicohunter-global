@@ -3207,17 +3207,18 @@ function escapeHtml(value) {
 }
 
 async function loadData() {
+  document.body.classList.add("is-loading");
+  els.opportunityList.classList.add("is-busy");
   els.backendStatus.textContent = "Conectando";
-  els.backendStatus.className = "status-pill";
-  if (!API_BASE_URL) {
-    opportunities = fallbackPayload.opportunities;
-    sources = fallbackPayload.sources;
-    els.backendStatus.textContent = "Respaldo local";
-    els.backendStatus.className = "status-pill offline";
-    renderAll();
-    return;
-  }
+  els.backendStatus.className = "status-pill is-loading";
   try {
+    if (!API_BASE_URL) {
+      opportunities = fallbackPayload.opportunities;
+      sources = fallbackPayload.sources;
+      els.backendStatus.textContent = "Respaldo local";
+      els.backendStatus.className = "status-pill offline";
+      return;
+    }
     const [oppsResponse, sourcesResponse] = await Promise.all([
       fetch(`${API_BASE_URL}/api/opportunities?limit=500`),
       fetch(`${API_BASE_URL}/api/sources?limit=500`)
@@ -3236,8 +3237,29 @@ async function loadData() {
     sources = fallbackPayload.sources;
     els.backendStatus.textContent = "API sin respuesta - respaldo local";
     els.backendStatus.className = "status-pill offline";
+  } finally {
+    document.body.classList.remove("is-loading");
+    els.opportunityList.classList.remove("is-busy");
+    renderAll();
   }
-  renderAll();
+}
+
+function showStateToast(message, tone = "success") {
+  let toast = document.getElementById("stateToast");
+  if (!toast) {
+    toast = document.createElement("div");
+    toast.id = "stateToast";
+    toast.className = "state-toast";
+    toast.setAttribute("role", "status");
+    toast.setAttribute("aria-live", "polite");
+    document.body.appendChild(toast);
+  }
+  toast.textContent = message;
+  toast.className = `state-toast is-visible is-${tone}`;
+  window.clearTimeout(showStateToast._timer);
+  showStateToast._timer = window.setTimeout(() => {
+    toast.classList.remove("is-visible");
+  }, 3200);
 }
 
 async function handleManualRefresh() {
@@ -3248,6 +3270,9 @@ async function handleManualRefresh() {
   if (API_BASE_URL) {
     els.backendStatus.textContent = "Datos recargados - motor automatico en GitHub";
     els.backendStatus.className = "status-pill online";
+    showStateToast("Radar actualizado correctamente.", "success");
+  } else {
+    showStateToast("Modo respaldo local activo.", "error");
   }
   els.refreshButton.disabled = false;
   els.refreshButton.innerHTML = previousLabel;
