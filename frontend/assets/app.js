@@ -3208,12 +3208,14 @@ function escapeHtml(value) {
 
 async function loadData() {
   els.backendStatus.textContent = "Conectando";
-  els.backendStatus.className = "status-pill";
+  els.backendStatus.className = "status-pill loading";
+  els.opportunityList.classList.add("is-loading");
   if (!API_BASE_URL) {
     opportunities = fallbackPayload.opportunities;
     sources = fallbackPayload.sources;
     els.backendStatus.textContent = "Respaldo local";
     els.backendStatus.className = "status-pill offline";
+    els.opportunityList.classList.remove("is-loading");
     renderAll();
     return;
   }
@@ -3237,6 +3239,7 @@ async function loadData() {
     els.backendStatus.textContent = "API sin respuesta - respaldo local";
     els.backendStatus.className = "status-pill offline";
   }
+  els.opportunityList.classList.remove("is-loading");
   renderAll();
 }
 
