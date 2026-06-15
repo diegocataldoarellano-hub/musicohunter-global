@@ -3207,13 +3207,18 @@ function escapeHtml(value) {
 }
 
 async function loadData() {
+  const pageShell = document.querySelector(".page-shell");
   els.backendStatus.textContent = "Conectando";
-  els.backendStatus.className = "status-pill";
+  els.backendStatus.className = "status-pill connecting";
+  pageShell?.classList.add("is-loading");
+  els.opportunityList.setAttribute("aria-busy", "true");
   if (!API_BASE_URL) {
     opportunities = fallbackPayload.opportunities;
     sources = fallbackPayload.sources;
     els.backendStatus.textContent = "Respaldo local";
     els.backendStatus.className = "status-pill offline";
+    pageShell?.classList.remove("is-loading");
+    els.opportunityList.setAttribute("aria-busy", "false");
     renderAll();
     return;
   }
@@ -3237,6 +3242,8 @@ async function loadData() {
     els.backendStatus.textContent = "API sin respuesta - respaldo local";
     els.backendStatus.className = "status-pill offline";
   }
+  pageShell?.classList.remove("is-loading");
+  els.opportunityList.setAttribute("aria-busy", "false");
   renderAll();
 }
 
