@@ -2734,6 +2734,7 @@ const els = {
   opportunityList: document.getElementById("opportunityList"),
   resultCount: document.getElementById("resultCount"),
   mapTitle: document.getElementById("mapTitle"),
+  mapShell: document.getElementById("mapShell"),
   sourcesList: document.getElementById("sourcesList"),
   clearFilters: document.getElementById("clearFilters"),
   detailDialog: document.getElementById("detailDialog"),
@@ -3197,6 +3198,34 @@ function keepSelectValue(select, value) {
   select.value = [...select.options].some((option) => option.value === value) ? value : "all";
 }
 
+function queryFromGoogleUrl(url) {
+  try {
+    return decodeURIComponent(new URL(url).searchParams.get("q") || "");
+  } catch {
+    return "";
+  }
+}
+
+function renderLoadingSkeleton() {
+  const cards = [1, 2, 3].map(() => `
+    <div class="skeleton-card">
+      <div class="skeleton skeleton-line short"></div>
+      <div class="skeleton skeleton-line long"></div>
+      <div class="skeleton skeleton-line medium"></div>
+    </div>
+  `).join("");
+  els.opportunityList.innerHTML = `
+    <div class="skeleton-stack" aria-hidden="true">${cards}</div>
+    <p class="sr-only">Cargando oportunidades del radar...</p>
+  `;
+}
+
+function setLoadingState(isLoading) {
+  els.opportunityList.classList.toggle("is-loading", isLoading);
+  els.mapShell?.classList.toggle("is-loading", isLoading);
+  if (isLoading) renderLoadingSkeleton();
+}
+
 function escapeHtml(value) {
   return String(value ?? "")
     .replaceAll("&", "&amp;")
@@ -3208,12 +3237,14 @@ function escapeHtml(value) {
 
 async function loadData() {
   els.backendStatus.textContent = "Conectando";
-  els.backendStatus.className = "status-pill";
+  els.backendStatus.className = "status-pill loading";
+  setLoadingState(true);
   if (!API_BASE_URL) {
     opportunities = fallbackPayload.opportunities;
     sources = fallbackPayload.sources;
     els.backendStatus.textContent = "Respaldo local";
     els.backendStatus.className = "status-pill offline";
+    setLoadingState(false);
     renderAll();
     return;
   }
@@ -3237,6 +3268,7 @@ async function loadData() {
     els.backendStatus.textContent = "API sin respuesta - respaldo local";
     els.backendStatus.className = "status-pill offline";
   }
+  setLoadingState(false);
   renderAll();
 }
 
@@ -3406,6 +3438,7 @@ function renderOpportunityCard(opp) {
 }
 
 function renderExternalCard(item) {
+  const query = queryFromGoogleUrl(item.url);
   return `
     <article class="opportunity-card external-card">
       <div class="card-top">
@@ -3413,6 +3446,7 @@ function renderExternalCard(item) {
         <span class="link-status requires_review">revisar</span>
       </div>
       <h3>${escapeHtml(item.title)}</h3>
+      ${query ? `<code class="code-snippet">${escapeHtml(query)}</code>` : ""}
       <div class="application-mini">
         <div><strong>Costo</strong><span>Por confirmar</span></div>
         <div><strong>Requiere</strong><span>abrir resultado oficial, bases/formulario, EPK</span></div>
@@ -3658,23 +3692,23 @@ function openDetail(id) {
         <span><i class="fa-solid fa-shield-halved"></i> ${statusLabel(opp.linkStatus)}</span>
         <span><i class="fa-solid fa-brain"></i> confianza ${Math.round((opp.confidence || 0) * 100)}%</span>
       </div>
-      <div class="detail-section">
-        <h3>Resumen curado</h3>
+      <details class="detail-disclosure" open>
+        <summary>Resumen curado</summary>
         <p>${escapeHtml(opp.summary || "Sin resumen disponible.")}</p>
-      </div>
-      <div class="detail-section">
-        <h3>Como postular en esta pagina</h3>
+      </details>
+      <details class="detail-disclosure" open>
+        <summary>Como postular en esta pagina</summary>
         <ul>${applicationGuide(opp).map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>
-      </div>
-      <div class="detail-section">
-        <h3>Requisitos y senales detectadas</h3>
+      </details>
+      <details class="detail-disclosure">
+        <summary>Requisitos y senales detectadas</summary>
         <ul>${(opp.requirements || ["Revisar bases oficiales en la fuente."]).map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>
         ${detectedIndustrySignals(opp).length ? `<p><strong>Lenguaje detectado:</strong> ${detectedIndustrySignals(opp).map(escapeHtml).join(", ")}</p>` : ""}
-      </div>
-      <div class="detail-section">
-        <h3>Fuente</h3>
+      </details>
+      <details class="detail-disclosure">
+        <summary>Fuente y revision</summary>
         <p>${escapeHtml(opp.sourceName || "Fuente publica")} - ultima revision ${escapeHtml(opp.lastChecked || "pendiente")}</p>
-      </div>
+      </details>
       <div class="detail-actions">
         <a class="primary-action" href="${escapeHtml(opp.url)}" target="_blank" rel="noopener">
           Abrir convocatoria/fuente <i class="fa-solid fa-up-right-from-square"></i>

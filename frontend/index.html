@@ -10,7 +10,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-  <link rel="stylesheet" href="./assets/styles.css?v=20260603-37" />
+  <link rel="stylesheet" href="./assets/styles.css?v=20260616-01" />
 </head>
 <body>
   <div class="page-shell">
@@ -154,9 +154,11 @@
               <p class="eyebrow">Mapa</p>
               <h2 id="mapTitle">Chile y Latinoamerica</h2>
             </div>
-            <span class="status-pill" id="backendStatus">Conectando</span>
+            <span class="status-pill" id="backendStatus" role="status" aria-live="polite">Conectando</span>
           </div>
-          <div id="map" role="application" aria-label="Mapa interactivo"></div>
+          <div class="map-shell" id="mapShell">
+            <div id="map" role="application" aria-label="Mapa interactivo"></div>
+          </div>
         </section>
 
         <section class="results-panel" aria-label="Resultados">
@@ -211,6 +213,6 @@
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="./assets/config.js?v=20260603-36"></script>
-  <script src="./assets/app.js?v=20260603-37"></script>
+  <script src="./assets/app.js?v=20260616-01"></script>
 </body>
 </html>
