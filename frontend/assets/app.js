@@ -3206,18 +3206,24 @@ function escapeHtml(value) {
     .replaceAll("'", "&#039;");
 }
 
+function setPageLoading(isLoading) {
+  document.querySelector(".page-shell")?.classList.toggle("is-loading", isLoading);
+  document.body.toggleAttribute("aria-busy", isLoading);
+}
+
 async function loadData() {
+  setPageLoading(true);
   els.backendStatus.textContent = "Conectando";
   els.backendStatus.className = "status-pill";
-  if (!API_BASE_URL) {
-    opportunities = fallbackPayload.opportunities;
-    sources = fallbackPayload.sources;
-    els.backendStatus.textContent = "Respaldo local";
-    els.backendStatus.className = "status-pill offline";
-    renderAll();
-    return;
-  }
   try {
+    if (!API_BASE_URL) {
+      opportunities = fallbackPayload.opportunities;
+      sources = fallbackPayload.sources;
+      els.backendStatus.textContent = "Respaldo local";
+      els.backendStatus.className = "status-pill offline";
+      renderAll();
+      return;
+    }
     const [oppsResponse, sourcesResponse] = await Promise.all([
       fetch(`${API_BASE_URL}/api/opportunities?limit=500`),
       fetch(`${API_BASE_URL}/api/sources?limit=500`)
@@ -3236,13 +3242,16 @@ async function loadData() {
     sources = fallbackPayload.sources;
     els.backendStatus.textContent = "API sin respuesta - respaldo local";
     els.backendStatus.className = "status-pill offline";
+  } finally {
+    renderAll();
+    setPageLoading(false);
   }
-  renderAll();
 }
 
 async function handleManualRefresh() {
   const previousLabel = els.refreshButton.innerHTML;
   els.refreshButton.disabled = true;
+  els.refreshButton.classList.add("is-busy");
   els.refreshButton.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Recargando';
   await loadData();
   if (API_BASE_URL) {
@@ -3250,6 +3259,7 @@ async function handleManualRefresh() {
     els.backendStatus.className = "status-pill online";
   }
   els.refreshButton.disabled = false;
+  els.refreshButton.classList.remove("is-busy");
   els.refreshButton.innerHTML = previousLabel;
 }
 
