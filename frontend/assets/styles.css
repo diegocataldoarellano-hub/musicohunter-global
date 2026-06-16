@@ -1,4 +1,5 @@
 :root {
+  /* Core palette */
   --ink: #f8fafc;
   --muted: #a7b0c3;
   --paper: #101522;
@@ -14,6 +15,38 @@
   --violet: #a78bfa;
   --cyan: #22d3ee;
   --shadow: 0 24px 80px rgba(0, 0, 0, 0.34);
+
+  /* High-contrast product tokens (Vercel-inspired, brand-agnostic) */
+  --primary: #ffffff;
+  --background: #000000;
+  --surface: rgba(255, 255, 255, 0.08);
+  --surface-hover: rgba(255, 255, 255, 0.12);
+  --focus-ring: rgba(244, 201, 93, 0.45);
+
+  /* Spatial layers */
+  --z-base: 0;
+  --z-ui: 10;
+  --z-tools: 100;
+  --z-overlay: 200;
+  --z-modal: 300;
+
+  /* Motion */
+  --ease-spring: cubic-bezier(0.34, 1.4, 0.64, 1);
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --duration-fast: 140ms;
+  --duration-normal: 220ms;
+
+  /* Fluid spacing & radii */
+  --space-xs: clamp(0.375rem, 0.8vw, 0.5rem);
+  --space-sm: clamp(0.5rem, 1vw, 0.75rem);
+  --space-md: clamp(0.875rem, 1.5vw, 1.125rem);
+  --space-lg: clamp(1rem, 2vw, 1.375rem);
+  --space-xl: clamp(1.25rem, 2.5vw, 1.75rem);
+  --radius-panel: clamp(1.25rem, 2vw, 1.75rem);
+  --radius-card: clamp(0.875rem, 1.2vw, 1.375rem);
+  --size-brand: clamp(1.875rem, 4vw, 2.125rem);
+  --map-height: clamp(17.5rem, 42vh, 36.875rem);
+  --list-max-height: clamp(22rem, 52vh, 36.875rem);
 }
 
 * {
@@ -22,6 +55,12 @@
 
 html {
   scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
 }
 
 body {
@@ -46,12 +85,18 @@ select {
 }
 
 .page-shell {
-  width: min(1880px, calc(100% - 20px));
+  width: min(100% - clamp(0.875rem, 2vw, 1.25rem), 1880px);
   margin: 0 auto;
 }
 
+.page-shell.is-loading .results-list,
+.page-shell.is-loading .sources-list {
+  opacity: 0.55;
+  pointer-events: none;
+}
+
 .hero {
-  padding: 14px 0 22px;
+  padding: var(--space-sm) 0 var(--space-md);
 }
 
 .topbar {
@@ -70,7 +115,12 @@ select {
   text-decoration: none;
   border: 1px solid var(--line);
   border-radius: 999px;
-  transition: transform 160ms ease, border-color 160ms ease, background 160ms ease;
+  transition:
+    transform var(--duration-fast) var(--ease-spring),
+    border-color var(--duration-normal) var(--ease-out),
+    background var(--duration-normal) var(--ease-out),
+    box-shadow var(--duration-normal) var(--ease-out),
+    opacity var(--duration-fast) ease;
 }
 
 .brand {
@@ -87,8 +137,8 @@ select {
 .brand-mark {
   display: grid;
   place-items: center;
-  width: 34px;
-  height: 34px;
+  width: var(--size-brand);
+  height: var(--size-brand);
   border-radius: 50%;
   background: var(--gold);
   color: #16110a;
@@ -118,7 +168,16 @@ select {
 .brand:hover {
   transform: translateY(-1px);
   border-color: rgba(244, 201, 93, 0.55);
-  background: rgba(255, 255, 255, 0.1);
+  background: var(--surface-hover);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.22);
+}
+
+.ghost-link:active,
+.secondary-action:active,
+.small-button:active,
+.brand:active,
+.primary-action:active {
+  transform: translateY(0) scale(0.98);
 }
 
 .ghost-link:disabled {
@@ -129,9 +188,11 @@ select {
 
 .hero-grid {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(320px, 0.42fr);
-  gap: 20px;
+  grid-template-columns: minmax(0, 1.4fr) minmax(min(100%, 18rem), 0.42fr);
+  gap: var(--space-lg);
   align-items: stretch;
+  container-type: inline-size;
+  container-name: hero;
 }
 
 .hero-copy,
@@ -149,9 +210,9 @@ select {
 }
 
 .hero-copy {
-  padding: clamp(28px, 4vw, 52px);
-  border-radius: 28px;
-  min-height: 300px;
+  padding: clamp(1.25rem, 3vw, 2.5rem);
+  border-radius: var(--radius-panel);
+  min-height: clamp(12rem, 28vh, 18.75rem);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -218,6 +279,11 @@ h2 {
 
 .primary-action:hover {
   transform: translateY(-2px);
+  box-shadow: 0 12px 32px rgba(244, 201, 93, 0.28);
+}
+
+.primary-action:focus-visible {
+  box-shadow: 0 0 0 3px var(--focus-ring);
 }
 
 .secondary-action {
@@ -225,12 +291,13 @@ h2 {
 }
 
 .hero-card {
-  border-radius: 28px;
-  padding: 22px;
+  border-radius: var(--radius-panel);
+  padding: var(--space-lg);
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  gap: 22px;
+  gap: var(--space-lg);
+  container-type: inline-size;
 }
 
 .signal-header {
@@ -242,25 +309,42 @@ h2 {
 }
 
 .pulse-dot {
-  width: 12px;
-  height: 12px;
+  width: clamp(0.625rem, 1.2vw, 0.75rem);
+  height: clamp(0.625rem, 1.2vw, 0.75rem);
   border-radius: 999px;
   background: var(--green);
-  box-shadow: 0 0 0 8px rgba(34, 197, 94, 0.14);
+  box-shadow: 0 0 0 clamp(0.375rem, 1vw, 0.5rem) rgba(34, 197, 94, 0.14);
+  animation: pulse-live 2.4s var(--ease-out) infinite;
+}
+
+@keyframes pulse-live {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.72; transform: scale(0.92); }
 }
 
 .signal-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
-  margin: 8px 0 0;
+  grid-template-columns: repeat(auto-fit, minmax(clamp(5.5rem, 18cqw, 7.5rem), 1fr));
+  gap: var(--space-sm);
+  margin: var(--space-xs) 0 0;
 }
 
 .signal-grid div,
 .stat-card {
   border: 1px solid var(--line);
-  border-radius: 22px;
-  background: rgba(255, 255, 255, 0.055);
+  border-radius: var(--radius-card);
+  background: var(--surface);
+  transition:
+    transform var(--duration-fast) var(--ease-spring),
+    border-color var(--duration-normal) var(--ease-out),
+    background var(--duration-normal) var(--ease-out);
+}
+
+.signal-grid div:hover,
+.stat-card:hover {
+  transform: translateY(-1px);
+  border-color: rgba(255, 255, 255, 0.18);
+  background: var(--surface-hover);
 }
 
 .signal-grid div {
@@ -282,18 +366,18 @@ h2 {
 }
 
 .main-layout {
-  padding: 0 0 44px;
+  padding: 0 0 clamp(1.75rem, 4vw, 2.75rem);
 }
 
 .stats-grid {
   display: grid;
-  grid-template-columns: repeat(4, minmax(160px, 1fr));
-  gap: 14px;
-  margin-bottom: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(clamp(9rem, 18vw, 10rem), 1fr));
+  gap: var(--space-md);
+  margin-bottom: var(--space-md);
 }
 
 .stat-card {
-  padding: 18px;
+  padding: var(--space-lg);
 }
 
 .stat-card i {
@@ -303,9 +387,14 @@ h2 {
 
 .workspace {
   display: grid;
-  grid-template-columns: minmax(280px, 0.7fr) minmax(460px, 1.5fr) minmax(330px, 0.9fr);
-  gap: 14px;
+  grid-template-columns:
+    minmax(clamp(15rem, 22vw, 17.5rem), 0.72fr)
+    minmax(clamp(18rem, 32vw, 28.75rem), 1.5fr)
+    minmax(clamp(16rem, 24vw, 20.625rem), 0.9fr);
+  gap: var(--space-md);
   align-items: start;
+  container-type: inline-size;
+  container-name: workspace;
 }
 
 .control-panel,
@@ -313,8 +402,9 @@ h2 {
 .results-panel,
 .calendar-panel,
 .sources-panel {
-  border-radius: 28px;
-  padding: 18px;
+  border-radius: var(--radius-panel);
+  padding: var(--space-lg);
+  container-type: inline-size;
 }
 
 .panel-heading,
@@ -351,19 +441,24 @@ input,
 select {
   width: 100%;
   border: 1px solid var(--line);
-  border-radius: 14px;
-  padding: 11px 12px;
+  border-radius: var(--radius-card);
+  padding: clamp(0.625rem, 1.2vw, 0.6875rem) clamp(0.6875rem, 1.4vw, 0.75rem);
   color: var(--ink);
-  background: rgba(255, 255, 255, 0.07);
+  background: var(--surface);
   outline: none;
+  transition:
+    border-color var(--duration-normal) var(--ease-out),
+    background var(--duration-normal) var(--ease-out),
+    box-shadow var(--duration-fast) var(--ease-out);
 }
 
 input:focus,
 select:focus,
 button:focus-visible,
 a:focus-visible {
-  outline: 3px solid rgba(244, 201, 93, 0.4);
-  outline-offset: 2px;
+  outline: none;
+  border-color: rgba(244, 201, 93, 0.55);
+  box-shadow: 0 0 0 3px var(--focus-ring);
 }
 
 select option {
@@ -380,8 +475,8 @@ select option {
 
 .mission-list {
   display: grid;
-  gap: 7px;
-  max-height: 185px;
+  gap: var(--space-xs);
+  max-height: clamp(9rem, 22vh, 11.5625rem);
   overflow: auto;
 }
 
@@ -403,11 +498,23 @@ select option {
 
 .search-empty-card {
   border: 1px solid rgba(96, 165, 250, 0.22);
-  border-radius: 22px;
-  padding: 18px;
+  border-radius: var(--radius-card);
+  padding: var(--space-xl);
   background:
     radial-gradient(circle at 12% 0%, rgba(96, 165, 250, 0.18), transparent 34%),
     rgba(96, 165, 250, 0.06);
+  animation: card-reveal var(--duration-normal) var(--ease-out);
+}
+
+@keyframes card-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .search-empty-card h3 {
@@ -449,10 +556,20 @@ select option {
 .chip {
   border: 1px solid var(--line);
   border-radius: 999px;
-  padding: 7px 11px;
+  padding: clamp(0.375rem, 0.9vw, 0.4375rem) clamp(0.625rem, 1.2vw, 0.6875rem);
   color: var(--muted);
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--surface);
   cursor: pointer;
+  transition:
+    transform var(--duration-fast) var(--ease-spring),
+    background var(--duration-normal) var(--ease-out),
+    border-color var(--duration-normal) var(--ease-out),
+    color var(--duration-normal) var(--ease-out);
+}
+
+.chip:hover {
+  transform: translateY(-1px);
+  background: var(--surface-hover);
 }
 
 .chip.active {
@@ -462,10 +579,30 @@ select option {
 }
 
 #map {
-  height: 590px;
-  border-radius: 22px;
+  height: var(--map-height);
+  border-radius: var(--radius-card);
   overflow: hidden;
   background: #0b1220;
+  position: relative;
+}
+
+#map.is-loading::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: var(--z-ui);
+  background: linear-gradient(
+    110deg,
+    rgba(255, 255, 255, 0.04) 8%,
+    rgba(255, 255, 255, 0.1) 18%,
+    rgba(255, 255, 255, 0.04) 33%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.4s linear infinite;
+}
+
+@keyframes shimmer {
+  to { background-position-x: -200%; }
 }
 
 .status-pill,
@@ -498,25 +635,36 @@ select option {
 
 .results-list {
   display: grid;
-  gap: 12px;
-  max-height: 590px;
+  gap: var(--space-md);
+  max-height: var(--list-max-height);
   overflow: auto;
-  padding-right: 4px;
+  padding-right: var(--space-xs);
+  scroll-behavior: smooth;
 }
 
 .opportunity-card {
   border: 1px solid var(--line);
-  border-radius: 22px;
-  padding: 16px;
-  background: rgba(255, 255, 255, 0.055);
+  border-radius: var(--radius-card);
+  padding: var(--space-lg);
+  background: var(--surface);
   cursor: pointer;
-  transition: transform 160ms ease, border-color 160ms ease, background 160ms ease;
+  transition:
+    transform var(--duration-fast) var(--ease-spring),
+    border-color var(--duration-normal) var(--ease-out),
+    background var(--duration-normal) var(--ease-out),
+    box-shadow var(--duration-normal) var(--ease-out);
 }
 
 .opportunity-card:hover {
   transform: translateY(-2px);
   border-color: rgba(244, 201, 93, 0.45);
-  background: rgba(255, 255, 255, 0.082);
+  background: var(--surface-hover);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.2);
+}
+
+.opportunity-card:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--focus-ring);
 }
 
 .card-top,
@@ -554,12 +702,12 @@ select option {
 
 .application-mini div {
   display: grid;
-  grid-template-columns: 88px minmax(0, 1fr);
-  gap: 10px;
+  grid-template-columns: clamp(4.5rem, 12cqw, 5.5rem) minmax(0, 1fr);
+  gap: var(--space-sm);
   align-items: start;
   border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 14px;
-  padding: 9px 10px;
+  border-radius: var(--radius-card);
+  padding: clamp(0.5rem, 1.2vw, 0.625rem) clamp(0.5625rem, 1.4vw, 0.625rem);
   background: rgba(15, 23, 42, 0.48);
 }
 
@@ -643,10 +791,12 @@ select option {
 
 .lower-grid {
   display: grid;
-  grid-template-columns: minmax(360px, 0.72fr) minmax(520px, 1.28fr);
-  gap: 16px;
-  margin-top: 16px;
+  grid-template-columns: minmax(clamp(16rem, 28vw, 22.5rem), 0.72fr) minmax(clamp(18rem, 40vw, 32.5rem), 1.28fr);
+  gap: var(--space-md);
+  margin-top: var(--space-md);
   align-items: start;
+  container-type: inline-size;
+  container-name: lower;
 }
 
 .calendar-grid {
@@ -662,12 +812,13 @@ select option {
 }
 
 .calendar-day {
-  min-height: 54px;
+  min-height: clamp(2.75rem, 6vw, 3.375rem);
   border: 1px solid var(--line);
-  border-radius: 15px;
-  padding: 8px;
+  border-radius: var(--radius-card);
+  padding: var(--space-xs);
   color: var(--muted);
-  background: rgba(255, 255, 255, 0.045);
+  background: var(--surface);
+  transition: border-color var(--duration-normal) var(--ease-out), background var(--duration-normal) var(--ease-out);
 }
 
 .calendar-day.has-events {
@@ -694,18 +845,27 @@ select option {
 
 .sources-list {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 10px;
-  max-height: 520px;
+  grid-template-columns: repeat(auto-fit, minmax(clamp(13rem, 28cqw, 15.625rem), 1fr));
+  gap: var(--space-sm);
+  max-height: clamp(20rem, 48vh, 32.5rem);
   overflow: auto;
-  padding-right: 4px;
+  padding-right: var(--space-xs);
 }
 
 .source-card {
   border: 1px solid var(--line);
-  border-radius: 18px;
-  padding: 14px;
-  background: rgba(255, 255, 255, 0.045);
+  border-radius: var(--radius-card);
+  padding: var(--space-md);
+  background: var(--surface);
+  transition:
+    transform var(--duration-fast) var(--ease-spring),
+    border-color var(--duration-normal) var(--ease-out),
+    background var(--duration-normal) var(--ease-out);
+}
+
+.source-card:hover {
+  transform: translateY(-1px);
+  background: var(--surface-hover);
 }
 
 .source-card h3 {
@@ -735,28 +895,41 @@ select option {
 }
 
 .detail-dialog {
-  width: min(760px, calc(100% - 28px));
-  border-radius: 30px;
+  width: min(47.5rem, calc(100% - clamp(1rem, 3vw, 1.75rem)));
+  border: 1px solid var(--line);
+  border-radius: var(--radius-panel);
   color: var(--ink);
-  padding: 24px;
+  padding: clamp(1.25rem, 3vw, 1.5rem);
+  z-index: var(--z-modal);
 }
 
 .detail-dialog::backdrop {
-  background: rgba(0, 0, 0, 0.62);
-  backdrop-filter: blur(8px);
+  background: rgba(0, 0, 0, 0.72);
+  backdrop-filter: blur(10px);
+  z-index: var(--z-overlay);
 }
 
 .dialog-close {
   position: absolute;
-  top: 16px;
-  right: 16px;
-  width: 38px;
-  height: 38px;
+  top: var(--space-md);
+  right: var(--space-md);
+  z-index: var(--z-tools);
+  width: clamp(2rem, 4vw, 2.375rem);
+  height: clamp(2rem, 4vw, 2.375rem);
   border: 1px solid var(--line);
   border-radius: 50%;
   color: var(--ink);
-  background: rgba(255, 255, 255, 0.08);
+  background: var(--surface);
   cursor: pointer;
+  transition:
+    transform var(--duration-fast) var(--ease-spring),
+    background var(--duration-normal) var(--ease-out),
+    border-color var(--duration-normal) var(--ease-out);
+}
+
+.dialog-close:hover {
+  transform: scale(1.04);
+  background: var(--surface-hover);
 }
 
 .detail-content h2 {
@@ -785,26 +958,81 @@ select option {
 
 .empty-state {
   border: 1px dashed var(--line);
-  border-radius: 22px;
-  padding: 22px;
+  border-radius: var(--radius-card);
+  padding: var(--space-xl);
   color: var(--muted);
+  text-align: center;
+  background: var(--surface);
 }
 
+.status-pill.is-loading {
+  color: #dbeafe;
+  border-color: rgba(96, 165, 250, 0.35);
+  animation: status-pulse 1.2s var(--ease-out) infinite;
+}
+
+@keyframes status-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.55; }
+}
+
+.skeleton-block {
+  border-radius: var(--radius-card);
+  background: linear-gradient(
+    110deg,
+    rgba(255, 255, 255, 0.05) 8%,
+    rgba(255, 255, 255, 0.12) 18%,
+    rgba(255, 255, 255, 0.05) 33%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.4s linear infinite;
+}
+
+/* Container-query responsive architecture */
+@container hero (max-width: 52rem) {
+  .hero-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@container workspace (max-width: 68rem) {
+  .workspace {
+    grid-template-columns: minmax(clamp(14rem, 30%, 18rem), 0.85fr) minmax(0, 1.4fr);
+  }
+
+  .results-panel {
+    grid-column: 1 / -1;
+  }
+}
+
+@container workspace (max-width: 42rem) {
+  .workspace {
+    grid-template-columns: 1fr;
+  }
+
+  .results-panel {
+    grid-column: auto;
+  }
+}
+
+@container lower (max-width: 48rem) {
+  .lower-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Viewport fallbacks for browsers without container queries on page shell */
 @media (max-width: 1100px) {
   .hero-grid {
     grid-template-columns: 1fr;
   }
 
   .workspace {
-    grid-template-columns: 300px minmax(0, 1fr);
+    grid-template-columns: minmax(clamp(14rem, 28vw, 18.75rem), 0.85fr) minmax(0, 1.4fr);
   }
 
   .results-panel {
     grid-column: 1 / -1;
-  }
-
-  #map {
-    height: 460px;
   }
 }
 
@@ -820,10 +1048,6 @@ select option {
 }
 
 @media (max-width: 720px) {
-  .page-shell {
-    width: min(100% - 14px, 1880px);
-  }
-
   .topbar,
   .panel-toolbar {
     align-items: flex-start;
@@ -832,16 +1056,38 @@ select option {
 
   .hero-copy,
   .hero-card {
-    border-radius: 24px;
+    border-radius: clamp(1rem, 3vw, 1.5rem);
   }
 
-  .stats-grid,
   .field-grid,
   .signal-grid {
     grid-template-columns: 1fr;
   }
 
   h1 {
-    font-size: 2.7rem;
+    font-size: clamp(2.1rem, 9vw, 2.7rem);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .ghost-link:hover,
+  .secondary-action:hover,
+  .small-button:hover,
+  .brand:hover,
+  .opportunity-card:hover,
+  .source-card:hover,
+  .signal-grid div:hover,
+  .stat-card:hover,
+  .chip:hover {
+    transform: none;
   }
 }
