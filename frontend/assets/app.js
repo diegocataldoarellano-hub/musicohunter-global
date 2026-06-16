@@ -2721,6 +2721,8 @@ const filters = {
 
 const els = {
   apiLink: document.getElementById("apiLink"),
+  pageShell: document.querySelector(".page-shell"),
+  map: document.getElementById("map"),
   backendStatus: document.getElementById("backendStatus"),
   refreshButton: document.getElementById("refreshButton"),
   searchInput: document.getElementById("searchInput"),
@@ -3206,15 +3208,23 @@ function escapeHtml(value) {
     .replaceAll("'", "&#039;");
 }
 
+function setLoadingState(isLoading) {
+  els.pageShell?.classList.toggle("is-loading", isLoading);
+  els.map?.classList.toggle("is-loading", isLoading);
+  els.backendStatus?.classList.toggle("is-loading", isLoading);
+}
+
 async function loadData() {
+  setLoadingState(true);
   els.backendStatus.textContent = "Conectando";
-  els.backendStatus.className = "status-pill";
+  els.backendStatus.className = "status-pill is-loading";
   if (!API_BASE_URL) {
     opportunities = fallbackPayload.opportunities;
     sources = fallbackPayload.sources;
     els.backendStatus.textContent = "Respaldo local";
     els.backendStatus.className = "status-pill offline";
     renderAll();
+    setLoadingState(false);
     return;
   }
   try {
@@ -3238,6 +3248,7 @@ async function loadData() {
     els.backendStatus.className = "status-pill offline";
   }
   renderAll();
+  setLoadingState(false);
 }
 
 async function handleManualRefresh() {
