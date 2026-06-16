@@ -3206,14 +3206,33 @@ function escapeHtml(value) {
     .replaceAll("'", "&#039;");
 }
 
-async function loadData() {
+function showLoadingState() {
+  document.body.classList.add("is-loading");
   els.backendStatus.textContent = "Conectando";
-  els.backendStatus.className = "status-pill";
+  els.backendStatus.className = "status-pill loading";
+  els.resultCount.textContent = "…";
+  els.opportunityList.innerHTML = Array.from({ length: 4 }, () => `
+    <article class="opportunity-card skeleton-card" aria-hidden="true">
+      <div class="skeleton-line skeleton-line--short"></div>
+      <div class="skeleton-line skeleton-line--title"></div>
+      <div class="skeleton-line"></div>
+      <div class="skeleton-line skeleton-line--medium"></div>
+    </article>
+  `).join("");
+}
+
+function clearLoadingState() {
+  document.body.classList.remove("is-loading");
+}
+
+async function loadData() {
+  showLoadingState();
   if (!API_BASE_URL) {
     opportunities = fallbackPayload.opportunities;
     sources = fallbackPayload.sources;
     els.backendStatus.textContent = "Respaldo local";
     els.backendStatus.className = "status-pill offline";
+    clearLoadingState();
     renderAll();
     return;
   }
@@ -3237,6 +3256,7 @@ async function loadData() {
     els.backendStatus.textContent = "API sin respuesta - respaldo local";
     els.backendStatus.className = "status-pill offline";
   }
+  clearLoadingState();
   renderAll();
 }
 
@@ -3625,7 +3645,8 @@ function renderSources() {
     </article>
   `;
   const empty = `
-    <article class="source-card">
+    <article class="empty-state" role="status">
+      <i class="fa-solid fa-compass" aria-hidden="true"></i>
       <h3>No hay fuentes para este filtro</h3>
       <p>Prueba ampliar pais, region o categoria. El mapa y resultados siguen conectados al mismo criterio.</p>
     </article>
