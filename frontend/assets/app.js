@@ -2733,6 +2733,7 @@ const els = {
   quickFilters: document.getElementById("quickFilters"),
   opportunityList: document.getElementById("opportunityList"),
   resultCount: document.getElementById("resultCount"),
+  map: document.getElementById("map"),
   mapTitle: document.getElementById("mapTitle"),
   sourcesList: document.getElementById("sourcesList"),
   clearFilters: document.getElementById("clearFilters"),
@@ -2742,7 +2743,8 @@ const els = {
   calendarTitle: document.getElementById("calendarTitle"),
   calendarDays: document.getElementById("calendarDays"),
   prevMonth: document.getElementById("prevMonth"),
-  nextMonth: document.getElementById("nextMonth")
+  nextMonth: document.getElementById("nextMonth"),
+  mainLayout: document.getElementById("radar")
 };
 
 function unique(values) {
@@ -3206,15 +3208,31 @@ function escapeHtml(value) {
     .replaceAll("'", "&#039;");
 }
 
+function renderLoadingSkeleton() {
+  els.opportunityList.classList.add("is-loading");
+  els.opportunityList.setAttribute("aria-busy", "true");
+  els.opportunityList.innerHTML = Array.from({ length: 3 }, () => `
+    <article class="skeleton-card" aria-hidden="true">
+      <div class="skeleton-line short"></div>
+      <div class="skeleton-line title"></div>
+      <div class="skeleton-line body"></div>
+      <div class="skeleton-line body"></div>
+    </article>
+  `).join("");
+}
+
 async function loadData() {
+  els.mainLayout?.classList.add("is-booting");
+  renderLoadingSkeleton();
   els.backendStatus.textContent = "Conectando";
-  els.backendStatus.className = "status-pill";
+  els.backendStatus.className = "status-pill loading";
   if (!API_BASE_URL) {
     opportunities = fallbackPayload.opportunities;
     sources = fallbackPayload.sources;
     els.backendStatus.textContent = "Respaldo local";
     els.backendStatus.className = "status-pill offline";
     renderAll();
+    els.mainLayout?.classList.remove("is-booting");
     return;
   }
   try {
@@ -3238,18 +3256,27 @@ async function loadData() {
     els.backendStatus.className = "status-pill offline";
   }
   renderAll();
+  els.mainLayout?.classList.remove("is-booting");
 }
 
 async function handleManualRefresh() {
   const previousLabel = els.refreshButton.innerHTML;
   els.refreshButton.disabled = true;
+  els.refreshButton.classList.add("is-loading");
   els.refreshButton.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Recargando';
   await loadData();
   if (API_BASE_URL) {
-    els.backendStatus.textContent = "Datos recargados - motor automatico en GitHub";
-    els.backendStatus.className = "status-pill online";
+    els.backendStatus.textContent = "Datos recargados";
+    els.backendStatus.className = "status-pill success";
+    window.setTimeout(() => {
+      if (els.backendStatus.classList.contains("success")) {
+        els.backendStatus.textContent = "Backend online";
+        els.backendStatus.className = "status-pill online";
+      }
+    }, 2400);
   }
   els.refreshButton.disabled = false;
+  els.refreshButton.classList.remove("is-loading");
   els.refreshButton.innerHTML = previousLabel;
 }
 
@@ -3487,6 +3514,8 @@ function applicationGuide(opp) {
 function renderList() {
   const externalCards = buildExternalSearchCards();
   els.resultCount.textContent = filtered.length + externalCards.length;
+  els.opportunityList.classList.remove("is-loading");
+  els.opportunityList.setAttribute("aria-busy", "false");
   const curatedHtml = filtered.length
     ? filtered.map(renderOpportunityCard).join("")
     : `<article class="search-empty-card">
@@ -3509,11 +3538,13 @@ function renderList() {
 
 function initMap() {
   if (map) return;
+  els.map.classList.add("is-loading");
   map = L.map("map", { scrollWheelZoom: false }).setView([-25.3, -67.2], 4);
   L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
     attribution: "&copy; OpenStreetMap",
     maxZoom: 18
   }).addTo(map);
+  map.whenReady(() => els.map.classList.remove("is-loading"));
 }
 
 function renderMap() {
