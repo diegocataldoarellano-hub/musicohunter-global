@@ -2742,7 +2742,8 @@ const els = {
   calendarTitle: document.getElementById("calendarTitle"),
   calendarDays: document.getElementById("calendarDays"),
   prevMonth: document.getElementById("prevMonth"),
-  nextMonth: document.getElementById("nextMonth")
+  nextMonth: document.getElementById("nextMonth"),
+  radar: document.getElementById("radar")
 };
 
 function unique(values) {
@@ -3207,6 +3208,8 @@ function escapeHtml(value) {
 }
 
 async function loadData() {
+  document.body.classList.add("is-loading");
+  els.radar?.setAttribute("aria-busy", "true");
   els.backendStatus.textContent = "Conectando";
   els.backendStatus.className = "status-pill";
   if (!API_BASE_URL) {
@@ -3215,6 +3218,8 @@ async function loadData() {
     els.backendStatus.textContent = "Respaldo local";
     els.backendStatus.className = "status-pill offline";
     renderAll();
+    document.body.classList.remove("is-loading");
+    els.radar?.setAttribute("aria-busy", "false");
     return;
   }
   try {
@@ -3238,6 +3243,8 @@ async function loadData() {
     els.backendStatus.className = "status-pill offline";
   }
   renderAll();
+  document.body.classList.remove("is-loading");
+  els.radar?.setAttribute("aria-busy", "false");
 }
 
 async function handleManualRefresh() {
