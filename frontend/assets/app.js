@@ -3206,9 +3206,29 @@ function escapeHtml(value) {
     .replaceAll("'", "&#039;");
 }
 
+function renderSkeletonCards(count = 3) {
+  return Array.from({ length: count }, () => `
+    <article class="skeleton-card" aria-hidden="true">
+      <div class="skeleton-line short"></div>
+      <div class="skeleton-line wide"></div>
+      <div class="skeleton-line medium"></div>
+      <div class="skeleton-line wide"></div>
+    </article>
+  `).join("");
+}
+
+function setLoadingState(isLoading) {
+  els.opportunityList.classList.toggle("is-loading", isLoading);
+  els.opportunityList.setAttribute("aria-busy", isLoading ? "true" : "false");
+  if (isLoading) {
+    els.opportunityList.innerHTML = renderSkeletonCards(4);
+    els.backendStatus.textContent = "Conectando";
+    els.backendStatus.className = "status-pill loading";
+  }
+}
+
 async function loadData() {
-  els.backendStatus.textContent = "Conectando";
-  els.backendStatus.className = "status-pill";
+  setLoadingState(true);
   if (!API_BASE_URL) {
     opportunities = fallbackPayload.opportunities;
     sources = fallbackPayload.sources;
@@ -3485,6 +3505,8 @@ function applicationGuide(opp) {
 }
 
 function renderList() {
+  els.opportunityList.classList.remove("is-loading");
+  els.opportunityList.setAttribute("aria-busy", "false");
   const externalCards = buildExternalSearchCards();
   els.resultCount.textContent = filtered.length + externalCards.length;
   const curatedHtml = filtered.length
