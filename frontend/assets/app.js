@@ -3207,14 +3207,20 @@ function escapeHtml(value) {
 }
 
 async function loadData() {
+  document.body.classList.add("is-loading");
+  els.opportunityList.classList.add("is-skeleton");
+  els.opportunityList.setAttribute("aria-busy", "true");
   els.backendStatus.textContent = "Conectando";
-  els.backendStatus.className = "status-pill";
+  els.backendStatus.className = "status-pill loading";
   if (!API_BASE_URL) {
     opportunities = fallbackPayload.opportunities;
     sources = fallbackPayload.sources;
     els.backendStatus.textContent = "Respaldo local";
     els.backendStatus.className = "status-pill offline";
     renderAll();
+    document.body.classList.remove("is-loading");
+    els.opportunityList.classList.remove("is-skeleton");
+    els.opportunityList.setAttribute("aria-busy", "false");
     return;
   }
   try {
@@ -3238,17 +3244,27 @@ async function loadData() {
     els.backendStatus.className = "status-pill offline";
   }
   renderAll();
+  document.body.classList.remove("is-loading");
+  els.opportunityList.classList.remove("is-skeleton");
+  els.opportunityList.setAttribute("aria-busy", "false");
 }
 
 async function handleManualRefresh() {
   const previousLabel = els.refreshButton.innerHTML;
   els.refreshButton.disabled = true;
   els.refreshButton.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Recargando';
+  document.body.classList.add("is-loading");
   await loadData();
   if (API_BASE_URL) {
     els.backendStatus.textContent = "Datos recargados - motor automatico en GitHub";
-    els.backendStatus.className = "status-pill online";
+    els.backendStatus.className = "status-pill online feedback-success";
+    window.setTimeout(() => {
+      if (els.backendStatus.classList.contains("feedback-success")) {
+        els.backendStatus.classList.remove("feedback-success");
+      }
+    }, 2400);
   }
+  document.body.classList.remove("is-loading");
   els.refreshButton.disabled = false;
   els.refreshButton.innerHTML = previousLabel;
 }
