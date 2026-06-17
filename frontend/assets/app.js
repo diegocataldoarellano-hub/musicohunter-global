@@ -2733,6 +2733,7 @@ const els = {
   quickFilters: document.getElementById("quickFilters"),
   opportunityList: document.getElementById("opportunityList"),
   resultCount: document.getElementById("resultCount"),
+  map: document.getElementById("map"),
   mapTitle: document.getElementById("mapTitle"),
   sourcesList: document.getElementById("sourcesList"),
   clearFilters: document.getElementById("clearFilters"),
@@ -3206,9 +3207,22 @@ function escapeHtml(value) {
     .replaceAll("'", "&#039;");
 }
 
+function showResultsSkeleton(count = 3) {
+  els.opportunityList.classList.add("is-loading");
+  els.opportunityList.innerHTML = Array.from({ length: count }, () => `
+    <article class="opportunity-card skeleton-card" aria-hidden="true">
+      <div class="skeleton-line skeleton-line--short"></div>
+      <div class="skeleton-line skeleton-line--title"></div>
+      <div class="skeleton-line"></div>
+      <div class="skeleton-line skeleton-line--medium"></div>
+    </article>
+  `).join("");
+}
+
 async function loadData() {
   els.backendStatus.textContent = "Conectando";
-  els.backendStatus.className = "status-pill";
+  els.backendStatus.className = "status-pill loading";
+  showResultsSkeleton();
   if (!API_BASE_URL) {
     opportunities = fallbackPayload.opportunities;
     sources = fallbackPayload.sources;
@@ -3243,13 +3257,15 @@ async function loadData() {
 async function handleManualRefresh() {
   const previousLabel = els.refreshButton.innerHTML;
   els.refreshButton.disabled = true;
+  els.refreshButton.classList.add("is-loading");
   els.refreshButton.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Recargando';
   await loadData();
   if (API_BASE_URL) {
     els.backendStatus.textContent = "Datos recargados - motor automatico en GitHub";
-    els.backendStatus.className = "status-pill online";
+    els.backendStatus.className = "status-pill success";
   }
   els.refreshButton.disabled = false;
+  els.refreshButton.classList.remove("is-loading");
   els.refreshButton.innerHTML = previousLabel;
 }
 
@@ -3504,16 +3520,19 @@ function renderList() {
     </div>
     ${externalCards.map(renderExternalCard).join("")}
   `;
+  els.opportunityList.classList.remove("is-loading");
   els.opportunityList.innerHTML = curatedHtml + externalHtml;
 }
 
 function initMap() {
   if (map) return;
+  els.map.classList.add("is-loading");
   map = L.map("map", { scrollWheelZoom: false }).setView([-25.3, -67.2], 4);
   L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
     attribution: "&copy; OpenStreetMap",
     maxZoom: 18
   }).addTo(map);
+  map.whenReady(() => els.map.classList.remove("is-loading"));
 }
 
 function renderMap() {
