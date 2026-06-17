@@ -3206,9 +3206,25 @@ function escapeHtml(value) {
     .replaceAll("'", "&#039;");
 }
 
+function renderLoadingSkeleton() {
+  els.opportunityList.setAttribute("aria-busy", "true");
+  els.opportunityList.innerHTML = Array.from({ length: 3 }, () => `
+    <article class="opportunity-card skeleton-card" aria-hidden="true">
+      <div class="card-top">
+        <span class="skeleton skeleton-line w-30"></span>
+        <span class="skeleton skeleton-line w-40"></span>
+      </div>
+      <span class="skeleton skeleton-line w-85"></span>
+      <span class="skeleton skeleton-line w-70"></span>
+      <span class="skeleton skeleton-block"></span>
+    </article>
+  `).join("");
+}
+
 async function loadData() {
+  renderLoadingSkeleton();
   els.backendStatus.textContent = "Conectando";
-  els.backendStatus.className = "status-pill";
+  els.backendStatus.className = "status-pill loading";
   if (!API_BASE_URL) {
     opportunities = fallbackPayload.opportunities;
     sources = fallbackPayload.sources;
@@ -3485,6 +3501,7 @@ function applicationGuide(opp) {
 }
 
 function renderList() {
+  els.opportunityList.removeAttribute("aria-busy");
   const externalCards = buildExternalSearchCards();
   els.resultCount.textContent = filtered.length + externalCards.length;
   const curatedHtml = filtered.length
