@@ -3206,7 +3206,13 @@ function escapeHtml(value) {
     .replaceAll("'", "&#039;");
 }
 
+function setLoadingState(isLoading) {
+  document.body.classList.toggle("is-loading", isLoading);
+  els.opportunityList.setAttribute("aria-busy", isLoading ? "true" : "false");
+}
+
 async function loadData() {
+  setLoadingState(true);
   els.backendStatus.textContent = "Conectando";
   els.backendStatus.className = "status-pill";
   if (!API_BASE_URL) {
@@ -3215,6 +3221,7 @@ async function loadData() {
     els.backendStatus.textContent = "Respaldo local";
     els.backendStatus.className = "status-pill offline";
     renderAll();
+    setLoadingState(false);
     return;
   }
   try {
@@ -3238,6 +3245,7 @@ async function loadData() {
     els.backendStatus.className = "status-pill offline";
   }
   renderAll();
+  setLoadingState(false);
 }
 
 async function handleManualRefresh() {
