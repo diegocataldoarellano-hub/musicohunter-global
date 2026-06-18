@@ -2733,6 +2733,7 @@ const els = {
   quickFilters: document.getElementById("quickFilters"),
   opportunityList: document.getElementById("opportunityList"),
   resultCount: document.getElementById("resultCount"),
+  map: document.getElementById("map"),
   mapTitle: document.getElementById("mapTitle"),
   sourcesList: document.getElementById("sourcesList"),
   clearFilters: document.getElementById("clearFilters"),
@@ -3208,12 +3209,16 @@ function escapeHtml(value) {
 
 async function loadData() {
   els.backendStatus.textContent = "Conectando";
-  els.backendStatus.className = "status-pill";
+  els.backendStatus.className = "status-pill loading";
+  els.opportunityList.classList.add("is-loading");
+  els.opportunityList.innerHTML = "";
+  els.opportunityList.setAttribute("aria-busy", "true");
   if (!API_BASE_URL) {
     opportunities = fallbackPayload.opportunities;
     sources = fallbackPayload.sources;
     els.backendStatus.textContent = "Respaldo local";
     els.backendStatus.className = "status-pill offline";
+    els.opportunityList.classList.remove("is-loading");
     renderAll();
     return;
   }
@@ -3237,12 +3242,14 @@ async function loadData() {
     els.backendStatus.textContent = "API sin respuesta - respaldo local";
     els.backendStatus.className = "status-pill offline";
   }
+  els.opportunityList.classList.remove("is-loading");
   renderAll();
 }
 
 async function handleManualRefresh() {
   const previousLabel = els.refreshButton.innerHTML;
   els.refreshButton.disabled = true;
+  els.refreshButton.classList.add("is-loading");
   els.refreshButton.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Recargando';
   await loadData();
   if (API_BASE_URL) {
@@ -3250,6 +3257,7 @@ async function handleManualRefresh() {
     els.backendStatus.className = "status-pill online";
   }
   els.refreshButton.disabled = false;
+  els.refreshButton.classList.remove("is-loading");
   els.refreshButton.innerHTML = previousLabel;
 }
 
@@ -3505,15 +3513,18 @@ function renderList() {
     ${externalCards.map(renderExternalCard).join("")}
   `;
   els.opportunityList.innerHTML = curatedHtml + externalHtml;
+  els.opportunityList.setAttribute("aria-busy", "false");
 }
 
 function initMap() {
   if (map) return;
+  els.map.classList.add("is-loading");
   map = L.map("map", { scrollWheelZoom: false }).setView([-25.3, -67.2], 4);
   L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
     attribution: "&copy; OpenStreetMap",
     maxZoom: 18
   }).addTo(map);
+  map.whenReady(() => els.map.classList.remove("is-loading"));
 }
 
 function renderMap() {
@@ -3625,8 +3636,8 @@ function renderSources() {
     </article>
   `;
   const empty = `
-    <article class="source-card">
-      <h3>No hay fuentes para este filtro</h3>
+    <article class="source-card empty-state">
+      <strong>No hay fuentes para este filtro</strong>
       <p>Prueba ampliar pais, region o categoria. El mapa y resultados siguen conectados al mismo criterio.</p>
     </article>
   `;
