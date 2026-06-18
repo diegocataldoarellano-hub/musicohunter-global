@@ -2733,6 +2733,7 @@ const els = {
   quickFilters: document.getElementById("quickFilters"),
   opportunityList: document.getElementById("opportunityList"),
   resultCount: document.getElementById("resultCount"),
+  map: document.getElementById("map"),
   mapTitle: document.getElementById("mapTitle"),
   sourcesList: document.getElementById("sourcesList"),
   clearFilters: document.getElementById("clearFilters"),
@@ -2742,8 +2743,47 @@ const els = {
   calendarTitle: document.getElementById("calendarTitle"),
   calendarDays: document.getElementById("calendarDays"),
   prevMonth: document.getElementById("prevMonth"),
-  nextMonth: document.getElementById("nextMonth")
+  nextMonth: document.getElementById("nextMonth"),
+  statusFeedback: document.getElementById("statusFeedback"),
+  statusLive: document.getElementById("statusLive")
 };
+
+const RESULTS_SKELETON_HTML = Array.from({ length: 3 }, () => `
+  <article class="skeleton-card" aria-hidden="true">
+    <div class="skeleton-line skeleton-line--title"></div>
+    <div class="skeleton-line skeleton-line--medium"></div>
+    <div class="skeleton-line skeleton-line--short"></div>
+  </article>
+`).join("");
+
+let initialDataLoad = true;
+let feedbackTimer;
+
+function setBackendStatus(text, className) {
+  els.backendStatus.textContent = text;
+  els.backendStatus.className = className;
+  if (els.statusLive) {
+    els.statusLive.textContent = text;
+  }
+}
+
+function setResultsLoading(loading) {
+  els.opportunityList.classList.toggle("is-loading", loading);
+  if (loading) {
+    els.opportunityList.innerHTML = RESULTS_SKELETON_HTML;
+    els.resultCount.textContent = "…";
+  }
+}
+
+function showFeedback(message, type = "success") {
+  if (!els.statusFeedback) return;
+  els.statusFeedback.textContent = message;
+  els.statusFeedback.className = `status-feedback status-feedback--${type} is-visible`;
+  clearTimeout(feedbackTimer);
+  feedbackTimer = setTimeout(() => {
+    els.statusFeedback.classList.remove("is-visible");
+  }, 3200);
+}
 
 function unique(values) {
   return [...new Set(values.filter(Boolean))].sort((a, b) => a.localeCompare(b, "es"));
@@ -3207,13 +3247,16 @@ function escapeHtml(value) {
 }
 
 async function loadData() {
-  els.backendStatus.textContent = "Conectando";
-  els.backendStatus.className = "status-pill";
+  setBackendStatus("Conectando", "status-pill loading");
+  if (initialDataLoad) {
+    setResultsLoading(true);
+  }
   if (!API_BASE_URL) {
     opportunities = fallbackPayload.opportunities;
     sources = fallbackPayload.sources;
-    els.backendStatus.textContent = "Respaldo local";
-    els.backendStatus.className = "status-pill offline";
+    setBackendStatus("Respaldo local", "status-pill offline");
+    if (initialDataLoad) setResultsLoading(false);
+    initialDataLoad = false;
     renderAll();
     return;
   }
@@ -3229,27 +3272,30 @@ async function loadData() {
     const sourcesJson = await sourcesResponse.json();
     opportunities = oppsJson.items || [];
     sources = sourcesJson.items || [];
-    els.backendStatus.textContent = "Backend online";
-    els.backendStatus.className = "status-pill online";
+    setBackendStatus("Backend online", "status-pill online");
   } catch (error) {
     opportunities = fallbackPayload.opportunities;
     sources = fallbackPayload.sources;
-    els.backendStatus.textContent = "API sin respuesta - respaldo local";
-    els.backendStatus.className = "status-pill offline";
+    setBackendStatus("API sin respuesta - respaldo local", "status-pill offline");
+    showFeedback("No se pudo conectar con la API. Mostrando datos locales.", "error");
   }
+  if (initialDataLoad) setResultsLoading(false);
+  initialDataLoad = false;
   renderAll();
 }
 
 async function handleManualRefresh() {
   const previousLabel = els.refreshButton.innerHTML;
   els.refreshButton.disabled = true;
+  els.refreshButton.classList.add("is-loading");
   els.refreshButton.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Recargando';
   await loadData();
   if (API_BASE_URL) {
-    els.backendStatus.textContent = "Datos recargados - motor automatico en GitHub";
-    els.backendStatus.className = "status-pill online";
+    setBackendStatus("Datos recargados - motor automatico en GitHub", "status-pill online");
+    showFeedback("Radar actualizado correctamente.");
   }
   els.refreshButton.disabled = false;
+  els.refreshButton.classList.remove("is-loading");
   els.refreshButton.innerHTML = previousLabel;
 }
 
@@ -3509,11 +3555,13 @@ function renderList() {
 
 function initMap() {
   if (map) return;
+  els.map.classList.add("is-loading");
   map = L.map("map", { scrollWheelZoom: false }).setView([-25.3, -67.2], 4);
   L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
     attribution: "&copy; OpenStreetMap",
     maxZoom: 18
   }).addTo(map);
+  map.whenReady(() => els.map.classList.remove("is-loading"));
 }
 
 function renderMap() {
