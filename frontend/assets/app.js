@@ -3206,7 +3206,13 @@ function escapeHtml(value) {
     .replaceAll("'", "&#039;");
 }
 
+function setAppLoading(isLoading) {
+  document.body.classList.toggle("app-loading", isLoading);
+  document.body.setAttribute("aria-busy", isLoading ? "true" : "false");
+}
+
 async function loadData() {
+  setAppLoading(true);
   els.backendStatus.textContent = "Conectando";
   els.backendStatus.className = "status-pill";
   if (!API_BASE_URL) {
@@ -3215,6 +3221,7 @@ async function loadData() {
     els.backendStatus.textContent = "Respaldo local";
     els.backendStatus.className = "status-pill offline";
     renderAll();
+    setAppLoading(false);
     return;
   }
   try {
@@ -3238,6 +3245,7 @@ async function loadData() {
     els.backendStatus.className = "status-pill offline";
   }
   renderAll();
+  setAppLoading(false);
 }
 
 async function handleManualRefresh() {
@@ -3625,7 +3633,7 @@ function renderSources() {
     </article>
   `;
   const empty = `
-    <article class="source-card">
+    <article class="source-card empty-state">
       <h3>No hay fuentes para este filtro</h3>
       <p>Prueba ampliar pais, region o categoria. El mapa y resultados siguen conectados al mismo criterio.</p>
     </article>
