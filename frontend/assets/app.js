@@ -3206,15 +3206,49 @@ function escapeHtml(value) {
     .replaceAll("'", "&#039;");
 }
 
-async function loadData() {
+function renderLoadingState() {
+  document.body.classList.add("is-loading");
+  const radar = document.getElementById("radar");
+  if (radar) radar.setAttribute("aria-busy", "true");
   els.backendStatus.textContent = "Conectando";
   els.backendStatus.className = "status-pill";
+  els.resultCount.textContent = "…";
+  ["statOpen", "statClosing", "statVerified", "statRegions", "heroOpportunities", "heroSources", "heroCountries"].forEach((id) => {
+    const node = document.getElementById(id);
+    if (node) node.textContent = "—";
+  });
+  els.opportunityList.innerHTML = Array.from({ length: 3 }, () => `
+    <article class="skeleton-card" aria-hidden="true">
+      <div class="skeleton-block skeleton-line short"></div>
+      <div class="skeleton-block skeleton-line tall"></div>
+      <div class="skeleton-block skeleton-line medium"></div>
+      <div class="skeleton-block skeleton-line"></div>
+    </article>
+  `).join("");
+  els.sourcesList.innerHTML = `
+    <article class="skeleton-card" aria-hidden="true">
+      <div class="skeleton-block skeleton-line short"></div>
+      <div class="skeleton-block skeleton-line medium"></div>
+      <div class="skeleton-block skeleton-line"></div>
+    </article>
+  `;
+}
+
+function clearLoadingState() {
+  document.body.classList.remove("is-loading");
+  const radar = document.getElementById("radar");
+  if (radar) radar.removeAttribute("aria-busy");
+}
+
+async function loadData() {
+  renderLoadingState();
   if (!API_BASE_URL) {
     opportunities = fallbackPayload.opportunities;
     sources = fallbackPayload.sources;
     els.backendStatus.textContent = "Respaldo local";
     els.backendStatus.className = "status-pill offline";
     renderAll();
+    clearLoadingState();
     return;
   }
   try {
@@ -3238,6 +3272,7 @@ async function loadData() {
     els.backendStatus.className = "status-pill offline";
   }
   renderAll();
+  clearLoadingState();
 }
 
 async function handleManualRefresh() {
