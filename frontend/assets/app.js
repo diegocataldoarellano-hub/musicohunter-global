@@ -2733,6 +2733,7 @@ const els = {
   quickFilters: document.getElementById("quickFilters"),
   opportunityList: document.getElementById("opportunityList"),
   resultCount: document.getElementById("resultCount"),
+  map: document.getElementById("map"),
   mapTitle: document.getElementById("mapTitle"),
   sourcesList: document.getElementById("sourcesList"),
   clearFilters: document.getElementById("clearFilters"),
@@ -3206,15 +3207,33 @@ function escapeHtml(value) {
     .replaceAll("'", "&#039;");
 }
 
+function renderSkeletonList(count = 4) {
+  return Array.from({ length: count }, () => `
+    <article class="skeleton-card" aria-hidden="true">
+      <div class="skeleton-line short"></div>
+      <div class="skeleton-line medium"></div>
+      <div class="skeleton-line tall"></div>
+      <div class="skeleton-line"></div>
+    </article>
+  `).join("");
+}
+
+function setResultsBusy(isBusy) {
+  els.opportunityList.setAttribute("aria-busy", isBusy ? "true" : "false");
+}
+
 async function loadData() {
   els.backendStatus.textContent = "Conectando";
-  els.backendStatus.className = "status-pill";
+  els.backendStatus.className = "status-pill loading";
+  setResultsBusy(true);
+  els.opportunityList.innerHTML = renderSkeletonList();
   if (!API_BASE_URL) {
     opportunities = fallbackPayload.opportunities;
     sources = fallbackPayload.sources;
     els.backendStatus.textContent = "Respaldo local";
     els.backendStatus.className = "status-pill offline";
     renderAll();
+    setResultsBusy(false);
     return;
   }
   try {
@@ -3238,11 +3257,13 @@ async function loadData() {
     els.backendStatus.className = "status-pill offline";
   }
   renderAll();
+  setResultsBusy(false);
 }
 
 async function handleManualRefresh() {
   const previousLabel = els.refreshButton.innerHTML;
   els.refreshButton.disabled = true;
+  els.refreshButton.classList.add("is-loading");
   els.refreshButton.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Recargando';
   await loadData();
   if (API_BASE_URL) {
@@ -3250,6 +3271,7 @@ async function handleManualRefresh() {
     els.backendStatus.className = "status-pill online";
   }
   els.refreshButton.disabled = false;
+  els.refreshButton.classList.remove("is-loading");
   els.refreshButton.innerHTML = previousLabel;
 }
 
@@ -3509,11 +3531,13 @@ function renderList() {
 
 function initMap() {
   if (map) return;
+  els.map.classList.add("is-loading");
   map = L.map("map", { scrollWheelZoom: false }).setView([-25.3, -67.2], 4);
   L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
     attribution: "&copy; OpenStreetMap",
     maxZoom: 18
   }).addTo(map);
+  map.whenReady(() => els.map.classList.remove("is-loading"));
 }
 
 function renderMap() {
