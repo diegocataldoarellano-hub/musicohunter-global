@@ -3207,6 +3207,7 @@ function escapeHtml(value) {
 }
 
 async function loadData() {
+  document.body.classList.add("is-loading");
   els.backendStatus.textContent = "Conectando";
   els.backendStatus.className = "status-pill";
   if (!API_BASE_URL) {
@@ -3215,6 +3216,7 @@ async function loadData() {
     els.backendStatus.textContent = "Respaldo local";
     els.backendStatus.className = "status-pill offline";
     renderAll();
+    document.body.classList.remove("is-loading");
     return;
   }
   try {
@@ -3238,6 +3240,7 @@ async function loadData() {
     els.backendStatus.className = "status-pill offline";
   }
   renderAll();
+  document.body.classList.remove("is-loading");
 }
 
 async function handleManualRefresh() {
