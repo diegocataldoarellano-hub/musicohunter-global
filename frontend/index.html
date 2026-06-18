@@ -10,9 +10,9 @@
   <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-  <link rel="stylesheet" href="./assets/styles.css?v=20260603-37" />
+  <link rel="stylesheet" href="./assets/styles.css?v=20260618-01" />
 </head>
-<body>
+<body class="is-loading">
   <div class="page-shell">
     <header class="hero">
       <nav class="topbar" aria-label="Navegacion principal">
@@ -154,9 +154,9 @@
               <p class="eyebrow">Mapa</p>
               <h2 id="mapTitle">Chile y Latinoamerica</h2>
             </div>
-            <span class="status-pill" id="backendStatus">Conectando</span>
+            <span class="status-pill loading" id="backendStatus" role="status" aria-live="polite">Conectando</span>
           </div>
-          <div id="map" role="application" aria-label="Mapa interactivo"></div>
+          <div id="map" class="is-loading" role="application" aria-label="Mapa interactivo" aria-busy="true"></div>
         </section>
 
         <section class="results-panel" aria-label="Resultados">
@@ -167,7 +167,26 @@
             </div>
             <button class="small-button" id="clearFilters" type="button">Limpiar</button>
           </div>
-          <div class="results-list" id="opportunityList"></div>
+          <div class="results-list is-loading" id="opportunityList" aria-busy="true" aria-label="Cargando oportunidades">
+            <article class="opportunity-card skeleton-card" aria-hidden="true">
+              <div class="skeleton skeleton-line w-40"></div>
+              <div class="skeleton skeleton-line w-80"></div>
+              <div class="skeleton skeleton-line w-60"></div>
+              <div class="skeleton skeleton-block"></div>
+            </article>
+            <article class="opportunity-card skeleton-card" aria-hidden="true">
+              <div class="skeleton skeleton-line w-40"></div>
+              <div class="skeleton skeleton-line w-80"></div>
+              <div class="skeleton skeleton-line w-60"></div>
+              <div class="skeleton skeleton-block"></div>
+            </article>
+            <article class="opportunity-card skeleton-card" aria-hidden="true">
+              <div class="skeleton skeleton-line w-40"></div>
+              <div class="skeleton skeleton-line w-80"></div>
+              <div class="skeleton skeleton-line w-60"></div>
+              <div class="skeleton skeleton-block"></div>
+            </article>
+          </div>
         </section>
       </section>
 
@@ -211,6 +230,6 @@
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="./assets/config.js?v=20260603-36"></script>
-  <script src="./assets/app.js?v=20260603-37"></script>
+  <script src="./assets/app.js?v=20260618-01"></script>
 </body>
 </html>
