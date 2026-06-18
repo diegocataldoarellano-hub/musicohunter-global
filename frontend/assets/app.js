@@ -2742,7 +2742,8 @@ const els = {
   calendarTitle: document.getElementById("calendarTitle"),
   calendarDays: document.getElementById("calendarDays"),
   prevMonth: document.getElementById("prevMonth"),
-  nextMonth: document.getElementById("nextMonth")
+  nextMonth: document.getElementById("nextMonth"),
+  mapEl: document.getElementById("map")
 };
 
 function unique(values) {
@@ -3206,14 +3207,40 @@ function escapeHtml(value) {
     .replaceAll("'", "&#039;");
 }
 
+function skeletonCardsHtml(count = 3) {
+  return Array.from({ length: count }, () => `
+    <article class="opportunity-card skeleton-card" aria-hidden="true">
+      <div class="skeleton skeleton-line w-40"></div>
+      <div class="skeleton skeleton-line w-80"></div>
+      <div class="skeleton skeleton-line w-60"></div>
+      <div class="skeleton skeleton-block"></div>
+    </article>
+  `).join("");
+}
+
+function setLoadingState(isLoading) {
+  document.body.classList.toggle("is-loading", isLoading);
+  els.opportunityList.classList.toggle("is-loading", isLoading);
+  els.opportunityList.setAttribute("aria-busy", String(isLoading));
+  if (els.mapEl) {
+    els.mapEl.classList.toggle("is-loading", isLoading);
+    els.mapEl.setAttribute("aria-busy", String(isLoading));
+  }
+  if (isLoading) {
+    els.opportunityList.innerHTML = skeletonCardsHtml(3);
+  }
+}
+
 async function loadData() {
+  setLoadingState(true);
   els.backendStatus.textContent = "Conectando";
-  els.backendStatus.className = "status-pill";
+  els.backendStatus.className = "status-pill loading";
   if (!API_BASE_URL) {
     opportunities = fallbackPayload.opportunities;
     sources = fallbackPayload.sources;
     els.backendStatus.textContent = "Respaldo local";
     els.backendStatus.className = "status-pill offline";
+    setLoadingState(false);
     renderAll();
     return;
   }
@@ -3237,6 +3264,7 @@ async function loadData() {
     els.backendStatus.textContent = "API sin respuesta - respaldo local";
     els.backendStatus.className = "status-pill offline";
   }
+  setLoadingState(false);
   renderAll();
 }
 
