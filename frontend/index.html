@@ -10,9 +10,9 @@
   <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-  <link rel="stylesheet" href="./assets/styles.css?v=20260603-37" />
+  <link rel="stylesheet" href="./assets/styles.css?v=20260618-01" />
 </head>
-<body>
+<body class="app-loading" aria-busy="true">
   <div class="page-shell">
     <header class="hero">
       <nav class="topbar" aria-label="Navegacion principal">
@@ -52,15 +52,15 @@
           </div>
           <div class="signal-grid">
             <div>
-              <strong id="heroOpportunities">0</strong>
+              <strong id="heroOpportunities" data-skeleton>0</strong>
               <span>oportunidades</span>
             </div>
             <div>
-              <strong id="heroSources">0</strong>
+              <strong id="heroSources" data-skeleton>0</strong>
               <span>fuentes</span>
             </div>
             <div>
-              <strong id="heroCountries">0</strong>
+              <strong id="heroCountries" data-skeleton>0</strong>
               <span>paises objetivo</span>
             </div>
           </div>
@@ -75,22 +75,22 @@
       <section class="stats-grid" aria-label="Estado del radar">
         <article class="stat-card">
           <i class="fa-solid fa-door-open"></i>
-          <strong id="statOpen">0</strong>
+          <strong id="statOpen" data-skeleton>0</strong>
           <span>Publicadas</span>
         </article>
         <article class="stat-card">
           <i class="fa-solid fa-hourglass-half"></i>
-          <strong id="statClosing">0</strong>
+          <strong id="statClosing" data-skeleton>0</strong>
           <span>Con plazo</span>
         </article>
         <article class="stat-card">
           <i class="fa-solid fa-shield-halved"></i>
-          <strong id="statVerified">0</strong>
+          <strong id="statVerified" data-skeleton>0</strong>
           <span>Links verificados</span>
         </article>
         <article class="stat-card">
           <i class="fa-solid fa-earth-americas"></i>
-          <strong id="statRegions">0</strong>
+          <strong id="statRegions" data-skeleton>0</strong>
           <span>Regiones activas</span>
         </article>
       </section>
@@ -211,6 +211,6 @@
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="./assets/config.js?v=20260603-36"></script>
-  <script src="./assets/app.js?v=20260603-37"></script>
+  <script src="./assets/app.js?v=20260618-01"></script>
 </body>
 </html>
