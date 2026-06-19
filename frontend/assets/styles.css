@@ -1030,7 +1030,8 @@ select option {
     border-radius: clamp(1.125rem, 3vw, 1.5rem);
   }
 
-  .signal-grid {
+  .signal-grid,
+  .field-grid {
     grid-template-columns: 1fr;
   }
 }
