@@ -3208,7 +3208,7 @@ function escapeHtml(value) {
 
 async function loadData() {
   els.backendStatus.textContent = "Conectando";
-  els.backendStatus.className = "status-pill";
+  els.backendStatus.className = "status-pill loading";
   if (!API_BASE_URL) {
     opportunities = fallbackPayload.opportunities;
     sources = fallbackPayload.sources;
@@ -3625,7 +3625,7 @@ function renderSources() {
     </article>
   `;
   const empty = `
-    <article class="source-card">
+    <article class="source-card empty-state">
       <h3>No hay fuentes para este filtro</h3>
       <p>Prueba ampliar pais, region o categoria. El mapa y resultados siguen conectados al mismo criterio.</p>
     </article>
