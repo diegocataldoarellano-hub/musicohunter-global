@@ -3207,17 +3207,18 @@ function escapeHtml(value) {
 }
 
 async function loadData() {
+  document.body.classList.add("is-loading");
+  document.getElementById("map")?.classList.add("is-loading");
   els.backendStatus.textContent = "Conectando";
   els.backendStatus.className = "status-pill";
-  if (!API_BASE_URL) {
-    opportunities = fallbackPayload.opportunities;
-    sources = fallbackPayload.sources;
-    els.backendStatus.textContent = "Respaldo local";
-    els.backendStatus.className = "status-pill offline";
-    renderAll();
-    return;
-  }
   try {
+    if (!API_BASE_URL) {
+      opportunities = fallbackPayload.opportunities;
+      sources = fallbackPayload.sources;
+      els.backendStatus.textContent = "Respaldo local";
+      els.backendStatus.className = "status-pill offline";
+      return;
+    }
     const [oppsResponse, sourcesResponse] = await Promise.all([
       fetch(`${API_BASE_URL}/api/opportunities?limit=500`),
       fetch(`${API_BASE_URL}/api/sources?limit=500`)
@@ -3236,8 +3237,11 @@ async function loadData() {
     sources = fallbackPayload.sources;
     els.backendStatus.textContent = "API sin respuesta - respaldo local";
     els.backendStatus.className = "status-pill offline";
+  } finally {
+    renderAll();
+    document.body.classList.remove("is-loading");
+    document.getElementById("map")?.classList.remove("is-loading");
   }
-  renderAll();
 }
 
 async function handleManualRefresh() {
