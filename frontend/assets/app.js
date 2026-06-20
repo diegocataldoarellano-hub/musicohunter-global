@@ -3508,12 +3508,19 @@ function renderList() {
 }
 
 function initMap() {
+  const mapEl = document.getElementById("map");
   if (map) return;
+  mapEl?.classList.add("is-loading");
+  mapEl?.setAttribute("aria-busy", "true");
   map = L.map("map", { scrollWheelZoom: false }).setView([-25.3, -67.2], 4);
   L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
     attribution: "&copy; OpenStreetMap",
     maxZoom: 18
   }).addTo(map);
+  map.whenReady(() => {
+    mapEl?.classList.remove("is-loading");
+    mapEl?.setAttribute("aria-busy", "false");
+  });
 }
 
 function renderMap() {
