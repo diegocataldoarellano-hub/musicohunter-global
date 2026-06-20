@@ -1044,8 +1044,7 @@ select option {
 }
 
 @container workspace (max-width: 56.25rem) {
-  .workspace,
-  .lower-grid {
+  .workspace {
     grid-template-columns: 1fr;
   }
 
@@ -1054,9 +1053,47 @@ select option {
   }
 }
 
+@container shell (max-width: 56.25rem) {
+  .lower-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 @container hero-copy (max-width: 32rem) {
   h1 {
     font-size: clamp(2.1rem, 9vw, 2.7rem);
+  }
+}
+
+/* Viewport fallbacks for browsers without container-query support */
+@supports not (container-type: inline-size) {
+  @media (max-width: 1100px) {
+    .hero-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .workspace {
+      grid-template-columns: minmax(0, 18.75rem) minmax(0, 1fr);
+    }
+
+    .results-panel {
+      grid-column: 1 / -1;
+    }
+
+    #map {
+      height: var(--map-height-compact);
+    }
+  }
+
+  @media (max-width: 900px) {
+    .workspace,
+    .lower-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .results-panel {
+      grid-column: auto;
+    }
   }
 }
 
