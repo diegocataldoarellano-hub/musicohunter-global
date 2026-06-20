@@ -2702,6 +2702,7 @@ const expandedTargetSources = expandedPublicTargets.map((target, index) => ({
 fallbackPayload.opportunities.push(...expandedTargetOpportunities);
 fallbackPayload.sources.push(...expandedTargetSources);
 
+let loadingCount = 0;
 let opportunities = [];
 let sources = [];
 let filtered = [];
@@ -3207,6 +3208,7 @@ function escapeHtml(value) {
 }
 
 async function loadData() {
+  loadingCount++;
   document.body.classList.add("is-loading");
   document.getElementById("map")?.classList.add("is-loading");
   els.backendStatus.textContent = "Conectando";
@@ -3238,9 +3240,14 @@ async function loadData() {
     els.backendStatus.textContent = "API sin respuesta - respaldo local";
     els.backendStatus.className = "status-pill offline";
   } finally {
-    renderAll();
-    document.body.classList.remove("is-loading");
-    document.getElementById("map")?.classList.remove("is-loading");
+    try {
+      renderAll();
+    } finally {
+      if (--loadingCount === 0) {
+        document.body.classList.remove("is-loading");
+        document.getElementById("map")?.classList.remove("is-loading");
+      }
+    }
   }
 }
 
